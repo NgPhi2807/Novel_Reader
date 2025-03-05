@@ -304,3 +304,140 @@ button[href] {
 .category-list ul li a:hover {
   color: #818181;
 }
+ul.dropdown {
+  display: none; /* Hide the dropdown by default */
+  position: absolute;
+  left: 0;
+  right: 0;
+  background-color: #fff;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  padding: 10px;
+  z-index: 1;
+  width: 100%; /* Full width */
+  display: flex;
+  flex-wrap: wrap;
+}
+
+/* Show the dropdown menu on hover */
+li:hover > ul.dropdown {
+  display: flex;
+}
+
+/* Style for the dropdown items */
+ul.dropdown li {
+  list-style: none;
+  margin: 0;
+  padding: 5px 0;
+  flex: 1 1 50%;
+}
+
+ul.dropdown li a {
+  color: #333;
+  text-decoration: none;
+  display: block;
+  padding: 5px 10px;
+}
+
+ul.dropdown li a:hover {
+  background-color: #f1f1f1;
+}
+
+.custom-link {
+  color: inherit; /* Use the inherited color */
+  text-decoration: none; /* Remove underline */
+  color: #2563eb;
+}
+
+.custom-link:hover {
+  color: inherit; /* Keep the inherited color on hover */
+  text-decoration: underline; /* Optional: Add underline on hover */
+  color: #2563eb;
+}
+.modal-footer.flex-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-footer p {
+  margin-bottom: 0;
+}
+.font-14 {
+  font-size: 14px;
+}
+.absolute {
+  position: absolute;
+  top: 50%;
+  right: 50%;
+}
+.custom-modal-width {
+  max-width: 450px; /* Adjust the width as needed */
+}
+
+/* button search and user */
+.user-button {
+  font-weight: bold;
+  padding: 5px 12px;
+  border-radius: 5px;
+  color: #ffff;
+}
+
+.search-button1 {
+  font-weight: bold;
+  border-radius: 5px;
+  color: #ffff;
+}
+.search-button1 i {
+  font-size: 18px;
+}
+.user-button i {
+  font-size: 18px;
+}
+.sign-in-container {
+  position: relative;
+  display: inline-block;
+}
+
+.user-dropdown {
+  position: absolute;
+  left: 0;
+  top: 100%;
+  width: 150px;
+  background: rgba(18, 18, 18, 0.87);
+  text-align: left;
+  padding: 3px 0;
+  z-index: 9;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease-in-out;
+  list-style: none;
+  border-radius: 5px;
+  font-size: 14px;
+  margin-top: 15px;
+}
+
+.user-dropdown li {
+  padding: 8px 15px;
+}
+
+.user-dropdown li a {
+  color: white;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Khoảng cách giữa icon và chữ */
+}
+
+.user-dropdown li a i {
+  font-size: 16px;
+  color: #ccc; /* Màu icon */
+}
+.user-dropdown li a:hover {
+  color: #c72526;
+}
+
+/* Khi có class .show, dropdown sẽ hiển thị */
+.user-dropdown.show {
+  opacity: 1;
+  visibility: visible;
+}
