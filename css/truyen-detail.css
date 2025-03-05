@@ -1,0 +1,306 @@
+.section-title {
+  display: flex;
+  gap: 8px;
+}
+
+.breadcrumb {
+  font-size: 16px;
+  color: #333;
+  display: flex;
+  align-items: center;
+}
+
+.breadcrumb a {
+  text-decoration: none;
+  color: #333;
+}
+
+.breadcrumb a:hover {
+  text-decoration: underline;
+}
+
+.separator1 {
+  margin: 0 5px;
+  color: #666;
+}
+
+.current {
+  color: #666;
+}
+
+.home-icon {
+  font-size: 18px;
+}
+.truyen_button {
+  display: flex;
+  gap: 15px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.primary-btn {
+  display: inline-block;
+  font-size: 14px;
+  font-weight: 700;
+  padding: 12px 30px;
+  color: #ffffff;
+  background-color: #e53637;
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+}
+
+.primary-btn:hover {
+  background-color: #c72526;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.primary-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Fix for button element with href attribute */
+button[href] {
+  text-decoration: none;
+}
+
+.book-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 1300px;
+}
+
+@keyframes initAnimation {
+  0% {
+    transform: rotateY(0deg);
+  }
+  100% {
+    transform: rotateY(-20deg);
+  }
+}
+
+.book {
+  width: 275px;
+  height: 375px;
+  position: relative;
+  transform-style: preserve-3d;
+  transform: rotateY(-20deg);
+  transition: 1s ease;
+  animation: 1s ease 0s 1 initAnimation;
+}
+
+.book-container:hover .book,
+.book-container:focus .book {
+  transform: rotateY(0deg);
+}
+
+.book > :first-child {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: red;
+  width: 275px;
+  height: 375px;
+  transform: translateZ(30px);
+  background-color: #01060f;
+  border-radius: 0 2px 2px 0;
+  box-shadow: 5px 5px 20px #666;
+}
+
+.book::before {
+  position: absolute;
+  content: " ";
+  background-color: blue;
+  left: 0;
+  top: 3px;
+  width: 58px;
+  height: 369px;
+  transform: translateX(242px) rotateY(90deg);
+  background: linear-gradient(
+    90deg,
+    #fff 0%,
+    #f9f9f9 5%,
+    #fff 10%,
+    #f9f9f9 15%,
+    #fff 20%,
+    #f9f9f9 25%,
+    #fff 30%,
+    #f9f9f9 35%,
+    #fff 40%,
+    #f9f9f9 45%,
+    #fff 50%,
+    #f9f9f9 55%,
+    #fff 60%,
+    #f9f9f9 65%,
+    #fff 70%,
+    #f9f9f9 75%,
+    #fff 80%,
+    #f9f9f9 85%,
+    #fff 90%,
+    #f9f9f9 95%,
+    #fff 100%
+  );
+}
+
+.book::after {
+  position: absolute;
+  top: 0;
+  left: 0;
+  content: " ";
+  width: 275px;
+  height: 375px;
+  transform: translateZ(-30px);
+  background-color: #01060f;
+  border-radius: 0 2px 2px 0;
+  box-shadow: -10px 0 50px 10px #666;
+}
+.font-20 {
+  font-size: 20px !important;
+}
+.anime__details__widget ul li {
+  display: flex;
+}
+.anime__details__content {
+  position: relative; /* Để ::before bám vào */
+  z-index: 1; /* Đảm bảo nội dung hiển thị phía trên */
+}
+
+.anime__details__content::before {
+  content: "";
+  position: absolute;
+  top: -50px; /* Đẩy nền lên trên 50px */
+  left: -50vw; /* Dịch nền sang trái */
+  width: 300vw; /* Kéo dài cả bên trái và bên phải */
+  height: 480px; /* Chiều cao của nền */
+  background: url("img/hero/truyen1.png") center/cover no-repeat;
+  filter: blur(25px);
+  opacity: 0.3;
+  z-index: -1; /* Đặt nền phía sau */
+  clip-path: inset(5% 5% 5% 5%);
+}
+.text-black {
+  color: black !important;
+  font-weight: 600;
+  line-height: 21px;
+  text-transform: uppercase;
+  font-size: 21px;
+  position: relative;
+  font-family: "Oswald", sans-serif;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.separator {
+  width: 2px;
+  height: 25px;
+  background-color: black; /* Màu của gạch */
+  margin: 0 10px; /* Khoảng cách giữa các chữ */
+}
+
+.tab {
+  text-decoration: none;
+  padding: 5px 10px;
+  position: relative;
+  color: black;
+  transition: color 0.3s ease;
+}
+
+.underline {
+  width: 100px;
+  height: 2px;
+  background-color: blue;
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  transition: all 0.3s ease;
+}
+
+.tab.active {
+  color: black;
+  font-weight: bold;
+}
+
+.tab.inactive {
+  color: gray;
+}
+
+.content-section {
+  display: none;
+}
+
+.content-section.active {
+  display: block;
+}
+.table {
+  width: 100%;
+}
+
+.table td {
+  padding: 15px;
+  border-bottom: 1px solid #ddd;
+}
+
+.table a {
+  text-decoration: none;
+  color: black;
+}
+
+.table a:hover {
+  text-decoration: underline;
+}
+.table1 {
+  width: 100%;
+}
+
+.table1 td {
+  padding-bottom: 10px;
+}
+
+.table1 a {
+  text-decoration: none;
+  color: black;
+}
+
+.table1 a:hover {
+  color: black;
+  text-decoration: underline;
+}
+.category-list {
+  padding: 20px;
+  background-color: rgb(32 32 32/ 1);
+  border-radius: 1px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 300px;
+}
+
+.category-list ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  column-gap: 30px; /* Space between columns */
+  position: relative;
+}
+
+.category-list ul li {
+  margin-bottom: 10px;
+}
+
+.category-list ul li a {
+  text-decoration: none;
+  color: #fff;
+  font-size: 16px;
+  transition: color 0.3s;
+}
+
+.category-list ul li a:hover {
+  color: #818181;
+}
