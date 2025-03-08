@@ -3,7 +3,8 @@
 -----------------------*/
 
 .header {
-  background-color: var(--app-bg-color-primary);
+  background-color: #ffffff !important;
+  border: 2px solid #e0e0e0;
 }
 
 .header__logo {
@@ -26,7 +27,7 @@
 }
 
 .header__menu ul li.active a {
-  color: rgb(255, 255, 255);
+  color: #232323;
 }
 
 .header__menu ul li:hover a {
@@ -76,12 +77,13 @@
 }
 
 .header__menu ul li a {
-  font-size: 15px;
-  color: rgb(255, 255, 255);
+  font-size: 16px;
+  color: #232323;
   display: block;
   font-weight: 700;
   transition: all 0.5s;
   padding: 20px;
+  text-transform: uppercase;
 }
 
 .header__menu ul li a span {
@@ -109,8 +111,8 @@
   height: 38px;
   align-items: center;
   justify-content: center;
-  border: 1.5px solid #ef4444;
-  color: #ef4444;
+  border: 1.5px solid #1f2129;
+  color: #1f2129;
   border-radius: 50%;
   text-decoration: none;
 }
@@ -119,20 +121,20 @@
   width: 20px;
   height: 20px;
   display: block;
-  color: #ef4444;
+  color: #1f2129;
 }
 
 .sign-in-btn {
   font-size: 16px;
   font-weight: bold;
   padding: 5px 12px;
-  border: 1.5px solid #ef4444;
+  border: 1.5px solid #1f2129;
   border-radius: 5px;
-  color: #ef4444;
+  color: #1f2129;
 }
 
 .sign-in-btn:hover {
-  background-color: #ef4444;
+  background-color: #1f2129;
   color: white;
   transition: 0.3s;
 }

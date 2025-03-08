@@ -1,8 +1,9 @@
 .footer {
-  background: #070720;
+  background: #ffff;
   padding-top: 60px;
   padding-bottom: 40px;
   position: relative;
+  border-top: 2px solid #e0e0e0;
 }
 
 .page-up {
@@ -15,11 +16,33 @@
 .page-up a {
   display: inline-block;
   font-size: 36px;
-  color: #ffffff;
+  color: #1f2129;
   height: 50px;
   width: 50px;
-  background: #e53637;
+  background: rgb(216, 216, 216);
   line-height: 50px;
   text-align: center;
   border-radius: 50%;
+}
+.footer-title {
+  color: #1f2129;
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.75rem;
+}
+
+.footer-text {
+  color: #1f2129;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.5rem;
+}
+.link-footer {
+  color: #1f2129;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.link-footer:hover {
+  color: #000000;
 }

@@ -14,9 +14,7 @@ document.addEventListener("DOMContentLoaded", function () {
           });
         } else {
           // Khi cuộn ra khỏi phần này, ẩn sản phẩm để có thể chạy lại hiệu ứng khi cuộn vào
-          products.forEach((product) => {
-            product.classList.remove("show");
-          });
+    
         }
       });
     },

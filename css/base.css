@@ -31,7 +31,7 @@ body {
   height: 100%;
   font-family: "Mulish", sans-serif;
   -webkit-font-smoothing: antialiased;
-  background-color: rgb(27 27 27);
+  background-color: #e7e7e7;
 }
 
 h1,
@@ -112,7 +112,7 @@ ol {
 
 .section-title h4,
 .section-title h5 {
-  color: #ffffff;
+  color: #1f2129;
   font-weight: 600;
   line-height: 21px;
   text-transform: uppercase;
