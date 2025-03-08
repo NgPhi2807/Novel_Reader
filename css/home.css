@@ -570,6 +570,27 @@ ul.dropdown li a:hover {
   position: relative;
   margin-bottom: 80px;
 }
+/* Ẩn sản phẩm ban đầu */
+.product__item {
+        opacity: 0;
+        transform: translateX(-20px);
+        transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+      }
+
+      /* Khi sản phẩm xuất hiện */
+.product__item.show {
+        opacity: 1;
+        transform: translateX(0);
+      }
+
+@keyframes loading {
+        0% {
+          background-position: 100% 0;
+        }
+        100% {
+          background-position: -100% 0;
+        }
+      }
 
 /*---------------------
   Truyen Details
