@@ -3,71 +3,169 @@
   gap: 8px;
 }
 
-.breadcrumb {
+.font-20 {
+  font-size: 20px !important;
+}
+.font-24 {
+  font-size: 24px !important;
+}
+
+.text-black {
+  color: black !important;
+  font-weight: 600;
+  line-height: 21px;
+  text-transform: uppercase;
+  font-size: 21px;
+  position: relative;
+  font-family: "Oswald", sans-serif;
+}
+
+/*---------------------
+  Breadcrumb
+-----------------------*/
+
+.breadcrumb-option {
+  padding-top: 35px;
+}
+
+.breadcrumb__links a {
   font-size: 16px;
-  color: #333;
+  color: #1f2129;
+  margin-right: 18px;
+  display: inline-block;
+  position: relative;
+}
+
+.breadcrumb__links a i {
+  margin-right: 5px;
+  color: #e53637;
+}
+
+.breadcrumb__links a:after {
+  position: absolute;
+  right: -14px;
+  top: 0;
+  content: "";
+  font-family: "FontAwesome";
+}
+
+.breadcrumb__links span {
+  font-size: 16px;
+  color: #565656;
+  display: inline-block;
+}
+
+/* Menu dropdown   */
+ul.dropdown {
+  display: none; /* Hide the dropdown by default */
+  position: absolute;
+  left: 0;
+  right: 0;
+  background-color: #fff;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  padding: 10px;
+  z-index: 1;
+  width: 100%; /* Full width */
   display: flex;
-  align-items: center;
+  flex-wrap: wrap;
 }
 
-.breadcrumb a {
-  text-decoration: none;
+/* Show the dropdown menu on hover */
+li:hover > ul.dropdown {
+  display: flex;
+}
+
+/* Style for the dropdown items */
+ul.dropdown li {
+  list-style: none;
+  margin: 0;
+  padding: 5px 0;
+  flex: 1 1 50%;
+}
+
+ul.dropdown li a {
   color: #333;
+  text-decoration: none;
+  display: block;
+  padding: 5px 10px;
 }
 
-.breadcrumb a:hover {
-  text-decoration: underline;
+ul.dropdown li a:hover {
+  background-color: #f1f1f1;
+}
+/* button search and user */
+.user-button {
+  font-weight: bold;
+  padding: 5px 12px;
+  border-radius: 5px;
+  color: #1f2129;
 }
 
-.separator1 {
-  margin: 0 5px;
-  color: #666;
+.search-button1 {
+  font-weight: bold;
+  border-radius: 5px;
+  color: #1f2129;
 }
-
-.current {
-  color: #666;
-}
-
-.home-icon {
+.search-button1 i {
   font-size: 18px;
 }
-.truyen_button {
-  display: flex;
-  gap: 15px;
-  margin-top: 20px;
-  margin-bottom: 20px;
+.user-button i {
+  font-size: 18px;
 }
-
-.primary-btn {
+.user-button:hover,
+.search-button1:hover {
+  color: #1f2129; /* Giữ nguyên màu khi hover */
+}
+.sign-in-container {
+  position: relative;
   display: inline-block;
+}
+
+.user-dropdown {
+  position: absolute;
+  left: 0;
+  top: 100%;
+  width: 150px;
+  background: rgba(18, 18, 18, 0.87);
+  text-align: left;
+  padding: 3px 0;
+  z-index: 9;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease-in-out;
+  list-style: none;
+  border-radius: 5px;
   font-size: 14px;
-  font-weight: 700;
-  padding: 12px 30px;
-  color: #ffffff;
-  background-color: #e53637;
-  border: none;
-  border-radius: 15px;
-  cursor: pointer;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  transition: all 0.3s ease;
+  margin-top: 15px;
 }
 
-.primary-btn:hover {
-  background-color: #c72526;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+.user-dropdown li {
+  padding: 8px 15px;
 }
 
-.primary-btn:active {
-  transform: translateY(0);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-/* Fix for button element with href attribute */
-button[href] {
+.user-dropdown li a {
+  color: white;
   text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Khoảng cách giữa icon và chữ */
 }
 
+.user-dropdown li a i {
+  font-size: 16px;
+  color: #ccc; /* Màu icon */
+}
+.user-dropdown li a:hover {
+  color: #c72526;
+}
+
+/* Khi có class .show, dropdown sẽ hiển thị */
+.user-dropdown.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Truyen Details */
 .book-container {
   display: flex;
   align-items: center;
@@ -159,40 +257,156 @@ button[href] {
   border-radius: 0 2px 2px 0;
   box-shadow: -10px 0 50px 10px #666;
 }
-.font-20 {
-  font-size: 20px !important;
-}
-.anime__details__widget ul li {
-  display: flex;
-}
-.anime__details__content {
-  position: relative; /* Để ::before bám vào */
-  z-index: 1; /* Đảm bảo nội dung hiển thị phía trên */
-}
-
-.anime__details__content::before {
-  content: "";
-  position: absolute;
-  top: -50px; /* Đẩy nền lên trên 50px */
-  left: -50vw; /* Dịch nền sang trái */
-  width: 300vw; /* Kéo dài cả bên trái và bên phải */
-  height: 480px; /* Chiều cao của nền */
-  background: url("img/hero/truyen1.png") center/cover no-repeat;
-  filter: blur(25px);
-  opacity: 0.3;
-  z-index: -1; /* Đặt nền phía sau */
-  clip-path: inset(5% 5% 5% 5%);
-}
-.text-black {
-  color: black !important;
-  font-weight: 600;
-  line-height: 21px;
+.primary-btn {
+  display: inline-block;
+  font-size: 14px;
+  font-weight: 700;
+  padding: 12px 30px;
+  color: #ffffff;
+  background-color: rgb(54, 109, 229);
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
   text-transform: uppercase;
-  font-size: 21px;
-  position: relative;
-  font-family: "Oswald", sans-serif;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+}
+.truyen_button {
+  display: flex;
+  gap: 15px;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
+.primary-btn:hover {
+  background-color: rgb(62, 123, 255);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.primary-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Fix for button element with href attribute */
+button[href] {
+  text-decoration: none;
+}
+.truyen-details {
+  padding-top: 60px;
+}
+
+.truyen__details__content {
+  margin-bottom: 65px;
+}
+
+.truyen__details__text {
+  position: relative;s
+}
+
+.truyen__details__text p {
+  color: #565656;
+  font-size: 18px;
+  line-height: 30px;
+}
+
+.truyen__details__pic {
+  height: 440px;
+  border-radius: 5px;
+  position: relative;
+}
+
+.truyen__details__pic .comment {
+  font-size: 13px;
+  color: #ffffff;
+  background: #3d3d3d;
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 4px;
+  position: absolute;
+  left: 10px;
+  bottom: 25px;
+}
+
+.truyen__details__pic .view {
+  font-size: 13px;
+  color: #ffffff;
+  background: #3d3d3d;
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 4px;
+  position: absolute;
+  right: 10px;
+  bottom: 25px;
+}
+
+.truyen__details__title {
+  margin-bottom: 20px;
+}
+
+.truyen__details__title h3 {
+  color: #1f2129;
+  font-weight: 700;
+  margin-bottom: 13px;
+}
+
+.truyen__details__title span {
+  font-size: 16px;
+  color: #565656;
+  display: block;
+}
+
+.truyen__details__rating {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Khoảng cách giữa sao và chữ */
+}
+
+.truyen__details__rating .rating i {
+  font-size: 17px;
+  color: #e89f12;
+  display: inline-block;
+}
+
+.truyen__details__rating span {
+  display: block;
+  font-size: 18px;
+  color: rgb(250, 124, 20);
+}
+
+.truyen__details__widget {
+  margin-bottom: 15px;
+}
+
+.truyen__details__widget ul {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 20px;
+}
+
+.truyen__details__widget li {
+  display: grid;
+  grid-template-columns: 30px 150px 10px auto; /* Cột 1: icon, Cột 2: tiêu đề, Cột 3: dấu :, Cột 4: nội dung */
+  align-items: center;
+  gap: 10px;
+}
+
+.truyen__details__widget ul li {
+  list-style: none;
+  font-size: 15px;
+  color: #565656;
+  line-height: 30px;
+  position: relative;
+}
+
+.truyen__details__widget ul li span {
+  color: #565656;
+  width: 150px;
+  display: inline-block;
+}
+
+
+/* Gioi thieu & danh sach chương  */
 .section-title {
   display: flex;
   align-items: center;
@@ -240,13 +454,18 @@ button[href] {
 .content-section.active {
   display: block;
 }
+
 .table {
   width: 100%;
 }
 
 .table td {
-  padding: 15px;
+  padding: 13px;
   border-bottom: 1px solid #ddd;
+}
+.table td a:hover {
+  color: rgba(70, 4, 100, 0.77);
+  text-decoration: none;
 }
 
 .table a {
@@ -274,316 +493,14 @@ button[href] {
   color: black;
   text-decoration: underline;
 }
-.category-list {
-  padding: 20px;
-  background-color: rgb(32 32 32/ 1);
-  border-radius: 1px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  width: 300px;
-}
-
-.category-list ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  column-gap: 30px; /* Space between columns */
-  position: relative;
-}
-
-.category-list ul li {
-  margin-bottom: 10px;
-}
-
-.category-list ul li a {
-  text-decoration: none;
-  color: #fff;
+.tab-content p {
   font-size: 16px;
-  transition: color 0.3s;
+  color: #1f2129; /* Màu chữ */
+  line-height: 25px;
 }
+/* End Gioi thieu & danh sach chương  */
 
-.category-list ul li a:hover {
-  color: #818181;
-}
-ul.dropdown {
-  display: none; /* Hide the dropdown by default */
-  position: absolute;
-  left: 0;
-  right: 0;
-  background-color: #fff;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-  padding: 10px;
-  z-index: 1;
-  width: 100%; /* Full width */
-  display: flex;
-  flex-wrap: wrap;
-}
-
-/* Show the dropdown menu on hover */
-li:hover > ul.dropdown {
-  display: flex;
-}
-
-/* Style for the dropdown items */
-ul.dropdown li {
-  list-style: none;
-  margin: 0;
-  padding: 5px 0;
-  flex: 1 1 50%;
-}
-
-ul.dropdown li a {
-  color: #333;
-  text-decoration: none;
-  display: block;
-  padding: 5px 10px;
-}
-
-ul.dropdown li a:hover {
-  background-color: #f1f1f1;
-}
-
-.custom-link {
-  color: inherit; /* Use the inherited color */
-  text-decoration: none; /* Remove underline */
-  color: #2563eb;
-}
-
-.custom-link:hover {
-  color: inherit; /* Keep the inherited color on hover */
-  text-decoration: underline; /* Optional: Add underline on hover */
-  color: #2563eb;
-}
-.modal-footer.flex-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.modal-footer p {
-  margin-bottom: 0;
-}
-.font-14 {
-  font-size: 14px;
-}
-.absolute {
-  position: absolute;
-  top: 50%;
-  right: 50%;
-}
-.custom-modal-width {
-  max-width: 450px; /* Adjust the width as needed */
-}
-
-/* button search and user */
-.user-button {
-  font-weight: bold;
-  padding: 5px 12px;
-  border-radius: 5px;
-  color: #ffff;
-}
-
-.search-button1 {
-  font-weight: bold;
-  border-radius: 5px;
-  color: #ffff;
-}
-.search-button1 i {
-  font-size: 18px;
-}
-.user-button i {
-  font-size: 18px;
-}
-.sign-in-container {
-  position: relative;
-  display: inline-block;
-}
-
-.user-dropdown {
-  position: absolute;
-  left: 0;
-  top: 100%;
-  width: 150px;
-  background: rgba(18, 18, 18, 0.87);
-  text-align: left;
-  padding: 3px 0;
-  z-index: 9;
-  opacity: 0;
-  visibility: hidden;
-  transition: all 0.3s ease-in-out;
-  list-style: none;
-  border-radius: 5px;
-  font-size: 14px;
-  margin-top: 15px;
-}
-
-.user-dropdown li {
-  padding: 8px 15px;
-}
-
-.user-dropdown li a {
-  color: white;
-  text-decoration: none;
-  display: flex;
-  align-items: center;
-  gap: 8px; /* Khoảng cách giữa icon và chữ */
-}
-
-.user-dropdown li a i {
-  font-size: 16px;
-  color: #ccc; /* Màu icon */
-}
-.user-dropdown li a:hover {
-  color: #c72526;
-}
-
-/* Khi có class .show, dropdown sẽ hiển thị */
-.user-dropdown.show {
-  opacity: 1;
-  visibility: visible;
-}
-
-.truyen-details {
-  padding-top: 60px;
-}
-
-.truyen__details__content {
-  margin-bottom: 65px;
-}
-
-.truyen__details__text {
-  position: relative;
-}
-
-.truyen__details__text p {
-  color: #b7b7b7;
-  font-size: 18px;
-  line-height: 30px;
-}
-
-.truyen__details__pic {
-  height: 440px;
-  border-radius: 5px;
-  position: relative;
-}
-
-.truyen__details__pic .comment {
-  font-size: 13px;
-  color: #ffffff;
-  background: #3d3d3d;
-  display: inline-block;
-  padding: 2px 10px;
-  border-radius: 4px;
-  position: absolute;
-  left: 10px;
-  bottom: 25px;
-}
-
-.truyen__details__pic .view {
-  font-size: 13px;
-  color: #ffffff;
-  background: #3d3d3d;
-  display: inline-block;
-  padding: 2px 10px;
-  border-radius: 4px;
-  position: absolute;
-  right: 10px;
-  bottom: 25px;
-}
-
-.truyen__details__title {
-  margin-bottom: 20px;
-}
-
-.truyen__details__title h3 {
-  color: #ffffff;
-  font-weight: 700;
-  margin-bottom: 13px;
-}
-
-.truyen__details__title span {
-  font-size: 15px;
-  color: #b7b7b7;
-  display: block;
-}
-
-.truyen__details__rating {
-  display: flex;
-  align-items: center;
-  gap: 10px; /* Khoảng cách giữa sao và chữ */
-}
-
-.truyen__details__rating .rating i {
-  font-size: 17px;
-  color: #e89f12;
-  display: inline-block;
-}
-
-.truyen__details__rating span {
-  display: block;
-  font-size: 18px;
-  color: #b7b7b7;
-}
-
-.truyen__details__widget {
-  margin-bottom: 15px;
-}
-
-.truyen__details__widget ul {
-  margin-bottom: 20px;
-}
-
-.truyen__details__widget ul li {
-  list-style: none;
-  font-size: 15px;
-  color: #ffffff;
-  line-height: 30px;
-  position: relative;
-}
-
-.truyen__details__widget ul li span {
-  color: #ffff;
-  width: 150px;
-  display: inline-block;
-}
-
-.truyen__details__btn .follow-btn {
-  font-size: 13px;
-  color: #ffffff;
-  background: #e53637;
-  display: inline-block;
-  font-weight: 700;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  padding: 14px 20px;
-  border-radius: 4px;
-  margin-right: 11px;
-}
-
-.truyen__details__btn .watch-btn span {
-  font-size: 13px;
-  color: #ffffff;
-  background: #e53637;
-  display: inline-block;
-  font-weight: 700;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  padding: 14px 20px;
-  border-radius: 4px 0 0 4px;
-  margin-right: 1px;
-}
-
-.truyen__details__btn .watch-btn i {
-  font-size: 20px;
-  display: inline-block;
-  background: #e53637;
-  padding: 11px 5px 16px 8px;
-  color: #ffffff;
-  border-radius: 0 4px 4px 0;
-}
-
-.truyen__details__review {
-}
-
+ /* Bình luận  */
 .truyen__review__item {
   overflow: hidden;
   margin-bottom: 15px;
@@ -618,6 +535,8 @@ ul.dropdown li a:hover {
   background: #1d1e39;
   padding: 18px 30px 16px 20px;
   border-radius: 10px;
+  width: 100%;
+  height:auto;
 }
 
 .truyen__review__item__text h6 {
@@ -657,43 +576,39 @@ ul.dropdown li a:hover {
   font-weight: 700;
   letter-spacing: 2px;
   text-transform: uppercase;
-  background: #e53637;
   border: none;
   padding: 10px 15px;
   border-radius: 2px;
 }
 
-/*---------------------
-  Breadcrumb
------------------------*/
-
-.breadcrumb-option {
-  padding-top: 35px;
+/* Truyên hot  */
+.category-list {
+  padding: 20px;
+    background-color: #fdfdfd;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1)
+  width: 300px;
 }
 
-.breadcrumb__links a {
-  font-size: 15px;
-  color: #ffffff;
-  margin-right: 18px;
-  display: inline-block;
+.category-list ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  column-gap: 30px; /* Space between columns */
   position: relative;
 }
 
-.breadcrumb__links a i {
-  margin-right: 5px;
-  color: #e53637;
+.category-list ul li {
+  margin-bottom: 10px;
 }
 
-.breadcrumb__links a:after {
-  position: absolute;
-  right: -14px;
-  top: 0;
-  content: "";
-  font-family: "FontAwesome";
+.category-list ul li a {
+  text-decoration: none;
+  color: #1f2129;
+  font-size: 16px;
+  transition: color 0.3s;
 }
 
-.breadcrumb__links span {
-  font-size: 15px;
-  color: #b7b7b7;
-  display: inline-block;
+.category-list ul li a:hover {
+  color:#e89f12;
 }

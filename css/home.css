@@ -1,10 +1,10 @@
-.btn-xemtatca{
-    display: inline-block;
-    font-size: 13px;
-    font-weight: 900;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-  color:#1f2129 !important;
+.btn-xemtatca {
+  display: inline-block;
+  font-size: 13px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #1f2129 !important;
 }
 /* hero slider  */
 .swiper {
@@ -128,9 +128,8 @@
 /* truyen item hot  */
 .story img {
   width: 60px;
-  height:60px;
+  height: 60px;
   border-radius: 4px;
-  
 }
 
 .story {
@@ -155,7 +154,7 @@
 .story span {
   font-size: 14px;
   color: #565656;
-  font-weight:700;
+  font-weight: 700;
   margin: 0;
 }
 
@@ -163,7 +162,6 @@
 .category-list {
   padding: 15px;
   background-color: #fdfdfd;
-  border-radius: 1px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   margin-top: 33px;
   border: 1px solid #e0e0e0;
@@ -188,8 +186,8 @@
   color: #1f2129;
   font-size: 1.1rem;
   transition: color 0.3s;
-  font-weight:600;
-  line-height:30px;
+  font-weight: 600;
+  line-height: 30px;
 }
 
 .category-list ul li a:hover {
@@ -198,24 +196,25 @@
 
 /* truyen co chuong moi */
 .card {
- width:100%;  
+  width: 100%;
   display: flex;
   height: 100px;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1) !important;
-border:none;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -2px rgba(0, 0, 0, 0.1) !important;
+  border: none;
 }
 
 .card-title {
   font-size: 1.1rem;
   font-weight: bold;
 }
-.card-title{
-  color:#1f2129;
-  font-size:18px;
+.card-title {
+  color: #1f2129;
+  font-size: 18px;
 }
-.card-content{
-  color:#2d73e7;
-  font-size:14px !important;
+.card-content {
+  color: #2d73e7;
+  font-size: 14px !important;
 }
 
 .top-05rem {
@@ -226,8 +225,8 @@ border:none;
   line-height: 10px;
 }
 .time-info {
-  color:#565656;
-  font-size:14px !important;
+  color: #565656;
+  font-size: 14px !important;
 }
 .img-box {
   width: 90px; /* Giữ cố định chiều rộng */
@@ -480,7 +479,7 @@ ul.dropdown li a:hover {
 -----------------------*/
 
 .product {
-  padding-bottom: 0;img
+  padding-bottom: 0;
 }
 
 .product-page {
@@ -492,11 +491,9 @@ ul.dropdown li a:hover {
   margin-bottom: 30px;
 }
 
-
 .update__product {
   margin-bottom: 50px;
 }
-
 
 .product__item {
   margin-bottom: 30px;
@@ -531,7 +528,7 @@ ul.dropdown li a:hover {
 .product__item__text ul li {
   list-style: none;
   font-size: 10px;
-  color:rgb(0, 0, 0);
+  color: rgb(0, 0, 0);
   font-weight: 700;
   padding: 1px 10px;
   background: rgba(121, 121, 121, 0.2);
@@ -571,25 +568,25 @@ ul.dropdown li a:hover {
 }
 /* Ẩn sản phẩm ban đầu */
 .product__item {
-        opacity: 0;
-        transform: translateX(-20px);
-        transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-      }
+  opacity: 0;
+  transform: translateX(-20px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
 
-      /* Khi sản phẩm xuất hiện */
+/* Khi sản phẩm xuất hiện */
 .product__item.show {
-        opacity: 1;
-        transform: translateX(0);
-      }
+  opacity: 1;
+  transform: translateX(0);
+}
 
 @keyframes loading {
-        0% {
-          background-position: 100% 0;
-        }
-        100% {
-          background-position: -100% 0;
-        }
-      }
+  0% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: -100% 0;
+  }
+}
 
 /*---------------------
   Truyen Details

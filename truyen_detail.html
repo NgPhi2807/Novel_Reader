@@ -44,17 +44,17 @@
     </div>
 
     <!-- Header Section Begin -->
-    <header>
+    <header class="header">
       <div class="container">
         <div class="row">
-          <div class="col-lg-2">
+          <div class="col-lg-2 col-md-2">
             <div class="header__logo">
               <a href="./index.html">
-                <img src="img/logo.png" alt="" />
+                <img class="logo" src="img/logo.png" alt="" />
               </a>
             </div>
           </div>
-          <div class="col-lg-8">
+          <div class="col-lg-8 pt-2">
             <div class="header__nav">
               <nav class="header__menu mobile-menu">
                 <ul>
@@ -97,7 +97,7 @@
               </nav>
             </div>
           </div>
-          <div class="col-lg-2">
+          <div class="col-lg-2 pt-2">
             <div class="header__right">
               <a class="search-button1" href="/search">
                 <i class="fa fa-search"></i>
@@ -146,7 +146,7 @@
     </div>
     <!-- Breadcrumb End -->
 
-    <!-- Anime Section Begin -->
+    <!-- Truyen Section Begin -->
     <section class="truyen-details spad1">
       <div class="container">
         <div class="truyen__details__content">
@@ -193,7 +193,7 @@
                         </li>
                         <li>
                           <i class="fas fa-file-alt px-2"></i>
-                          <span class="font-20">Độ dài : </span>
+                          <span class="font-20 pl-1">Độ dài : </span>
                           <span class="font-20 fw-bold">645 chương</span>
                         </li>
                       </ul>
@@ -224,13 +224,14 @@
           </div>
         </div>
 
+        <!-- Truyen Description -->
         <div class="row">
           <div class="col-lg-8 col-md-8">
-            <div class="card p-3">
+            <div class="card px-3 py-1">
               <div class="section-title">
                 <div class="mt-3">
                   <div class="section-title">
-                    <h4 class="text-black">Truyện có chương mới</h4>
+                    <h4 class="text-black font-24">Truyện có chương mới</h4>
                   </div>
                   <div class="col-md-12">
                     <div>
@@ -260,11 +261,14 @@
               </div>
               <!-- Tabs: Giới thiệu và Danh sách chương -->
               <div class="section-title">
-                <a href="#" class="text-black tab active" data-tab="gioi-thieu"
+                <a
+                  href="#"
+                  class="text-black font-24 tab active"
+                  data-tab="gioi-thieu"
                   >Giới thiệu</a
                 >
                 <span class="separator"></span>
-                <a href="#" class="text-black tab" data-tab="danh-sach"
+                <a href="#" class="text-black font-24 tab" data-tab="danh-sach"
                   >Danh sách chương</a
                 >
                 <div class="underline"></div>
@@ -272,7 +276,7 @@
 
               <div class="tab-content">
                 <div id="gioi-thieu" class="content-section active">
-                  <p class="px-2">
+                  <p class="px-3">
                     <strong>Mê Truyện Chữ</strong> Đỉnh Cấp Khí Vận, Lặng Lẽ Tu
                     Luyện Ngàn Năm được cập nhật nhanh và đầy đủ nhất tại
                     MeTruyenChu. Bạn đọc đừng quên để lại bình luận và chia sẻ,
@@ -310,13 +314,13 @@
               <!-- Reviews -->
               <div class="truyen__details__review mt-3">
                 <div class="section-title">
-                  <h4 class="text-black">Bình luận</h4>
+                  <h4 class="text-black font-24">Bình luận</h4>
                 </div>
 
                 <div class="truyen__review__item d-flex align-items-start">
                   <div class="truyen__review__item__pic me-3">
                     <img
-                      src="img/trending/trend-1.png"
+                      src="img/user/user1.png"
                       alt="Review Image"
                       class="rounded-circle"
                       width="50"
@@ -327,16 +331,13 @@
                     <h6 class="mb-1">
                       Chris Curry - <span class="text-muted">1 Hour ago</span>
                     </h6>
-                    <p class="mb-0">
-                      whachikan Just noticed that someone categorized this as
-                      belonging to the genre "demons" LOL
-                    </p>
+                    <p class="mb-0">Nhân vật chính thông minh</p>
                   </div>
                 </div>
                 <div class="truyen__review__item d-flex align-items-start">
                   <div class="truyen__review__item__pic me-3">
                     <img
-                      src="img/trending/trend-1.png"
+                      src="img/user/user2.png "
                       alt="Review Image"
                       class="rounded-circle"
                       width="50"
@@ -348,15 +349,14 @@
                       Chris Curry - <span class="text-muted">1 Hour ago</span>
                     </h6>
                     <p class="mb-0">
-                      whachikan Just noticed that someone categorized this as
-                      belonging to the genre "demons" LOL
+                      Truyện hay, mình đọc rất thích, cảm ơn bạn đã chia sẻ
                     </p>
                   </div>
                 </div>
               </div>
 
               <!-- Comment Form -->
-              <div class="truyen__details__form mt-4">
+              <div class="truyen__details__form mt-4 mb-3">
                 <form action="#">
                   <textarea
                     class="form-control mb-2"
@@ -371,7 +371,7 @@
             </div>
           </div>
 
-          <div class="col-lg-4 col-md-4">
+          <div class="col-lg-4 col-md-4 pt-1">
             <div class="section-title">
               <h4>Truyện Hot</h4>
             </div>
@@ -393,7 +393,7 @@
         </div>
       </div>
     </section>
-    <!-- Anime Section End -->
+    <!-- Truyen Section End -->
 
     <!-- Footer Section Begin -->
     <footer class="footer">
@@ -405,8 +405,8 @@
       <div class="container">
         <div class="row">
           <div class="col-lg-12">
-            <h4 class="footer-title text-white">Về Mê Truyện Chữ</h4>
-            <p class="footer-text py-4 text-white">
+            <h4 class="footer-title">Về Mê Truyện Chữ</h4>
+            <p class="footer-text py-2">
               <a href="#" class="text-primary">Mê Truyện Chữ</a> là nền tảng
               <a href="#" class="text-primary">đọc truyện chữ</a>,
               <a href="#" class="text-primary">truyện hay</a> online miễn phí
@@ -420,13 +420,11 @@
               tiết. Hỗ trợ mọi thiết bị như di động và máy tính bảng.
             </p>
 
-            <div
-              class="footer-links text-md-center text-lg-end no-underline text-white"
-            >
-              <a href="#" class="mx-2">Điều khoản dịch vụ</a>
-              <a href="#" class="mx-2">Về chúng tôi</a>
-              <a href="#" class="mx-2">Blog</a>
-              <a href="#" class="mx-2">Liên hệ</a>
+            <div class="text-md-center text-lg-end no-underline">
+              <a href="#" class="mx-2 link-footer">Điều khoản dịch vụ</a>
+              <a href="#" class="mx-2 link-footer">Về chúng tôi</a>
+              <a href="#" class="mx-2 link-footer">Blog</a>
+              <a href="#" class="mx-2 link-footer">Liên hệ</a>
             </div>
           </div>
         </div>
