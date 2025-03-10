@@ -226,7 +226,7 @@
 
         <!-- Truyen Description -->
         <div class="row">
-          <div class="col-lg-8 col-md-8">
+          <div class="col-lg-9 col-md-9">
             <div class="card px-3 py-1">
               <div class="section-title">
                 <div class="mt-3">
@@ -370,26 +370,76 @@
               </div>
             </div>
           </div>
+          <div class="col-lg-3 col-md-3 pt-1">
+        <div class="section-title">
+            <h4>Truyện Đang Hot</h4>
+        </div>
+        <div class="category-list">
+            <ul>
+                <li><a href="#"><span class="rank rank-1">1</span> Virus Cổ Đại</a></li>
+                <li><a href="#"><span class="rank rank-2">2</span> Gia Vị Tình Yêu</a></li>
+                <li><a href="#"><span class="rank rank-3">3</span> Bao Nuôi Tiền Bối</a></li>
+                <li><a href="#"><span class="rank rank-khac">4</span> Thuần Hóa Cậu Chủ</a></li>
+                <li><a href="#"><span class="rank rank-khac">5</span> Thuần Hóa Cậu Chủ</a></li>
+                <li><a href="#"><span class="rank rank-khac">6</span> Nói Lời Yêu Em</a></li>
+                <li><a href="#"><span class="rank rank-khac">7</span> Nói Lời Yêu Em</a></li>
+                <li><a href="#"><span class="rank rank-khac">8</span> Nói Lời Yêu Em</a></li>
+            </ul>
+        </div>
 
-          <div class="col-lg-4 col-md-4 pt-1">
-            <div class="section-title">
-              <h4>Truyện Hot</h4>
-            </div>
-            <div class="category-list">
-              <ul>
-                <li><a href="#">🥇 Virus Cổ Đại</a></li>
-                <li><a href="#">🥈 Gia Vị Tình Yêu</a></li>
-                <li><a href="#">🥉 Bao Nuôi Tiền Bối</a></li>
-                <li><a href="#">4️⃣ Hãy Nhìn Tôi Này Tên Cuồng Em Trai</a></li>
-                <li><a href="#">5️⃣ Thuần Hóa Cậu Chủ</a></li>
-                <li><a href="#">6️⃣ Nói Lời Yêu Em</a></li>
-                <li>
-                  <a href="#">7️⃣ Incubus-kun to Mesu Kaihatsu Shokushukan</a>
-                </li>
-                <li><a href="#">8️⃣ Danshoku Rei no Sumu Apart</a></li>
-              </ul>
-            </div>
-          </div>
+         <style>
+        /* Định dạng danh sách */
+        .category-list ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .category-list li {
+            margin: 8px 0;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+        }
+
+        .category-list a {
+            text-decoration: none;
+            color: #808080;
+            display: flex;
+            align-items: center;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        /* Hover: Gạch chân nhưng bỏ qua số thứ tự */
+        .category-list a:hover {
+            text-decoration: underline; 
+        }
+
+        .category-list a:hover .rank {
+            text-decoration: none;
+        }
+
+        /* Định dạng số thứ tự */
+        .rank {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            font-weight: bold;
+            color: white;
+            margin-right: 12px;
+            font-size: 14px;
+        }
+
+        /* Màu sắc theo thứ hạng */
+        .rank-1 { background-color: red; }
+        .rank-2 { background-color: green; }
+        .rank-3 { background-color: orange; }
+        .rank-khac { background-color: gray; }
+    </style>
         </div>
       </div>
     </section>

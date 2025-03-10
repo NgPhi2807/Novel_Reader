@@ -460,7 +460,7 @@ button[href] {
 }
 
 .table td {
-  padding: 13px;
+    padding: 10px 10px 10px 0; /* Trên - Phải - Dưới - Trái */
   border-bottom: 1px solid #ddd;
 }
 .table td a:hover {
@@ -583,7 +583,7 @@ button[href] {
 
 /* Truyên hot  */
 .category-list {
-  padding: 20px;
+  padding: 15px 15px 15px 20px;
     background-color: #fdfdfd;
     border-radius: 5px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1)
@@ -609,6 +609,4 @@ button[href] {
   transition: color 0.3s;
 }
 
-.category-list ul li a:hover {
-  color:#e89f12;
-}
+
