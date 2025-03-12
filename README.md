@@ -1,1 +1,1 @@
-UI
+Novel Frontend
