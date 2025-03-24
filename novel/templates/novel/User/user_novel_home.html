@@ -1,0 +1,258 @@
+
+{% extends "base_user.html" %}
+{% load static %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'novel/css/home.css' %}">
+{% endblock %}
+{% block content %}
+<!-- Hero Section Begin -->
+<section class="truyen">
+  <div class="container">
+    <div class="swiper mySwiper">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide">
+          <div class="truyen__items set-bg" data-setbg="../../static/novel/img/slider/truyen1.png"></div>
+        </div>
+        <div class="swiper-slide">
+          <div class="truyen__items set-bg" data-setbg="../../static/novel/img/slider/truyen2.png"></div>
+        </div>
+        <div class="swiper-slide">
+          <div class="truyen__items set-bg" data-setbg="../../static/novel/img/slider/truyen3.png"></div>
+        </div>
+        <div class="swiper-slide">
+          <div class="truyen__items set-bg" data-setbg="../../static/novel/img/slider/truyen4.png"></div>
+        </div>
+        <div class="swiper-slide">
+          <div class="truyen__items set-bg" data-setbg="../../static/novel/img/slider/truyen5.png"></div>
+        </div>
+      </div>
+    </div>
+    <div class="swiper sw1">
+      <div class="swiper-pagination"></div>
+      <!-- Dấu chấm điều hướng -->
+    </div>
+  </div>
+  <!-- Nút điều hướng riêng -->
+  <div class="custom-prev">
+    <svg width="30" height="30" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+      <path fill-rule="evenodd"
+        d="M9.224 1.553a.5.5 0 0 0-.671.223l-3 6a.5.5 0 0 0 0 .448l3 6a.5.5 0 1 0 .894-.448L6.56 8l2.887-5.776a.5.5 0 0 0-.223-.671" />
+    </svg>
+  </div>
+  <div class="custom-next">
+    <svg width="30" height="30" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+      <path fill-rule="evenodd"
+        d="M6.776 1.553a.5.5 0 0 1 .671.223l3 6a.5.5 0 0 1 0 .448l-3 6a.5.5 0 1 1-.894-.448L9.44 8 6.553 2.224a.5.5 0 0 1 .223-.671" />
+    </svg>
+  </div>
+</section>
+<!-- Hero Section End -->
+
+<!-- Product Section Begin -->
+<section class="product">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <div id="trending-section" class="trending__product">
+          <div class="row">
+            <div class="col-lg-8 col-md-8 col-sm-8">
+              <div class="section-title">
+                <h4>Truyện Hot</h4>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4">
+              <div class="btn__all">
+                <a href="#" class="btn-xemtatca">
+                  Xem tất cả <span class="arrow_right"></span>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Nội dung thực tế -->
+          <div class="row">
+            {% for novel in novels%}
+            <div class="col-lg-2 col-md-4 col-sm-6 product__item hidden">
+              {%load static %}
+              <div class="product__item__pic set-bg" data-setbg="{% get_media_prefix %}{{novel.ImgUrl}}">
+                <div class="ep">{{ novel.chapters.count }} chương</div>
+                <p class="Name">{{novel.Name}}</p>
+              </div>
+              <div class="product__item__text">
+                <ul>
+                  {% for category in novel.categorynovel_set.all|slice:":4" %}
+                  <li>{{category.Category.Name}}</li>
+                  {% endfor %}
+                </ul>
+              </div>
+              <a href="{% url 'user_novel_detail' novel.NovelId %}" class="full-link"></a>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+
+      <div class="container mt-4 pb-4">
+        <div class="row">
+          <!-- Cột Đọc Nhiều -->
+          <div class="col-lg-4 col-md-4 col-sm-12">
+            <div class="section-title">
+              <h4>Đọc Nhiều</h4>
+            </div>
+            <div class="story">
+              <img src="../../static/novel/img/truyen_docnhieu/vancothande.png" alt="Truyện 1" />
+              <div>
+                <h6>Ta, Kỷ Nguyên Chi Chủ</h6>
+                <p>Khoa huyễn</p>
+                <span>513 chương</span>
+              </div>
+            </div>
+            <div class="story">
+              <img src="../../static/novel/img/truyen_docnhieu/vancothande.png" alt="Truyện 1" />
+              <div>
+                <h6>Ta, Kỷ Nguyên Chi Chủ</h6>
+                <p>Khoa huyễn</p>
+                <span>513 chương</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Cột Thịnh Hành -->
+          <div class="col-lg-4 col-md-4 col-sm-12">
+            <div class="section-title">
+              <h4>Thịnh Hành</h4>
+            </div>
+            <div class="story">
+              <img src="../../static/novel/img/truyen_thinhhanh/dangcapkhivan.png" alt="Truyện 1" />
+              <div>
+                <h6>Mọi Người Tu Tiên Ta Làm Ruộng</h6>
+                <p>Khoa huyễn</p>
+                <span>513 chương</span>
+              </div>
+            </div>
+            <div class="story">
+              <img src="../../static/novel/img/truyen_thinhhanh/vancothande.png" alt="Truyện 1" />
+              <div>
+                <h6>Ta, Kỷ Nguyên Chi Chủ</h6>
+                <p>Khoa huyễn</p>
+                <span>513 chương</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Cột Đề Cử -->
+          <div class="col-lg-4 col-md-4 col-sm-12">
+            <div class="section-title">
+              <h4>Đề Cử</h4>
+            </div>
+            <div class="story">
+              <img src="../../static/novel/img/truyen_decu/dangcapkhivan.png" alt="Truyện 1" />
+              <div>
+                <h6>Ta, Kỷ Nguyên Chi Chủ</h6>
+                <p>Khoa huyễn</p>
+                <span>513 chương</span>
+              </div>
+            </div>
+            <div class="story">
+              <img src="../../static/novel/img/truyen_decu/dangcapkhivan.png" alt="Truyện 1" />
+              <div>
+                <h6>Hải Tặc Chi Toàn Thuộc Tính Bạo Tạc</h6>
+                <p>Khoa huyễn</p>
+                <span>513 chương</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="container mb-4">
+        <div class="row">
+          <div class="col-lg-9 col-md-9 col-sm-12">
+            <div class="update__product">
+              <div class="row">
+                <div class="col-lg-8 col-md-8 col-sm-8">
+                  <div class="section-title">
+                    <h4>Truyện có chương mới</h4>
+                  </div>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-4">
+                  <div class="btn__all">
+                    <a href="#" class="btn-xemtatca">Xem tất cả <span class="arrow_right"></span></a>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                {% for novel in novels %}
+                <div class="col-12 mb-4">
+                  <div class="card d-flex flex-row">
+                    <div class="img-box">
+                      {% load static %}
+                      <a href="{% url 'user_novel_detail' novel.NovelId %}">
+                        <img src="{% get_media_prefix %}{{ novel.ImgUrl }}" alt="{{ novel.Name }}">
+                      </a>
+                    </div>
+                    <div class="card px-3 py-1">
+                      <h6 class="card-title top-05rem card-title">
+                        <a href="{% url 'user_novel_detail' novel.NovelId %}">
+                          {{ novel.Name }}
+                        </a>
+                      </h6>
+
+                      {% if novel.latest_chapter and novel.latest_chapter.ChapId %}
+                      <p class="card-text">
+                        <strong><i class="fas fa-fire"></i> Chương mới nhất:</strong>
+                        <a href="{% url 'user_chapter_detail' novel.NovelId novel.latest_chapter.ChapId %}">
+                          Chương {{ novel.latest_chapter.Number }} - {{ novel.latest_chapter.Name }}
+                        </a>
+                      </p>
+                      <p class="time-info">
+                        <i class="fas fa-clock"></i> Cập nhật: {{ novel.latest_update_display }}
+                      </p>
+                      {% else %}
+                      <p class="card-text"><i class="fas fa-exclamation-circle"></i> Chưa có chương nào</p>
+                      {% endif %}
+                    </div>
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
+
+
+
+            </div>
+          </div>
+          <!-- New column for Thể loại -->
+          <div class="col-lg-3">
+            <div class="section-title">
+              <h4>Thể loại</h4>
+            </div>
+            <div class="category-list">
+              <ul>
+                <li><a href="#">Tiên hiệp</a></li>
+                <li><a href="#">Kiếm hiệp</a></li>
+                <li><a href="#">Ngôn tình</a></li>
+                <li><a href="#">Khoa huyễn</a></li>
+                <li><a href="#">Hệ thống</a></li>
+                <li><a href="#">Huyền huyễn</a></li>
+                <li><a href="#">Dị năng</a></li>
+                <li><a href="#">Dị giới</a></li>
+                <li><a href="#">Quân sự</a></li>
+                <li><a href="#">Xuyên không</a></li>
+                <li><a href="#">Xuyên nhanh</a></li>
+                <li><a href="#">Trọng sinh</a></li>
+                <li><a href="#">Trinh thám</a></li>
+                <li><a href="#">Thám hiểm</a></li>
+                <li><a href="#">Đô thị</a></li>
+                <li><a href="#">Võng du</a></li>
+                <li><a href="#">Kinh dị</a></li>
+                <li><a href="#">Hài hước</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Product Section End -->
+{% endblock %}

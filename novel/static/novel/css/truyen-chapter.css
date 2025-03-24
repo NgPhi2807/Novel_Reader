@@ -1,0 +1,445 @@
+/* Truyện Description */
+.row1 {
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  margin-right: -15px;
+  margin-left: -15px;
+}
+.container-custom {
+  padding: 15px; /* Khoảng cách bên trong */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  border-bottom: 2px solid #ccc;
+}
+.container-custom h3 {
+  margin: 0 0 10px 0; /* Khoảng cách dưới tiêu đề */
+  font-size: 24px; /* Kích thước chữ lớn hơn một chút */
+  font-weight: 500;
+}
+
+.chapter-controls {
+  display: flex; /* Sắp xếp các phần tử theo hàng ngang */
+  align-items: center; /* Căn giữa theo chiều dọc */
+  gap: 10px; /* Khoảng cách giữa các phần tử */
+  flex-wrap: wrap; /* Cho phép xuống dòng nếu không đủ chỗ */
+}
+.btn-custom {
+  padding: 8px 12px; /* Khoảng cách bên trong nút */
+  font-size: 14px; /* Kích thước chữ */
+  background-color: #5cb85c; /* Màu xanh dương */
+  color: white; /* Chữ trắng */
+  border: none; /* Bỏ viền */
+  border-radius: 5px; /* Bo góc */
+  cursor: pointer; /* Con trỏ tay khi hover */
+  transition: background-color 0.3s ease; /* Hiệu ứng chuyển màu */
+}
+.btn-custom.active {
+  background-color: #5cb85c; /* Màu xanh dương */
+  color: white;
+}
+.btn-custom:hover {
+  text-decoration: underline;
+}
+
+.dropdown-font {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background: rgba(18, 18, 18, 0.87);
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+  z-index: 100;
+  width: 170px;
+}
+
+.dropdown-font:hover .dropdown-content {
+  display: block;
+}
+.dropdown-content button {
+  width: 100%;
+  border: none;
+  background: none;
+  padding: 8px;
+  text-align: left;
+  cursor: pointer;
+  color: white;
+}
+.dropdown-content button:hover {
+  background-color: #f1f1f1; /* Màu xám nhạt khi hover */
+  color: black; /* Chữ đen khi hover */
+}
+.bottom-controls {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.novel-content {
+  margin-top: 20px;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  line-height: 1.8;
+}
+
+/*---------------------
+  Breadcrumb
+-----------------------*/
+
+/* Main breadcrumb container */
+.breadcrumb-option {
+  padding: 20px 0;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  margin-bottom: 30px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+}
+
+/* Breadcrumb links container */
+.breadcrumb__links {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* All links styling */
+.breadcrumb__links a {
+  font-size: 15px;
+  font-weight: 500;
+  color: #2c3e50;
+  margin-right: 22px;
+  display: inline-flex;
+  align-items: center;
+  position: relative;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+/* Hover state for links - now using e53637 color */
+.breadcrumb__links a:hover {
+  color: #e53637;
+  transform: translateY(-1px);
+}
+
+/* Icon styling */
+.breadcrumb__links a i {
+  margin-right: 8px;
+  color: #e53637;
+  font-size: 14px;
+}
+
+/* Separator arrow */
+.breadcrumb__links a:after {
+  position: absolute;
+  right: -14px;
+  top: 50%;
+  transform: translateY(-50%);
+  content: "\f105"; /* FontAwesome arrow */
+  font-family: "FontAwesome";
+  color: #adb5bd;
+  font-size: 14px;
+}
+
+/* Current page indicator */
+.breadcrumb__links span {
+  font-size: 15px;
+  color: #6c757d;
+  font-weight: 400;
+  display: inline-block;
+  position: relative;
+  padding-left: 5px;
+}
+
+/* First link (usually home) */
+.breadcrumb__links a:first-child {
+  font-weight: 600;
+}
+
+/* First link icon */
+.breadcrumb__links a:first-child i {
+  font-size: 16px;
+}
+
+/* Last link before current */
+.breadcrumb__links a:last-of-type:after {
+  color: #adb5bd;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .breadcrumb__links a,
+  .breadcrumb__links span {
+    font-size: 14px;
+  }
+  
+  .breadcrumb__links a {
+    margin-right: 16px;
+  }
+  
+  .breadcrumb__links a:after {
+    right: -12px;
+  }
+}
+
+/* Menu dropdown */
+ul.dropdown {
+  display: none; /* Hide the dropdown by default */
+  position: absolute;
+  left: 0;
+  right: 0;
+  background-color: #fff;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  padding: 10px;
+  z-index: 1;
+  width: 100%; /* Full width */
+  display: flex;
+  flex-wrap: wrap;
+}
+
+/* Show the dropdown menu on hover */
+li:hover > ul.dropdown {
+  display: flex;
+}
+
+/* Style for the dropdown items */
+ul.dropdown li {
+  list-style: none;
+  margin: 0;
+  padding: 5px 0;
+  flex: 1 1 50%;
+}
+
+ul.dropdown li a {
+  color: #333;
+  text-decoration: none;
+  display: block;
+  padding: 5px 10px;
+}
+
+ul.dropdown li a:hover {
+  background-color: #f1f1f1;
+}
+/* button search and user */
+.user-button {
+  font-weight: bold;
+  padding: 5px 12px;
+  border-radius: 5px;
+  color: #1f2129;
+}
+
+.search-button1 {
+  font-weight: bold;
+  border-radius: 5px;
+  color: #1f2129;
+}
+.search-button1 i {
+  font-size: 18px;
+}
+.user-button i {
+  font-size: 18px;
+}
+.user-button:hover,
+.search-button1:hover {
+  color: #1f2129; /* Giữ nguyên màu khi hover */
+}
+.sign-in-container {
+  position: relative;
+  display: inline-block;
+}
+
+.user-dropdown {
+  position: absolute;
+  left: 0;
+  top: 100%;
+  width: 150px;
+  background: rgba(18, 18, 18, 0.87);
+  text-align: left;
+  padding: 3px 0;
+  z-index: 9;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease-in-out;
+  list-style: none;
+  border-radius: 5px;
+  font-size: 14px;
+  margin-top: 15px;
+}
+
+.user-dropdown li {
+  padding: 8px 15px;
+}
+
+.user-dropdown li a {
+  color: white;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Khoảng cách giữa icon và chữ */
+}
+
+.user-dropdown li a i {
+  font-size: 16px;
+  color: #ccc; /* Màu icon */
+}
+.user-dropdown li a:hover {
+  color: #c72526;
+}
+
+/* Khi có class .show, dropdown sẽ hiển thị */
+.user-dropdown.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+/*---------------------
+  Product
+-----------------------*/
+
+.product {
+  padding-bottom: 0;
+}
+
+.product-page {
+  padding-top: 60px;
+}
+
+.btn__all {
+  text-align: right;
+  margin-bottom: 30px;
+}
+
+.update__product {
+  margin-bottom: 50px;
+}
+
+.product__item {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.15s ease-in-out;
+  margin-bottom: 30px;
+}
+
+.product__item:hover {
+  transform: scale(1.05) !important; /* Phóng to nhẹ */
+}
+
+.full-link {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+}
+
+.product__item__pic {
+  height: 230px;
+  position: relative;
+  border-radius: 2px;
+}
+
+.product__item__pic .ep {
+  font-size: 13px;
+  color: #ffffff;
+  background: #e53637;
+  display: inline-block;
+  padding: 2px 12px;
+  border-radius: 4px;
+  position: absolute;
+  left: 10px;
+  top: 10px;
+}
+
+.product__item__text {
+  padding-top: 10px;
+
+}
+
+.product__item__text ul {
+  margin-bottom: 10px;
+}
+
+.product__item__text ul li {
+  list-style: none;
+  font-size: 10px;
+  color: rgb(0, 0, 0);
+  font-weight: 700;
+  padding: 1px 10px;
+  background: rgba(121, 121, 121, 0.2);
+  border-radius: 15px;
+  display: inline-block;
+}
+
+
+.product__item__pic .Name{
+  position: absolute;
+  bottom: 0; 
+  left: 0;
+  width: 100%; 
+  background: rgba(27, 18, 18, 0.7); 
+  color: white; 
+  font-weight: bold; 
+  font-size: 14px;
+  padding: 5px 0;
+  text-align: center;
+  margin: 0;
+}
+
+
+
+.product__sidebar .section-title h5 {
+  color: #ffffff;
+  font-weight: 600;
+  font-family: "Oswald", sans-serif;
+  line-height: 21px;
+  text-transform: uppercase;
+  padding-left: 20px;
+  position: relative;
+}
+
+.product__sidebar .section-title h5:after {
+  position: absolute;
+  left: 0;
+  top: -6px;
+  height: 32px;
+  width: 4px;
+  background: #e53637;
+  content: "";
+}
+
+.product__sidebar__view {
+  position: relative;
+  margin-bottom: 80px;
+}
+/* Ẩn sản phẩm ban đầu */
+.product__item {
+  opacity: 0;
+  transform: translateX(-20px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+/* Khi sản phẩm xuất hiện */
+.product__item.show {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+@keyframes loading {
+  0% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: -100% 0;
+  }
+}
+
+.spad2 {
+  padding-top: 50px;
+  padding-bottom: 50px;
+}

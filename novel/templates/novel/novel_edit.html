@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+{% load static %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'novel/css/noveledit.css' %}">
+{% endblock %}
+{% block title %}{% endblock %}
+{% block content %}
+
+            <div class="col-md-9">
+                <div class="card p-4">
+                    <h4 class="mb-3 fw-bold text-primary fo">Chỉnh sửa truyện :</h4>
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="form-container">
+                            <div class="left-column">
+                                <div class="book-container">
+                                    <div class="book">
+                                      {%load static %}
+                                        <div class="truyen__details__pic set-bg" id="previewImage" data-setbg="{% get_media_prefix %}{{novel.ImgUrl}}">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                          
+
+                            <div class="right-column">
+                                <div class="mb-3">
+                                    <label class="form-label" for="name"> Tiêu đề *</label>
+                                    <input
+                                      type="text"
+                                      class="form-control"
+                                      placeholder="Nhập tiêu đề truyện"
+                                      id = "name"
+                                      name = "name"
+                                      value = "{{novel.Name}}"
+                                      required
+                                    />
+                                  </div>
+                    
+                    
+                                  <div class="mb-3">
+                                    <label class="form-label" for = "author">Tác giả *</label>
+                                    <input
+                                      type="text"
+                                      class="form-control"
+                                      placeholder="Nhập tên tác giả"
+                                      id = "author"
+                                      name = "author"
+                                      value = "{{novel.Author}}"
+                                    />
+                                  </div>
+                    
+                    
+                                  <div class="mb-3">
+                                    <label class="form-label" for="description">Mô tả *</label>
+                                    <textarea
+                                      class="form-control"
+                                      rows="4"
+                                      placeholder="Nhập tóm tắt nội dung truyện"
+                                      id = "editor"
+                                      name = "description"
+                                      
+                                    >{{novel.Description}}</textarea>
+                                  </div>
+                                  <div class="mb-3">
+                                    <label class="form-label">Thể loại</label>
+                                    
+                                    <!-- Textarea để chứa các badge -->
+                                    <div id="selected-categories" class="form-control selected-categories" onclick="showCategorySelect()">
+                                        {% if not selected_categories %}
+                                            <span class="placeholder">Chọn thể loại...</span>
+                                        {% else %}
+                                            {% for category in categories %}
+                                                {% if category.CategoryId in selected_categories %}
+                                                    <span class="badge badge-primary mr-1" data-id="{{ category.CategoryId }}">
+                                                        {{ category.Name }} 
+                                                        <span class="remove-category" onclick="removeCategory('{{ category.CategoryId }}')"> &#120 </span>
+                                                    </span>
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endif %}
+                                    </div>
+                                    
+                                    <!-- Danh sách thể loại -->
+                                    <div id="category-list" class="category-dropdown" style="display: none;">
+                                        {% for category in categories %}
+                                            <div class="category-option" onclick="addCategory('{{ category.CategoryId }}', '{{ category.Name }}')">
+                                                {{ category.Name }}
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                    
+                                    <!-- Input ẩn để lưu danh sách ID thể loại -->
+                                    <input type="hidden" name="categories" id="categories-input" value="{{ selected_categories|join:',' }}">
+                                </div>
+                                
+                                  
+                                  <div class="mb-3">
+                                    <label class="form-label">Chọn ảnh mới</label>
+                                    <input type="file" class="form-control" id="img" name="img" accept="image/*">
+                                </div>
+                    
+                                  <div class="mb-3">
+                                    <label for="state" class="form-label">Tình trạng *</label>
+                                    <select class="form-select w-100 mb-3" name = "state" id = "state">
+                                      <option value = "Đang tiến hành"> Đang tiến hành</option>
+                                      <option value = "Hoàn thành">Hoàn thành</option>
+                                    </select>
+                                  </div>
+
+                    
+                                  <div class="mb-3">
+                                    <button type="submit" class="btn btn-primary mr-1">
+                                      Xác nhận
+                                    </button>
+
+                                    <a href ="{% url 'novel_list' %}" class="btn btn-secondary mr-1">
+                                      Hủy</a>
+                                  </div>
+
+                            </div>
+                        </div>
+                    </form>
+
+
+                </div>
+            </div>
+{% endblock %}
+
+
+   

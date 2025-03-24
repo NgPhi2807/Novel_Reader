@@ -1,0 +1,171 @@
+{% extends "base_user.html" %}
+{% load static %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'novel/css/truyen-chapter.css' %}">
+{% endblock %}
+{% block content %}
+<section class="truyen-details spad2">
+  <div class="container">
+    <div class="truyen__chapter__content"></div>
+    <div class="row1">
+      <div class="col-lg-12">
+        <div class="card p-3 mb-3">
+          <div class="breadcrumb__links">
+            <a href="{% url 'user_home' %}"><i class="fa fa-home"></i> Home</a>
+
+            <a href="{% url 'user_novel_detail' novel_id=chapter.Novel.NovelId %}" class="novel-link">
+              {{ chapter.Novel.Name }}
+            </a>
+            <span class="current">Chương {{ chapter.Number }}</span>
+
+
+
+            <span class="current">{{chapter.Novel.Name}}</span>
+
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-12">
+        <div class="card p-3">
+          <div class="container-custom">
+            <!-- Phần tiêu đề -->
+            <div>
+              <h3 style="color: blue">{{chapter.Novel.Name}}</h3>
+              <p id="chapter-title">Chương {{chapter.Number}}: {{chapter.Name}}</p>
+            </div>
+
+            <!-- Phần điều khiển chương và giao diện -->
+            <div class="chapter-controls">
+              <button class="btn-custom" onclick="fetchPrevChapter({{ chapter.Novel.NovelId }}, {{ chapter.ChapId }})">
+                <i class="fas fa-angle-left"></i> TRƯỚC
+              </button>
+
+              <select id="chapterSelect" class="chapter-select" data-novel-id="{{ novel.NovelId }}">
+                {% for chapter_item in chapters %}
+                    <option value="{{ chapter_item.ChapId }}" {% if chapter_item.ChapId == chapter.ChapId %}selected{% endif %}>
+                        Chương {{ chapter_item.Number }}: {{ chapter_item.Name }}
+                    </option>
+                {% endfor %}
+            </select>
+
+              <button class="btn-custom active"
+                onclick="fetchNextChapter({{ chapter.Novel.NovelId }}, {{ chapter.ChapId }})">
+                SAU <i class="fas fa-angle-right"></i>
+              </button>
+              <button class="btn-custom" onclick="increaseFontSize()">
+                A<sup>+</sup>
+              </button>
+              <button class="btn-custom" onclick="decreaseFontSize()">
+                A<sup>-</sup>
+              </button>
+
+              <!-- Dropdown chọn font -->
+              <div class="dropdown-font">
+                <button class="btn-custom">Chọn Font</button>
+                <div class="dropdown-content">
+                  <button onclick="changeFont('Arial')">Arial</button>
+                  <button onclick="changeFont('Tahoma')">Tahoma</button>
+                  <button onclick="changeFont('Times New Roman')">
+                    Times New Roman
+                  </button>
+                  <button onclick="changeFont('Verdana')">Verdana</button>
+                  <button onclick="changeFont('Palatino Linotype')">
+                    Palatino Linotype
+                  </button>
+                </div>
+              </div>
+
+              <!-- Nút HOME -->
+              <button class="btn-custom home-button" onclick="goHome()">
+                <i class="fas fa-home"></i> HOME
+              </button>
+            </div>
+          </div>
+
+          <!-- Nội dung truyện -->
+          <div class="novel-content" id="chapter-content">
+            {{ chapter.Content|safe }}
+          </div>
+
+
+
+
+          <!-- Nút điều khiển chương dưới nội dung -->
+          <div class="chapter-controls bottom-controls">
+            <button class="btn-custom" onclick="fetchPrevChapter({{ chapter.Novel.NovelId }}, {{ chapter.ChapId }})">
+              <i class="fas fa-angle-left"></i> TRƯỚC
+            </button>
+            <a class="btn-custom home-button" href="{% url 'user_home' %}">
+              <i class="fas fa-home"></i>
+            </a>
+            <button class="btn-custom active"
+              onclick="fetchNextChapter({{ chapter.Novel.NovelId }}, {{ chapter.ChapId }})">
+              SAU <i class="fas fa-angle-right"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Truyen hot  -->
+      <div class="col-lg-12 pt-5">
+        <div id="trending-section" class="trending__product">
+          <div class="row">
+            <div class="col-lg-8 col-md-8 col-sm-8">
+              <div class="section-title">
+                <h4>Truyện Hot</h4>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            {% for novel in novels%}
+            <div class="col-lg-2 col-md-4 col-sm-6 product__item hidden">
+              {%load static %}
+              <div class="product__item__pic set-bg" data-setbg="{% get_media_prefix %}{{novel.ImgUrl}}">
+                  <div class="ep">{{novel.ChapCount}} chương</div>
+                  <p class="Name">{{novel.Name}}</p>
+              </div>
+              <div class="product__item__text">
+                  <ul>
+                      {% for category in novel.categorynovel_set.all|slice:":4" %}
+                      <li>{{category.Category.Name}}</li>
+                      {% endfor %}
+                  </ul>
+              </div>
+              <a href="{% url 'user_novel_detail' novel.NovelId %}" class="full-link"></a>
+          </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  function fetchNextChapter(novelId, chapterId) {
+    console.log('Next Chapter:', novelId, chapterId);
+    fetch(`/novel/next_chapter/${novelId}/${chapterId}/`)
+      .then(response => response.json())
+      .then(data => {
+        if (data.status === 'success') {
+          window.location.href = `/novel/detail/${novelId}/${data.next_chapter_id}`;
+        } else {
+          alert(data.message);
+        }
+      })
+      .catch(error => console.error('Lỗi:', error));
+  }
+
+  function fetchPrevChapter(novelId, chapterId) {
+    fetch(`/novel/prev_chapter/${novelId}/${chapterId}/`)
+      .then(response => response.json())
+      .then(data => {
+        if (data.status === 'success') {
+          window.location.href = `/novel/detail/${novelId}/${data.prev_chapter_id}`;
+        } else {
+          alert(data.message);
+        }
+      })
+      .catch(error => console.error('Lỗi:', error));
+  }
+</script>
+{% endblock %}

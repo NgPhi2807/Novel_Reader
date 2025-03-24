@@ -1,0 +1,135 @@
+
+@keyframes initAnimation {
+    0% {
+      transform: rotateY(0deg);
+    }
+  
+    100% {
+      transform: rotateY(-20deg);
+    }
+  }
+  .button-group {
+    display: flex;
+    gap: 10px; 
+    flex-wrap: nowrap; 
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+}
+
+  /* Đảm bảo container cha căn giữa */
+  .book-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  /* Điều chỉnh kích thước sách */
+  .book {
+    width: 90px;
+    /* Tăng kích thước lên 90px */
+    height: 120px;
+    /* Giữ tỉ lệ */
+    position: relative;
+    transform-style: preserve-3d;
+    transform: rotateY(-20deg);
+    transition: 1s ease;
+    animation: 1s ease 0s 1 initAnimation;
+  
+    /* Cải thiện hiển thị ảnh */
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    image-rendering: crisp-edges;
+    image-rendering: -webkit-optimize-contrast;
+  }
+  
+  .book-container:hover .book,
+  .book-container:focus .book {
+    transform: rotateY(0deg);
+  }
+  
+  .book> :first-child {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 90px;
+    height: 120px;
+    transform: translateZ(9px);
+    background-color: #01060f;
+    border-radius: 0 2px 2px 0;
+    box-shadow: 2px 2px 5px #666;
+  }
+  
+  /* Điều chỉnh gáy sách */
+  .book::before {
+    position: absolute;
+    content: " ";
+    left: 0;
+    top: 1px;
+    width: 18px;
+    /* Điều chỉnh theo tỉ lệ */
+    height: 118px;
+    transform: translateX(80px) rotateY(90deg);
+    background: linear-gradient(90deg,
+        #fff 0%,
+        #f9f9f9 5%,
+        #fff 10%,
+        #f9f9f9 15%,
+        #fff 20%,
+        #f9f9f9 25%,
+        #fff 30%,
+        #f9f9f9 35%,
+        #fff 40%,
+        #f9f9f9 45%,
+        #fff 50%,
+        #f9f9f9 55%,
+        #fff 60%,
+        #f9f9f9 65%,
+        #fff 70%,
+        #f9f9f9 75%,
+        #fff 80%,
+        #f9f9f9 85%,
+        #fff 90%,
+        #f9f9f9 95%,
+        #fff 100%);
+  }
+  
+  /* Mặt sau của sách */
+  .book::after {
+    position: absolute;
+    top: 0;
+    left: 0;
+    content: " ";
+    width: 90px;
+    height: 120px;
+    transform: translateZ(-9px);
+    background-color: #01060f;
+    border-radius: 0 2px 2px 0;
+  }
+  
+  /* Canh giữa tiêu đề sách */
+  .book-title {
+    text-align: center;
+    margin-top: 15px;
+    font-size: 16px;
+    /* Tăng kích thước chữ */
+    font-weight: bold;
+  }
+  
+  .badge-custom {
+    display: inline-flex;
+    align-items: center;
+    background-color: rgb(230, 228, 228);
+    color: #4a4a8c;
+    border-radius: 5px;
+    padding: 2px 5px;
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    border: 1px solid #c0c0f0;
+    margin: auto;
+    font-weight: 500;
+  }
+  

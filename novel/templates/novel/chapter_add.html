@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% load static %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'novel/css/listchap.css' %}">
+{% endblock %}
+
+{% block title %}Thêm Chương - {{ novel.Name }}{% endblock %}
+
+{% block content %}
+<div class="col-md-9 col-lg-9 mx-auto">
+    <div class="card p-4">
+        <h4 class="mb-3 fw-bold text-primary">Danh sách chương:</h4>
+
+        <div class="d-flex align-items-center search-bar">
+            <!-- Ô tìm kiếm -->
+            <div class="flex-grow-1">
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fas fa-search"></i></span>
+                    <input type="text" class="form-control" placeholder="Tìm kiếm chương...">
+                </div>
+            </div>
+
+            <button class="btn btn-primary btn-search">
+                <i class="fas fa-search"></i> Tìm kiếm
+            </button>
+
+            <!-- Nút thêm chương -->
+            <button type="button" class="btn btn-success btn-add" id="addChapter">
+                <i class="fas fa-plus"></i> Thêm chương
+            </button>
+        </div>
+
+        <div class="form-container">
+            <div class="left-column">
+                <ul id="chapterList">
+                    {% for chapter in chapters %}
+                    <li class="list-group-item1 chapter-item">
+                        Chương {{ chapter.Number }}: {{ chapter.Name }}
+                        <div class="popup-menu">
+                            <button class="edit-btn" data-id="{{ chapter.ChapId }}">Chỉnh sửa</button>
+                            <button class="delete-btn text-danger">Xóa</button>
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="right-column" id="editChapterBox">
+                <div class="card p-4" id="editChapterSection">
+                    <h5 class="mb-3 fw-bold text-primary">Chỉnh Sửa Chương</h5>
+                    <form id="editChapterForm">
+                        {% csrf_token %}
+                        <input type="hidden" id="chapterId">
+
+                        <div class="mb-3">
+                            <label class="form-label">Tên chương *</label>
+                            <input type="text" class="form-control" id="chapterTitle" placeholder="Nhập tên chương">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Nội dung chương *</label>
+                            <textarea id="editor"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <button type="submit" class="btn btn-primary">Xác nhận</button>
+                            <button type="button" class="btn btn-secondary" id="cancelEdit">Hủy</button>
+                        </div>
+                    </form>
+                </div>
+                <div id="alertBox" class="custom-alert">
+                    <i class="fa fa-check-circle"></i> 
+                    <span id="alertMessage"></span>
+                </div>
+                
+                <div class="card p-4" id="addChapterSection">
+                    <h5 class="mb-3 fw-bold text-success">Thêm Chương Mới</h5>
+                    <form method="post" id="addChapterForm" action="/novel/{{ novel.NovelId }}/add_chapter/add/">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label class="form-label" for="name">Tên chương *</label>
+                            <input type="text" class="form-control" id="name" name="name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="number">Số chương *</label>
+                            <input type="number" class="form-control" id="number" name="number" min="1" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="addEditor">Nội dung *</label>
+                            <textarea id="addEditor" name="content"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-success"
+                            data-url="/novel/{{ novel.NovelId }}/add_chapter/add/">Thêm Chương</button>
+                        <button type="button" class="btn btn-secondary" id="cancelAdd">Hủy</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

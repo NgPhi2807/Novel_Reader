@@ -1,0 +1,6 @@
+<h2>Bạn có chắc muốn xóa "{{ novel.name }}" không?</h2>
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Xóa</button>
+</form>
+<a href="{% url 'novel_list' %}">Hủy</a>

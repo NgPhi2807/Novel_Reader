@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'novel/css/listnovel.css' %}">
+{% endblock %}
+
+
+{% block title %}Danh Sách Truyện{% endblock %}
+
+{% block content %}
+<div class="col-md-9 col-lg-9 mx-auto">
+
+  <div class="card p-4 shadow-lg">
+    <div class="d-flex align-items-center gap-3 mb-3">
+      <img
+        src="../../static/novel/img/book-shelf-books-education-learning-school-study-svgrepo-com.svg"
+        alt="Book Shelf"
+        width="40"
+      />
+      <h4 class="ml-2 mb-0 text-primary fo">Danh sách truyện</h4>
+    </div>
+
+    <div class="table-responsive">
+      <table class="table align-middle table-bordered shadow-sm">
+        <thead class="table-dark text-light">
+         <tr class="text-center">
+          <th style="width: 5%">#</th>
+
+          <th style="width: 20%">Tên truyện</th>
+          <th style="width: 18%">Tác giả</th>
+          <th style="width: 25%">Loại truyện</th>
+          <th style="width: 27%">Hành động</th>
+
+        </tr>
+        </thead>
+        <tbody class="table-hover">
+            {% for novel in novels %}
+          <tr>
+            
+            <td class="text-center">{{novel.NovelId}}</td>
+            <td>
+              <div class="book-container">
+                <div class="book">
+
+                  <div class="truyen__details__pic set-bg" data-setbg="{% get_media_prefix %}{{ novel.ImgUrl }}"></div>
+
+                </div>
+              </div>
+              <p class="book-title" >{{novel.Name}}</p>
+             </td>
+            <td class="text-center">{{novel.Author}}</td>
+            <td class="text-center">
+              {% for category in novel.categorynovel_set.all %}
+              <span class="badge badge-custom">{{ category.Category.Name }}</span>
+              {% endfor %}
+            </td>
+
+            <td >
+              <div class="button-group">
+                <a href="{% url 'novel_edit' novel.NovelId %}" class="btn btn-sm btn-primary">Sửa</a>
+                <a href="{% url 'list_chapter' novel.NovelId %}" class="btn btn-sm btn-primary">Thêm Chương</a>
+                <button class="btn btn-sm btn-danger">Xóa</button>
+              </div>
+           
+
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+

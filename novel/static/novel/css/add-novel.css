@@ -1,0 +1,58 @@
+.selected-categories {
+    cursor: pointer;
+    min-height: 40px;
+    padding: 10px;
+    background: #fff;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 5px;
+    border: 1px solid #ccc;
+    position: relative;
+}
+
+.selected-categories .placeholder {
+    color: #aaa;
+}
+
+.badge {
+    background: #a2a2a240;
+    color: rgb(9, 9, 9);
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.badge .remove {
+    background: rgb(10, 10, 10);
+    color: white;
+    font-size: 12px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.category-dropdown {
+    display: none;
+    border: 1px solid #ccc;
+    background: #fff;
+    max-height: 150px;
+    overflow-y: auto;
+    position: absolute;
+    width: 100%;
+    z-index: 1000;
+}
+
+.category-option {
+    padding: 8px;
+    cursor: pointer;
+}
+
+.category-option:hover {
+    background: #f0f0f0;
+}
