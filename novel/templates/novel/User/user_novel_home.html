@@ -1,4 +1,3 @@
-
 {% extends "base_user.html" %}
 {% load static %}
 {% block extra_css %}
@@ -167,7 +166,7 @@
 
       <div class="container mb-4">
         <div class="row">
-          <div class="col-lg-9 col-md-9 col-sm-12">
+          <div class="col-lg-12 col-md-12 col-sm-12">
             <div class="update__product">
               <div class="row">
                 <div class="col-lg-8 col-md-8 col-sm-8">
@@ -183,72 +182,46 @@
               </div>
               <div class="row">
                 {% for novel in novels %}
-                <div class="col-12 mb-4">
-                  <div class="card d-flex flex-row">
-                    <div class="img-box">
-                      {% load static %}
-                      <a href="{% url 'user_novel_detail' novel.NovelId %}">
-                        <img src="{% get_media_prefix %}{{ novel.ImgUrl }}" alt="{{ novel.Name }}">
-                      </a>
-                    </div>
-                    <div class="card px-3 py-1">
-                      <h6 class="card-title top-05rem card-title">
+                  <div class="col-6 mb-4">
+                    <div class="card d-flex flex-row">
+                      <div class="img-box">
+                        {% load static %}
                         <a href="{% url 'user_novel_detail' novel.NovelId %}">
-                          {{ novel.Name }}
+                          <img src="{% get_media_prefix %}{{ novel.ImgUrl }}" alt="{{ novel.Name }}">
                         </a>
-                      </h6>
-
-                      {% if novel.latest_chapter and novel.latest_chapter.ChapId %}
-                      <p class="card-text">
-                        <strong><i class="fas fa-fire"></i> Chương mới nhất:</strong>
-                        <a href="{% url 'user_chapter_detail' novel.NovelId novel.latest_chapter.ChapId %}">
-                          Chương {{ novel.latest_chapter.Number }} - {{ novel.latest_chapter.Name }}
-                        </a>
-                      </p>
-                      <p class="time-info">
-                        <i class="fas fa-clock"></i> Cập nhật: {{ novel.latest_update_display }}
-                      </p>
-                      {% else %}
-                      <p class="card-text"><i class="fas fa-exclamation-circle"></i> Chưa có chương nào</p>
-                      {% endif %}
+                      </div>
+                      <div class="card px-3 py-1">
+                        <h6 class="card-title top-05rem card-title">
+                          <a href="{% url 'user_novel_detail' novel.NovelId %}">
+                            {{ novel.Name }}
+                          </a>
+                        </h6>
+              
+                        {% if novel.latest_chapter and novel.latest_chapter.ChapId %}
+                        <p class="card-text">
+                          <strong><i class="fas fa-fire"></i> Chương mới nhất:</strong>
+                          <a href="{% url 'user_chapter_detail' novel.NovelId novel.latest_chapter.ChapId %}">
+                            Chương {{ novel.latest_chapter.Number }} - {{ novel.latest_chapter.Name }}
+                          </a>
+                        </p>
+                        <p class="time-info">
+                          <i class="fas fa-clock"></i> Cập nhật: {{ novel.latest_update_display }}</p>
+                        {% else %}
+                        <p class="card-text"><i class="fas fa-exclamation-circle"></i> Chưa có chương nào</p>
+                        {% endif %}
+                      </div>
                     </div>
                   </div>
-                </div>
                 {% endfor %}
               </div>
+              
 
 
 
             </div>
           </div>
           <!-- New column for Thể loại -->
-          <div class="col-lg-3">
-            <div class="section-title">
-              <h4>Thể loại</h4>
-            </div>
-            <div class="category-list">
-              <ul>
-                <li><a href="#">Tiên hiệp</a></li>
-                <li><a href="#">Kiếm hiệp</a></li>
-                <li><a href="#">Ngôn tình</a></li>
-                <li><a href="#">Khoa huyễn</a></li>
-                <li><a href="#">Hệ thống</a></li>
-                <li><a href="#">Huyền huyễn</a></li>
-                <li><a href="#">Dị năng</a></li>
-                <li><a href="#">Dị giới</a></li>
-                <li><a href="#">Quân sự</a></li>
-                <li><a href="#">Xuyên không</a></li>
-                <li><a href="#">Xuyên nhanh</a></li>
-                <li><a href="#">Trọng sinh</a></li>
-                <li><a href="#">Trinh thám</a></li>
-                <li><a href="#">Thám hiểm</a></li>
-                <li><a href="#">Đô thị</a></li>
-                <li><a href="#">Võng du</a></li>
-                <li><a href="#">Kinh dị</a></li>
-                <li><a href="#">Hài hước</a></li>
-              </ul>
-            </div>
-          </div>
+          
         </div>
       </div>
     </div>

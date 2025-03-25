@@ -9,6 +9,8 @@ from django.db.models import Max  # Thêm dòng này
 from django.utils.timezone import localtime
 from django.utils.timezone import now, localtime
 from datetime import timedelta
+from django.core.paginator import Paginator
+
 
 
 
@@ -124,7 +126,6 @@ def add_novel(request):
             novel.ImgUrl = img
         novel.save()
 
-
         # Liên kết thể loại
         for category_id in category_ids:
             category = Category.objects.get(pk=category_id)
@@ -136,7 +137,6 @@ def add_novel(request):
     return render(request, "novel/novel_create.html", {"categories": categories})
 
 def list_chapter(request, novel_id):
-
     novel = get_object_or_404(Novel, pk=novel_id)
     chapters = Chapter.objects.filter(Novel=novel).order_by('Number') 
     if request.method == "POST":
@@ -151,32 +151,12 @@ def list_chapter(request, novel_id):
                 Number=number,
                 Content=content
             )
-            return redirect('novel_list')  # Chuyển về trang chi tiết truyện
+            return redirect('novel_list')
 
 
     return render(request, 'novel/chapter_add.html', {'novel': novel, 'chapters' : chapters})
 
 ####   USER
-def user_home(request):
-    novelupdates = Novel.objects.annotate(
-        latest_update=Max('chapter__dateUpdate')  # Lấy thời gian cập nhật chương mới nhất
-    ).order_by('-latest_update')  # Sắp xếp theo chương mới nhất
-
-    # Lấy danh sách chương theo số chương cho mỗi tiểu thuyết
-    for novel in novelupdates:
-        novel.chapters = novel.chapter_set.all().order_by('Number')
-
-        # Lấy chương mới nhất của từng novel
-        latest_chapter = novel.chapter_set.order_by('-dateUpdate').first()
-        novel.latest_chapter = latest_chapter  # Gán chương mới nhất cho tiểu thuyết đó
-
-        # Format lại thời gian cập nhật theo múi giờ Việt Nam
-        if latest_chapter:
-            novel.latest_update = localtime(latest_chapter.dateUpdate)
-            novel.latest_update_display = viet_timesince(novel.latest_update)
-
-    return render(request, 'novel/User/user_novel_home.html', {'novels': novelupdates})
-
 def viet_timesince(time):
     if not time:
         return "Không có dữ liệu"
@@ -195,28 +175,58 @@ def viet_timesince(time):
         return f"{delta.days // 30} tháng trước"
     else:
         return f"{delta.days // 365} năm trước"
+    
+def user_home(request):
+    novelupdates = Novel.objects.annotate(
+        latest_update=Max('chapter__dateUpdate')  # Lấy thời gian cập nhật chương mới nhất
+    ).order_by('-latest_update')  # Sắp xếp theo chương mới nhất
+
+    # Lấy danh sách chương theo số chương cho mỗi tiểu thuyết
+    for novel in novelupdates:
+        novel.chapters = novel.chapter_set.all().order_by('Number')
+
+        # Lấy chương mới nhất của từng novel
+        latest_chapter = novel.chapter_set.order_by('-dateUpdate').first()
+        novel.latest_chapter = latest_chapter  # Gán chương mới nhất cho tiểu thuyết đó
+
+        # Format lại thời gian cập nhật theo múi giờ Việt Nam
+        if latest_chapter:
+            novel.latest_update = localtime(latest_chapter.dateUpdate)
+            novel.latest_update_display = viet_timesince(novel.latest_update)
+
+
+    return render(request, 'novel/User/user_novel_home.html', {'novels': novelupdates})
 
 def user_novel_detail(request, novel_id):
     novel = get_object_or_404(Novel, pk=novel_id)
-    chapters = Chapter.objects.filter(Novel=novel).order_by('Number')  
-    novel.ChapCount = chapters.count()  
+    chapters = Chapter.objects.filter(Novel=novel).order_by('Number')
+    chapters_new = Chapter.objects.filter(Novel=novel).order_by('-Number')[:6]  # Lấy 6 chương mới nhất
+    novel.ChapCount = chapters.count()
     first_chapter = Chapter.objects.filter(Novel=novel).order_by('Number').first()
     first_chapter_id = first_chapter.ChapId if first_chapter else None
-    
-    # Lấy các tiểu thuyết từ vị trí 1 đến 3
+
+    paginator = Paginator(chapters, 4)  
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     novel123 = Novel.objects.all()[:3]
-    
-    # Lấy các tiểu thuyết từ vị trí 4 đến 10
+
     novel4_10 = Novel.objects.all()[3:10]
 
-    return render(request, 'novel/User/user_novel_detail.html', {
-        'novel': novel, 
-        'chapters': chapters,
-        'FirstChapterId': first_chapter_id, 
-        'novels_123': novel123,  # Đặt tên rõ ràng cho biến
-        'novels_4_10': novel4_10,  # Đặt tên rõ ràng cho biến
-    })
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        return render(request, 'novel/User/user_novel_detail.html', {
+            'page_obj': page_obj,
+        })
 
+    return render(request, 'novel/User/user_novel_detail.html', {
+        'novel': novel,
+        'chapters': chapters,
+        'chapters' : chapters_new,
+        'FirstChapterId': first_chapter_id,
+        'novels_123': novel123,
+        'novels_4_10': novel4_10,
+        'page_obj': page_obj,
+    })
 
 
 def user_chapter_detail(request, novel_id, chapter_id):

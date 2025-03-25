@@ -39,10 +39,8 @@
         <div class="col-lg-9 px-5">
           <div class="truyen__details__text">
             <div class="truyen__details__title">
-
               <h3>{{novel.Name}}</h3>
               <span class="font-20 px-1">Tác giả: {{novel.Author}}</span>
-
             </div>
 
             <div class="truyen__details__widget">
@@ -52,7 +50,6 @@
                     <li>
                       <i class="fas fa-book-open px-2"></i>
 
-
                       <span class="font-20">Thể loại: </span>
                       <span class="font-20 fw-bold">
 
@@ -60,7 +57,6 @@
                         {{ category.Category.Name }}{% if not forloop.last %}, {% endif %}
                         {% endfor %}
                       </span>
-
 
                     </li>
                     <li>
@@ -100,8 +96,8 @@
             {% else %}
             {% endif %}
             <a href="#" class="btn primary-btn">Theo dõi</a>
-            
-            </div>
+
+          </div>
         </div>
       </div>
     </div>
@@ -117,20 +113,19 @@
                 <h4 class="text-black font-24">Truyện có chương mới</h4>
               </div>
               <div class="col-md-12">
-                <div>
+                <div class="row1">
                   <table class="table1">
-                    <tbody>
-
-                      {%for chapter in chapters%}
+                    <tbody class="chapter-update-list-grid">
+                      {% for chapter in chapters %}
                       <tr>
                         <td>
                           <a href="#">
-                            Chương {{chapter.Number}}: {{chapter.Name}}</a>
+                            <i class="fas fa-book"></i> <!-- Icon Font Awesome -->
+                            Chương {{ chapter.Number }}: {{ chapter.Name }}
+                          </a>
                         </td>
                       </tr>
-                      {%endfor%}
-
-
+                      {% endfor %}
                     </tbody>
                   </table>
                 </div>
@@ -138,7 +133,7 @@
             </div>
           </div>
 
-          <!-- Tabs: Giới thiệu và Danh sách chương -->
+          <!-- Giới thiệu và Danh sách chương -->
           <div class="section-title">
             <a href="#" class="text-black font-24 tab active" data-tab="gioi-thieu">Giới thiệu</a>
             <span class="separator"></span>
@@ -152,28 +147,114 @@
                 {{ novel.Description|safe }}
               </div>
             </div>
-            <div id="danh-sach" class="content-section">
-              <div class="col-md-12">
-                <div>
-                  <table class="table">
-                    <tbody>
 
-                      {%for chapter in chapters%}
+            <div id="danh-sach" class="content-section">
+               
+              <div class="col-md-12 mb-3">
+                <div class="row1">
+                  <table class="table ml-2">
+                    <tbody id="chapter-list" class="chapter-list-grid">
+                      {% for chapter in page_obj %}
                       <tr>
                         <td>
                           <a href="{% url 'user_chapter_detail' novel_id=novel.NovelId chapter_id=chapter.ChapId %}">
-                            Chương {{chapter.Number}}: {{chapter.Name}}</a>
+                            Chương {{ chapter.Number }}: {{ chapter.Name }}
+                          </a>
                         </td>
                       </tr>
-                      {%endfor%}
-
-
+                      {% endfor %}
                     </tbody>
                   </table>
                 </div>
               </div>
+              <div class="pagination mb-3">
+                <span class="step-links">
+                  {% if page_obj.has_previous %}
+                  <a href="#" data-page="1" class="pagination-link">
+                    <i class="fas fa-angle-double-left"></i> 
+                  </a>
+                  <a href="#" data-page="{{ page_obj.previous_page_number }}" class="pagination-link">
+                    <i class="fas fa-arrow-left"></i> 
+                  </a>
+                  {% endif %}
+                
+                  {% for num in page_obj.paginator.page_range %}
+                  {% if num == page_obj.number %}
+                  <span class="current-page">{{ num }}</span>
+                  {% else %}
+                  <a href="#" data-page="{{ num }}" class="pagination-link">{{ num }}</a>
+                  {% endif %}
+                  {% endfor %}
+                
+                  {% if page_obj.has_next %}
+                  <a href="#" data-page="{{ page_obj.next_page_number }}" class="pagination-link" title="Next">
+                    <i class="fas fa-arrow-right"></i> 
+                  </a>
+                  <a href="#" data-page="{{ page_obj.paginator.num_pages }}" class="pagination-link" title="Last">
+                    <i class="fas fa-angle-double-right"></i> 
+                  </a>
+                  {% endif %}
+                </span>
+              </div>
             </div>
+
+            <script>
+              function loadChapters(pageNumber) {
+                const url = "?page=" + pageNumber; 
+
+                fetch(url)
+                  .then(response => {
+                    if (!response.ok) {
+                      throw new Error("Lỗi khi tải dữ liệu từ server: " + response.status);
+                    }
+                    return response.text(); 
+                  })
+                  .then(data => {
+                    console.log("Response data:", data); 
+
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(data, 'text/html');
+
+                    const newChapterList = doc.querySelector('#chapter-list');
+                    if (newChapterList) {
+                      document.getElementById('chapter-list').innerHTML = newChapterList.innerHTML;
+                    } else {
+                      console.error("Không tìm thấy phần tử #chapter-list trong dữ liệu trả về.");
+                    }
+
+                    const newPagination = doc.querySelector('.pagination');
+                    if (newPagination) {
+                      document.querySelector('.pagination').innerHTML = newPagination.innerHTML;
+                    } else {
+                      console.error("Không tìm thấy phần tử .pagination trong dữ liệu trả về.");
+                    }
+                  })
+                  .catch(error => console.error('Error:', error));
+              }
+
+              document.addEventListener('DOMContentLoaded', function () {
+                const paginationContainer = document.querySelector('.pagination');
+                if (paginationContainer) {
+                  paginationContainer.addEventListener('click', function (event) {
+                    if (event.target && event.target.tagName === 'A') {
+                      event.preventDefault(); 
+
+                      const pageNumber = event.target.getAttribute('data-page');
+                      if (pageNumber) {
+                        loadChapters(pageNumber); 
+                      } else {
+                        console.error("Không tìm thấy thuộc tính data-page trong liên kết phân trang.");
+                      }
+                    }
+                  });
+                } else {
+                  console.error("Không tìm thấy phần tử .pagination trong DOM.");
+                }
+              });
+
+            </script>
           </div>
+
 
           <!-- Reviews -->
           <div class="truyen__details__review mt-3">
@@ -220,67 +301,26 @@
           </div>
         </div>
       </div>
+
+
       <div class="col-lg-3 col-md-3 pt-1">
         <div class="section-title">
           <h4>Truyện Đang Hot</h4>
         </div>
         <div class="category-list">
-         
           <ul>
             {% for novel in novels_123 %}
-            <li><a href="#" class="book-item book-rank-{{ forloop.counter }}" > {{ forloop.counter }} . {{ novel.Name }} </a></li>
-        {% endfor %}
-        
-        {% for novel in novels_4_10 %}
-            <li><a href="#" class="book-item book-rank-{{ forloop.counter|add:3 }}" > {{ forloop.counter|add:3 }} . {{ novel.Name }} </a></li>
-        {% endfor %}
-        
+            <li><a href="#" class="book-item book-rank-{{ forloop.counter }}"> {{ forloop.counter }} . {{ novel.Name }}
+              </a></li>
+            {% endfor %}
+            {% for novel in novels_4_10 %}
+            <li><a href="#" class="book-item book-rank-{{ forloop.counter|add:3 }}"> {{ forloop.counter|add:3 }} . {{
+                novel.Name }} </a></li>
+            {% endfor %}
           </ul>
         </div>
-        <style>
-          .book-item {
-            display: flex;
-            align-items: center;
-            padding: 10px 0;
-            border-bottom: 1px solid #ddd;
-            font-weight: bold;
-          }
 
-          .book-item:hover {
-            text-decoration: underline;
-          }
 
-          .book-rank {
-            font-size: 16px;
-            font-weight: bold;
-            color: white;
-            background-color: #0073e6;
-            width: 25px !important;
-            height: 25px !important;
-            text-align: center;
-            line-height: 25px;
-            border-radius: 50%;
-            margin-right: 10px;
-            display: inline-block;
-            /* Thêm dòng này */
-          }
-
-          .book-rank-khac {
-            font-size: 16px;
-            font-weight: bold;
-            color: black;
-            background-color: #f0f0f0;
-            width: 25px !important;
-            height: 25px !important;
-            text-align: center;
-            line-height: 25px;
-            border-radius: 50%;
-            margin-right: 10px;
-            display: inline-block;
-            /* Thêm dòng này */
-          }
-        </style>
-        
 
       </div>
     </div>

@@ -405,8 +405,8 @@ ul.dropdown li a:hover {
 
 .truyen {
   padding: 20px;
-  background: url('/static/novel/img/bg.jpg') no-repeat center center / cover;
-  background-attachment: fixed; /* Ảnh nền cố định khi cuộn */
+  background: url('/novel/static/novel/img/bg.jpg') no-repeat center center / cover;
+  background-attachment: fixed; 
 
 }
 
@@ -489,7 +489,7 @@ ul.dropdown li a:hover {
 -----------------------*/
 
 .product {
-  background: url('/static/novel/img/bg.jpg') no-repeat center bottom / cover;
+  background: url('../img/bg.jpg') no-repeat center bottom / cover;
   background-attachment: fixed;
 }
 

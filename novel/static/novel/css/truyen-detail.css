@@ -454,16 +454,136 @@ button[href] {
 
 .content-section.active {
   display: block;
+  
 }
-
+.row1{
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  margin-right: -15px;
+  margin-left: -15px;
+}
 .table {
   width: 100%;
 }
 
 .table td {
-    padding: 10px 10px 10px 0; /* Trên - Phải - Dưới - Trái */
-  border-bottom: 1px solid #ddd;
+  padding: 10px 10px 10px 0; 
+  border-top: 1px solid #ddd;
+  width: 400px; 
+  white-space: nowrap; 
+  overflow: hidden; 
+  text-overflow: ellipsis; 
 }
+.table1 td{
+  width: 450px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+  /* Container phân trang */
+  .pagination {
+    text-align: center;
+    margin-top: 20px;
+  }
+
+  /* Các nút phân trang */
+  .pagination a,
+  .pagination .current-page {
+    display: inline-block;
+    padding: 8px 16px;
+    margin: 0 5px;
+    text-decoration: none;
+    border: 1px solid #ddd;
+    color: #007bff;
+    background-color: #f8f9fa;
+    border-radius: 5px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+  }
+
+  /* Nút khi di chuột vào */
+  .pagination a:hover {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+  }
+
+  /* Nút trang hiện tại */
+  .pagination .current-page {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+    font-weight: bold;
+  }
+
+  /* Nút đầu và cuối */
+  .pagination a:first-child,
+  .pagination a:last-child {
+    font-weight: bold;
+  }
+
+  /* Nút không thể click (disabled) */
+  .pagination a[disabled] {
+    background-color: #e9ecef;
+    color: #6c757d;
+    pointer-events: none;
+    cursor: not-allowed;
+  }
+
+  .pagination a:hover:first-child,
+  .pagination a:hover:last-child {
+    background-color: #6c757d;
+    color: white;
+    border-color: #6c757d;
+  }
+
+  .chapter-list-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 10px;
+    row-gap: 0;
+  }
+  .chapter-list-grid table td{
+    padding-left: 20px; 
+    padding-right: 20px; 
+  }
+  .chapter-update-list-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 20px;
+    row-gap: 0;
+  }
+  .chapter-update-list-grid tr{
+    display: flex;
+    justify-content: space-between;
+  }
+ 
+  .chapter-update-list-grid a i {
+    margin-right: 8px; /* Khoảng cách giữa icon và text */
+  }
+  .chapter-list-grid tr {
+    display: flex;
+    justify-content: space-between;
+  }
+
+/* CSS cho pagination */
+.pagination {
+  display: flex;
+  justify-content: flex-end; /* Căn sang phải */
+  margin-left: 0; /* Đảm bảo không bị đẩy từ trái */
+  margin-right: 0; /* Đảm bảo không bị đẩy từ phải */
+  width: 100%; /* Đảm bảo chiếm toàn bộ chiều rộng container */
+}
+
+/* Định dạng các phần tử con */
+.pagination a,
+.pagination span {
+  margin: 0 5px;
+  font-size: 14px;
+  text-decoration: none;
+}
+
 .table td a:hover {
   color: rgba(70, 4, 100, 0.77);
   text-decoration: none;
