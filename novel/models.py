@@ -1,4 +1,13 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser
+
+class CustomUser(AbstractUser):
+    # Các trường mặc định của AbstractUser đã có: username, password, email
+    sdt = models.CharField(max_length=15, blank=True, null=True, verbose_name="Số điện thoại")  # Thêm trường số điện thoại
+    is_admin = models.BooleanField(default=False, verbose_name="Là Admin")  # Phân biệt admin và user
+
+    def __str__(self):
+        return self.username
 
 class Novel(models.Model):
     NovelId = models.AutoField(primary_key=True)
@@ -10,7 +19,13 @@ class Novel(models.Model):
     ChapCount = models.IntegerField(default=0)
     ImgUrl = models.ImageField(upload_to='novel_images/')
     dateUpdate = models.DateTimeField(auto_now=True)
-    
+
+    class Meta:
+        permissions = [
+            ("can_edit_novel", "Can edit novel"),
+            ("can_delete_novel", "Can delete novel"),
+        ]
+
 
 class Chapter(models.Model):
     ChapId = models.AutoField(primary_key=True)
@@ -19,9 +34,13 @@ class Chapter(models.Model):
     Number = models.IntegerField()
     Content = models.TextField()
     dateUpdate = models.DateTimeField(auto_now=True)
-    def __str__(self):
-        return f"Chương {self.Number}: {self.Name}"
-   
+
+    class Meta:
+        permissions = [
+            ("can_edit_chapter", "Can edit chapter"),
+            ("can_delete_chapter", "Can delete chapter"),
+        ]
+
     
 class Category(models.Model):
     CategoryId = models.AutoField(primary_key=True)

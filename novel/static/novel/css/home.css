@@ -405,7 +405,7 @@ ul.dropdown li a:hover {
 
 .truyen {
   padding: 20px;
-  background: url('/novel/static/novel/img/bg.jpg') no-repeat center center / cover;
+  background: url('../img/bg.jpg') no-repeat center center / cover;
   background-attachment: fixed; 
 
 }
@@ -1267,3 +1267,60 @@ color: #28a745; /* Màu xanh lá */
 color: #6c757d; /* Màu xám */
 }
 
+
+.pagination {
+  display: flex;
+  justify-content: flex-end; /* Căn phải */
+  margin-top: 20px;
+}
+
+/* Các nút phân trang */
+.pagination a,
+.pagination .current-page {
+  display: inline-block;
+  padding: 8px 16px;
+  margin: 0 5px;
+  text-decoration: none;
+  border: 1px solid #ddd;
+  color: #007bff;
+  background-color: #f8f9fa;
+  border-radius: 5px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+/* Nút khi di chuột vào */
+.pagination a:hover {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+
+/* Nút trang hiện tại */
+.pagination .current-page {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
+  font-weight: bold;
+}
+
+/* Nút đầu và cuối */
+.pagination a:first-child,
+.pagination a:last-child {
+  font-weight: bold;
+}
+
+/* Nút không thể click (disabled) */
+.pagination a[disabled] {
+  background-color: #e9ecef;
+  color: #6c757d;
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+.pagination a:hover:first-child,
+.pagination a:hover:last-child {
+  background-color: #6c757d;
+  color: white;
+  border-color: #6c757d;
+}

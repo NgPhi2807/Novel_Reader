@@ -1,25 +1,52 @@
+# Django core imports
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Novel, Category, CategoryNovel, Chapter
-from django.http import JsonResponse
-
-from django.views.decorators.csrf import csrf_exempt
-import json
-from django.views.decorators.http import require_POST
-from django.db.models import Max  # Thêm dòng này
-from django.utils.timezone import localtime
-from django.utils.timezone import now, localtime
-from datetime import timedelta
+from django.http import JsonResponse, HttpResponse
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required, permission_required, user_passes_test
+from django.contrib.auth.forms import AuthenticationForm
 from django.core.paginator import Paginator
+from django.db.models import Max
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
+from django.utils.timezone import localtime, now
+from datetime import timedelta
+
+# Import models from current app
+from .models import Novel, Category, CategoryNovel, Chapter, CustomUser
+
+# Import forms from current app
+from .forms import UserRegistrationForm
 
 
+def admin_required(view_func):
+    def _wrapped_view(request, *args, **kwargs):
+        # Kiểm tra nếu người dùng không phải admin và URL chứa 'admin'
+        if not request.user.is_admin and 'admin' in request.path:
+            return HttpResponse("Bạn không có quyền truy cập!", status=403)
+        return view_func(request, *args, **kwargs)
+    
+    return _wrapped_view
 
 
+@admin_required
+def admin_dashboard(request):
+    users = CustomUser.objects.all()  # Hiển thị danh sách user
+    return render(request, 'admin_dashboard.html', {'users': users})
 
+@login_required
+def user_page(request):
+    if request.user.is_admin:
+        return redirect('login')  # Sử dụng tên view hoặc URL pattern hợp lệ ở đây
+    return render(request, 'novel/User/user_novel_home.html')
+
+@admin_required
 def novel_list(request):
-    novels = Novel.objects.all()
-    return render(request, "novel/novel_list.html", {"novels": novels})
-
-
+    novels_list = Novel.objects.all().order_by('-NovelId')  
+    paginator = Paginator(novels_list, 5)  
+    page_number = request.GET.get('page')  
+    page_obj = paginator.get_page(page_number)  
+    return render(request, "novel/novel_list.html", {"page_obj": page_obj})
+@admin_required
 def edit_novel(request, novel_id):
     novel = get_object_or_404(Novel, pk=novel_id)
     categories = Category.objects.all()  # Fetch all categories
@@ -66,7 +93,6 @@ def edit_novel(request, novel_id):
             "selected_categories": selected_categories,
         },
     )
-
 
 # def add_novel(request):
 #     if request.method == 'POST':
@@ -175,27 +201,40 @@ def viet_timesince(time):
         return f"{delta.days // 30} tháng trước"
     else:
         return f"{delta.days // 365} năm trước"
-    
 def user_home(request):
+    all_novels = Novel.objects.all().order_by('-NovelId')[:12]
+
     novelupdates = Novel.objects.annotate(
-        latest_update=Max('chapter__dateUpdate')  # Lấy thời gian cập nhật chương mới nhất
-    ).order_by('-latest_update')  # Sắp xếp theo chương mới nhất
+        latest_update=Max('chapter__dateUpdate')
+    ).order_by('-latest_update')[:20]
 
-    # Lấy danh sách chương theo số chương cho mỗi tiểu thuyết
+    # Xử lý dữ liệu cho danh sách truyện mới cập nhật
     for novel in novelupdates:
-        novel.chapters = novel.chapter_set.all().order_by('Number')
-
-        # Lấy chương mới nhất của từng novel
         latest_chapter = novel.chapter_set.order_by('-dateUpdate').first()
-        novel.latest_chapter = latest_chapter  # Gán chương mới nhất cho tiểu thuyết đó
+        novel.latest_chapter = latest_chapter  # Gán chương mới nhất
 
-        # Format lại thời gian cập nhật theo múi giờ Việt Nam
         if latest_chapter:
             novel.latest_update = localtime(latest_chapter.dateUpdate)
             novel.latest_update_display = viet_timesince(novel.latest_update)
 
+    return render(request, 'novel/User/user_novel_home.html', {
+        'all_novels': all_novels, 
+        'novelupdates': novelupdates
+    })
 
-    return render(request, 'novel/User/user_novel_home.html', {'novels': novelupdates})
+def all_novel(request):
+    novels_list = Novel.objects.all().order_by('-NovelId')  # Sắp xếp truyện theo NovelId giảm dần
+    paginator = Paginator(novels_list, 12)  # Hiển thị 10 truyện mỗi trang
+
+    page_number = request.GET.get('page', 1)  # Lấy số trang từ request, mặc định là 1
+    try:
+        page_obj = paginator.page(page_number)
+    except PageNotAnInteger:
+        page_obj = paginator.page(1)  # Nếu không phải số nguyên, quay về trang đầu
+    except EmptyPage:
+        page_obj = paginator.page(paginator.num_pages)  # Nếu vượt quá số trang, hiển thị trang cuối cùng
+
+    return render(request, 'novel/User/all_novel.html', {'page_obj': page_obj})
 
 def user_novel_detail(request, novel_id):
     novel = get_object_or_404(Novel, pk=novel_id)
@@ -324,6 +363,8 @@ def add_chapter(request, novel_id):
     except Exception as e:
         return JsonResponse({'status': 'error', 'message': str(e)}, status=500)    
     
+
+
 @csrf_exempt
 @require_POST
 def delete_chapter(request, novel_id, chap_id):
@@ -353,3 +394,51 @@ def chapter_detail(request, novel_id, chapter_id):
         'chapter': chapter,
         'chapters': chapters,  # Danh sách chương thuộc novel_id
     })
+
+
+@login_required
+def register_user(request):
+    if not request.user.is_admin:
+        return HttpResponse("Bạn không có quyền truy cập!")
+    
+    if request.method == 'POST':
+        form = UserRegistrationForm(request.POST)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.set_password(form.cleaned_data['password'])  # Mã hóa mật khẩu
+            user.is_admin = False  # Đảm bảo không phải admin
+            user.save()
+            return redirect('login')
+    else:
+        form = UserRegistrationForm()
+    
+    return render(request, 'novel/signup.html', {'form': form})
+
+def admin_login(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+        
+        if user is not None and user.is_admin:
+            login(request, user)
+            return redirect('novel_list')
+        else:
+            return HttpResponse("Bạn không phải admin hoặc thông tin đăng nhập sai!")
+    
+    return render(request, 'novel/login.html')
+
+def login_view(request):
+    if request.method == 'POST':
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+            return redirect('user_home')  # Hoặc trang bạn muốn chuyển hướng sau khi đăng nhập
+    else:
+        form = AuthenticationForm()
+    return render(request, 'novel/login.html', {'form': form})
+    
+def logout_view(request):
+    logout(request)
+    return redirect('user_home')  # Chuyển hướng đến trang chủ sau khi đăng xuất

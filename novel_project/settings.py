@@ -93,6 +93,9 @@ DATABASES = {
     }
 }
 
+# settings.py
+AUTH_USER_MODEL = 'novel.CustomUser'
+
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators

@@ -1,20 +1,30 @@
 from django.urls import path
 from . import views
-from .views import get_chapter, update_chapter, list_chapter,delete_chapter
-
+from .views import get_chapter, update_chapter, list_chapter,delete_chapter,admin_dashboard,admin_login,register_user,user_page,login_view,logout_view
 
 urlpatterns = [
 
-    path("admin/", views.novel_list, name="novel_list"),  # Danh sách truyện
+    path('admin/', views.novel_list, name='novel_list'),  # Danh sách truyện
     path("create/", views.add_novel, name="novel_create"),  # Tạo truyện mới
     path(
         "edit/<int:novel_id>/", views.edit_novel, name="novel_edit"
     ),  
+
+    path('admin/login/', views.admin_login, name='admin_login'),
+    path('admin/dashboard/', views.admin_dashboard, name='admin_dashboard'),
+    path('admin/register-user/', views.register_user, name='register_user'),
+    path('user/', views.user_page, name='user_page'),
+    path('login/', views.login_view, name='login'),
+    path('logout/', views.logout_view, name='logout'),
+
+
     # Chi tiết truyện
     path("<int:novel_id>/list_chapter/", views.list_chapter, name="list_chapter"),
 
- 
+    
     path("", views.user_home, name="user_home"),
+    path('all-novels/', views.all_novel, name='all_novel'),  # Thêm đường dẫn này
+
     path("detail/<int:novel_id>/", views.user_novel_detail, name="user_novel_detail"),
     
     path("detail/<int:novel_id>/<int:chapter_id>", views.user_chapter_detail, name="user_chapter_detail"),

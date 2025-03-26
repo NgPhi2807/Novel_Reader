@@ -61,16 +61,16 @@
             </div>
             <div class="col-lg-4 col-md-4 col-sm-4">
               <div class="btn__all">
-                <a href="#" class="btn-xemtatca">
+                <a href="{% url 'all_novel' %}" class="btn-xemtatca">
                   Xem tất cả <span class="arrow_right"></span>
-                </a>
+              </a>
               </div>
             </div>
           </div>
 
           <!-- Nội dung thực tế -->
           <div class="row">
-            {% for novel in novels%}
+            {% for novel in all_novels%}
             <div class="col-lg-2 col-md-4 col-sm-6 product__item hidden">
               {%load static %}
               <div class="product__item__pic set-bg" data-setbg="{% get_media_prefix %}{{novel.ImgUrl}}">
@@ -176,12 +176,14 @@
                 </div>
                 <div class="col-lg-4 col-md-4 col-sm-4">
                   <div class="btn__all">
-                    <a href="#" class="btn-xemtatca">Xem tất cả <span class="arrow_right"></span></a>
-                  </div>
+                    <a href="{% url 'all_novel' %}" class="btn-xemtatca">
+                      Xem tất cả <span class="arrow_right"></span>
+                  </a>
+              </div>
                 </div>
               </div>
               <div class="row">
-                {% for novel in novels %}
+                {% for novel in novelupdates %}
                   <div class="col-6 mb-4">
                     <div class="card d-flex flex-row">
                       <div class="img-box">

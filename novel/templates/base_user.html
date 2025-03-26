@@ -42,99 +42,70 @@
     <div class="loader"></div>
   </div>
   <!-- Header Section Begin -->
-  <header class="header">
-    <div class="container">
+  <!-- Header Section Begin -->
+<header class="header">
+  <div class="container">
       <div class="row">
-        <div class="col-lg-2 col-md-2">
-          <div class="header__logo">
-            <a href="{% url 'user_home' %}">
-              <img class="logo" src="../../static/novel/img/logo.png" alt="" />
-            </a>
-          </div>
-        </div>
-        <div class="col-lg-8 pt-1">
-          <div class="header__nav">
-            <nav class="header__menu mobile-menu">
-              <ul>
-                <li class="active"><a href="{% url 'user_home' %}">Trang chủ</a></li>
-                <li>
-                  <a href="./categories.html">
-                    Thể loại <span class="arrow_carrot-down"></span>
+          <div class="col-lg-2 col-md-2">
+              <div class="header__logo">
+                  <a href="{% url 'user_home' %}">
+                      <img class="logo" src="../../static/novel/img/logo.png" alt="" />
                   </a>
-                  <ul class="dropdown">
-                    {%for category in novels_base%}
-                    <li><a href="#">{{category.Name}}</a></li>
-                    {% endfor %}
-                  </ul>
-                </li>
-                <li><a href="#">Danh sách</a></li>
-              </ul>
-            </nav>
+              </div>
           </div>
-        </div>
-        <!-- <div class="col-lg-2">
-            <div class="header__right">
-              <a class="search-button" href="/search">
-                <svg
-                  stroke="currentColor"
-                  fill="currentColor"
-                  stroke-width="0"
-                  viewBox="0 0 24 24"
-                  class="icon-size"
-                  height="1em"
-                  width="1em"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M10 18a7.952 7.952 0 0 0 4.897-1.688l4.396 4.396 1.414-1.414-4.396-4.396A7.952 7.952 0 0 0 18 10c0-4.411-3.589-8-8-8s-8 3.589-8 8 3.589 8 8 8zm0-14c3.309 0 6 2.691 6 6s-2.691 6-6 6-6-2.691-6-6 2.691-6 6-6z"
-                  ></path>
-                  <path
-                    d="M11.412 8.586c.379.38.588.882.588 1.414h2a3.977 3.977 0 0 0-1.174-2.828c-1.514-1.512-4.139-1.512-5.652 0l1.412 1.416c.76-.758 2.07-.756 2.826-.002z"
-                  ></path>
-                </svg>
-              </a>
-              <a
-                href="#"
-                class="sign-in-btn"
-                data-bs-toggle="modal"
-                data-bs-target="#loginModal"
-                >Đăng nhập</a
-              >
-            </div>
-          </div> -->
-
-        <!-- Sau khi đăng nhập hiện ra cái này  -->
-        <div class="col-lg-2 pt-2">
-          <div class="header__right">
-            <a class="search-button1" href="/search">
-              <i class="fa fa-search"></i>
-            </a>
-            <div class="sign-in-container">
-              <a href="#" class="user-button">
-                <i class="far fa-user-circle"></i>
-              </a>
-              <ul class="user-dropdown">
-                <li>
-                  <a href="#"><i class="fas fa-user"></i> Tài khoản</a>
-                </li>
-                <li>
-                  <a href="#"><i class="fas fa-history"></i> Lịch sử</a>
-                </li>
-                <li>
-                  <a href="#"><i class="fas fa-bookmark"></i> Theo dõi</a>
-                </li>
-                <li>
-                  <a href="#"><i class="fas fa-sign-out-alt"></i> Thoát</a>
-                </li>
-              </ul>
-            </div>
+          <div class="col-lg-8 pt-1">
+              <div class="header__nav">
+                  <nav class="header__menu mobile-menu">
+                      <ul>
+                          <li class="active"><a href="{% url 'user_home' %}">Trang chủ</a></li>
+                          <li>
+                              <a href="./categories.html">
+                                  Thể loại <span class="arrow_carrot-down"></span>
+                              </a>
+                              <ul class="dropdown">
+                                  {% for category in novels_base %}
+                                  <li><a href="#">{{ category.Name }}</a></li>
+                                  {% endfor %}
+                              </ul>
+                          </li>
+                          <li><a href="#">Danh sách</a></li>
+                      </ul>
+                  </nav>
+              </div>
           </div>
-        </div>
+          <div class="col-lg-2 pt-2">
+              <div class="header__right">
+                  <a class="search-button1" href="/search">
+                      <i class="fa fa-search"></i>
+                  </a>
 
+                  {% if user.is_authenticated %}
+                  <!-- Hiển thị icon và dropdown nếu người dùng đã đăng nhập -->
+                  <div class="sign-in-container">
+                      <a href="#" class="user-button">
+                          <i class="far fa-user-circle"></i>
+                      </a>
+                      <ul class="user-dropdown">
+                          <li><a href="#"><i class="fas fa-user"></i> Tài khoản</a></li>
+                          <li><a href="#"><i class="fas fa-history"></i> Lịch sử</a></li>
+                          <li><a href="#"><i class="fas fa-bookmark"></i> Theo dõi</a></li>
+                          <li><a href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Thoát</a></li>
+                      </ul>
+                  </div>
+                  {% else %}
+                  <div class="sign-in-container1">
+                      <a href="{% url 'login' %}" class="user-button1">
+                         Đăng nhập
+                      </a>
+                  </div>
+                  {% endif %}
+              </div>
+          </div>
       </div>
-      <div id="mobile-menu-wrap"></div>
-    </div>
-  </header>
+  </div>
+</header>
+<!-- Header End -->
+
   <!-- Header End -->
 
   {% block content %}
@@ -175,24 +146,7 @@
   </footer>
 
 
-  <!-- Liên kết giữa hai modal -->
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      const registerLink = document.querySelector("#loginModal .custom-link");
-      if (registerLink) {
-        registerLink.addEventListener("click", function () {
-          var loginModal = new bootstrap.Modal(
-            document.getElementById("loginModal")
-          );
-          loginModal.hide();
-          var registerModal = new bootstrap.Modal(
-            document.getElementById("registerModal")
-          );
-          registerModal.show();
-        });
-      }
-    });
-  </script>
+
 
   <!-- Js Plugins -->
   <script src="{% static 'novel/js/jquery-3.3.1.min.js' %}"></script>
