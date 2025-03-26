@@ -74,7 +74,7 @@
             <div class="col-lg-2 col-md-4 col-sm-6 product__item hidden">
               {%load static %}
               <div class="product__item__pic set-bg" data-setbg="{% get_media_prefix %}{{novel.ImgUrl}}">
-                <div class="ep">{{ novel.chapters.count }} chương</div>
+                <div class="ep">{{ novel.chapter_count}} chương</div>
                 <p class="Name">{{novel.Name}}</p>
               </div>
               <div class="product__item__text">
@@ -184,38 +184,40 @@
               </div>
               <div class="row">
                 {% for novel in novelupdates %}
-                  <div class="col-6 mb-4">
-                    <div class="card d-flex flex-row">
+                  <div class="col-6 mb-4 d-flex">
+                    <div class="card d-flex flex-row w-100">
                       <div class="img-box">
                         {% load static %}
                         <a href="{% url 'user_novel_detail' novel.NovelId %}">
                           <img src="{% get_media_prefix %}{{ novel.ImgUrl }}" alt="{{ novel.Name }}">
                         </a>
                       </div>
-                      <div class="card px-3 py-1">
-                        <h6 class="card-title top-05rem card-title">
+                      <div class="card-body">
+                        <h6 class="card-title top-05rem">
                           <a href="{% url 'user_novel_detail' novel.NovelId %}">
                             {{ novel.Name }}
                           </a>
                         </h6>
               
                         {% if novel.latest_chapter and novel.latest_chapter.ChapId %}
-                        <p class="card-text">
-                          <strong><i class="fas fa-fire"></i> Chương mới nhất:</strong>
-                          <a href="{% url 'user_chapter_detail' novel.NovelId novel.latest_chapter.ChapId %}">
-                            Chương {{ novel.latest_chapter.Number }} - {{ novel.latest_chapter.Name }}
-                          </a>
-                        </p>
-                        <p class="time-info">
-                          <i class="fas fa-clock"></i> Cập nhật: {{ novel.latest_update_display }}</p>
+                          <p class="card-text">
+                            <strong><i class="fas fa-fire"></i> Chương mới nhất:</strong>
+                            <a href="{% url 'user_chapter_detail' novel.NovelId novel.latest_chapter.ChapId %}">
+                              Chương {{ novel.latest_chapter.Number }} - {{ novel.latest_chapter.Name }}
+                            </a>
+                          </p>
+                          <p class="time-info">
+                            <i class="fas fa-clock"></i> Cập nhật: {{ novel.latest_update_display }}
+                          </p>
                         {% else %}
-                        <p class="card-text"><i class="fas fa-exclamation-circle"></i> Chưa có chương nào</p>
+                          <p class="card-text"><i class="fas fa-exclamation-circle"></i> Chưa có chương nào</p>
                         {% endif %}
                       </div>
                     </div>
                   </div>
                 {% endfor %}
               </div>
+              
               
 
 

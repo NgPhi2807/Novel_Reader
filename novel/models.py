@@ -2,9 +2,8 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 
 class CustomUser(AbstractUser):
-    # Các trường mặc định của AbstractUser đã có: username, password, email
-    sdt = models.CharField(max_length=15, blank=True, null=True, verbose_name="Số điện thoại")  # Thêm trường số điện thoại
-    is_admin = models.BooleanField(default=False, verbose_name="Là Admin")  # Phân biệt admin và user
+    sdt = models.CharField(max_length=15, blank=True, null=True, verbose_name="Số điện thoại")  
+    is_admin = models.BooleanField(default=False, verbose_name="Là Admin")  
 
     def __str__(self):
         return self.username

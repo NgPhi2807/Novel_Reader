@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from .views import get_chapter, update_chapter, list_chapter,delete_chapter,admin_dashboard,admin_login,register_user,user_page,login_view,logout_view
+from .views import get_chapter, update_chapter, list_chapter,delete_chapter,admin_dashboard,register_user,user_page,login_view,logout_view
 
 urlpatterns = [
 
@@ -10,17 +10,17 @@ urlpatterns = [
         "edit/<int:novel_id>/", views.edit_novel, name="novel_edit"
     ),  
 
-    path('admin/login/', views.admin_login, name='admin_login'),
     path('admin/dashboard/', views.admin_dashboard, name='admin_dashboard'),
-    path('admin/register-user/', views.register_user, name='register_user'),
+    path('register/', views.register_user, name='register_user'),
     path('user/', views.user_page, name='user_page'),
     path('login/', views.login_view, name='login'),
     path('logout/', views.logout_view, name='logout'),
+    path('novel_list/', views.novel_list, name='novel_list'),  # Trang admin
+    path('user_home/', views.user_home, name='user_home'),  # Trang người dùng
 
 
     # Chi tiết truyện
     path("<int:novel_id>/list_chapter/", views.list_chapter, name="list_chapter"),
-
     
     path("", views.user_home, name="user_home"),
     path('all-novels/', views.all_novel, name='all_novel'),  # Thêm đường dẫn này

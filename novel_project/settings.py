@@ -80,18 +80,15 @@ WSGI_APPLICATION = 'novel_project.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'novel_db',  # Tên database
-        'USER': 'root',  # User mặc định của MySQL trên XAMPP
-        'PASSWORD': '',  # XAMPP mặc định không có mật khẩu
-        'HOST': '127.0.0.1',
-        'PORT': '3306',
-        'OPTIONS': {
-            'charset': 'utf8mb4',
-            'init_command': "SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci;",
-        }
+        'ENGINE': 'djongo',
+        'NAME': 'novel_db',  # Tên database MongoDB của bạn
+        'CLIENT': {
+            'host': 'mongodb+srv://ngphi039:456123nhp@cluster0.jvf7l.mongodb.net/?retryWrites=true&w=majority',  # Thay <db_username> và <db_password> bằng thông tin của bạn
+            'authSource': 'admin',  # Chỉ định authSource (nếu có)
+        },
     }
 }
+
 
 # settings.py
 AUTH_USER_MODEL = 'novel.CustomUser'
