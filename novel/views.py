@@ -16,11 +16,12 @@ from django.utils.timezone import localtime, now
 from datetime import timedelta
 
 # Import models from current app
-from .models import Novel, Category, CategoryNovel, Chapter, CustomUser
+from .models import Novel, Category, CategoryNovel, Chapter, CustomUser 
 
 # Import forms from current app
 from .forms import UserRegistrationForm
 import json
+import uuid
 
 
 from django.http import HttpResponseForbidden
@@ -35,8 +36,100 @@ def admin_required(view_func):
 
 @admin_required
 def admin_dashboard(request):
-    users = CustomUser.objects.all()  # Hiển thị danh sách user
-    return render(request, "admin_dashboard.html", {"users": users})
+    users_count = CustomUser.objects.count()
+    novels_count = Novel.objects.count()
+    chapters_count = Chapter.objects.count()
+    visits_count = VisitLog.objects.count()  # Đếm số lượt truy cập
+
+    context = {
+        "users_count": users_count,
+        "novels_count": novels_count,
+        "chapters_count": chapters_count,
+        "visits_count": visits_count,
+    }
+
+    return render(request, "novel/dashboard.html", context)
+
+
+@admin_required
+@csrf_exempt
+def update_chapter(request, novel_id, chap_id):
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            chapter = Chapter.objects.get(ChapId=chap_id, Novel_id=novel_id)
+
+            chapter.Name = data.get("name", chapter.Name)
+            chapter.Content = data.get("content", chapter.Content)
+            chapter.save()
+
+            return JsonResponse({"status": "success"})
+        except Chapter.DoesNotExist:
+            return JsonResponse(
+                {"status": "error", "message": "Không tìm thấy chương!"}, status=404
+            )
+        except json.JSONDecodeError:
+            return JsonResponse(
+                {"status": "error", "message": "Dữ liệu không hợp lệ!"}, status=400
+            )
+        except Exception as e:
+            return JsonResponse({"status": "error", "message": str(e)}, status=500)
+    return JsonResponse({"status": "error", "message": "Chỉ hỗ trợ POST!"}, status=405)
+
+
+@admin_required
+@csrf_exempt
+@require_POST
+def add_chapter(request, novel_id):
+    try:
+        data = json.loads(request.body)
+        name = data.get('name')
+        number = data.get('number')
+        content = data.get('content')
+
+        if not all([name, number, content]):
+            return JsonResponse({'status': 'error', 'message': 'Thiếu thông tin bắt buộc'}, status=400)
+
+        novel = get_object_or_404(Novel, NovelId=novel_id)
+        if Chapter.objects.filter(Novel=novel, Number=number).exists():
+            return JsonResponse({'status': 'error', 'message': 'Số chương đã tồn tại'}, status=400)
+
+        # Tạo chương mới
+        chapter = Chapter.objects.create(
+            Novel=novel,
+            Name=name,
+            Number=number,
+            Content=content
+        )
+
+        # Cập nhật ChapCount cho novel
+        novel.ChapCount = Chapter.objects.filter(Novel=novel).count()
+        novel.save()
+
+        return JsonResponse({
+            'status': 'success',
+            'message': 'Thêm chương thành công',
+            'chapter_id': chapter.ChapId
+        })
+    except json.JSONDecodeError:
+        return JsonResponse({'status': 'error', 'message': 'Dữ liệu không hợp lệ'}, status=400)
+    except Exception as e:
+        return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+
+    
+
+@admin_required
+@csrf_exempt
+@require_POST
+def delete_chapter(request, novel_id, chap_id):
+    try:
+        # Lấy chapter dựa trên chap_id và novel_id
+        chapter = get_object_or_404(Chapter, ChapId=chap_id, Novel__NovelId=novel_id)
+        chapter.delete()  # Xóa chapter khỏi database
+
+        return JsonResponse({"status": "success", "message": "Xóa chương thành công"})
+    except Exception as e:
+        return JsonResponse({"status": "error", "message": str(e)}, status=500)
 
 
 @login_required
@@ -159,7 +252,10 @@ def list_chapter(request, novel_id):
     return render(
         request, "novel/chapter_add.html", {"novel": novel, "chapters": chapters}
     )
-
+@admin_required
+def get_chapter(request, novel_id, chapter_id):
+    chapter = (get_object_or_404(Chapter, ChapId=chapter_id, Novel_id=novel_id),)
+    return JsonResponse({"name": chapter.Name, "content": chapter.Content})
 
 ####   USER
 def viet_timesince(time):
@@ -182,7 +278,7 @@ def viet_timesince(time):
         return f"{delta.days // 365} năm trước"
 
 
-from django.db.models import Count
+
 def user_home(request):
     # Lấy 12 truyện mới nhất theo NovelId
     all_novels = Novel.objects.all().order_by("-NovelId")[:12]
@@ -236,10 +332,15 @@ def all_novel(request):
 
 def user_novel_detail(request, novel_id):
     novel = get_object_or_404(Novel, pk=novel_id)
+
+    # Cập nhật lượt xem, đảm bảo mỗi lần xem chỉ tăng một lần duy nhất cho mỗi user
+    if not request.session.get(f"viewed_{novel_id}", False):
+        novel.ViewCount += 1
+        novel.save()
+        request.session[f"viewed_{novel_id}"] = True  # Lưu vào session để tránh tăng nhiều lần
+
     chapters = Chapter.objects.filter(Novel=novel).order_by("Number")
-    chapters_new = Chapter.objects.filter(Novel=novel).order_by("-Number")[
-        :6
-    ]  # Lấy 6 chương mới nhất
+    chapters_new = Chapter.objects.filter(Novel=novel).order_by("-Number")[:6]
     novel.ChapCount = chapters.count()
     first_chapter = Chapter.objects.filter(Novel=novel).order_by("Number").first()
     first_chapter_id = first_chapter.ChapId if first_chapter else None
@@ -249,24 +350,13 @@ def user_novel_detail(request, novel_id):
     page_obj = paginator.get_page(page_number)
 
     novel123 = Novel.objects.all()[:3]
-
     novel4_10 = Novel.objects.all()[3:10]
-
-    if request.headers.get("x-requested-with") == "XMLHttpRequest":
-        return render(
-            request,
-            "novel/User/user_novel_detail.html",
-            {
-                "page_obj": page_obj,
-            },
-        )
 
     return render(
         request,
         "novel/User/user_novel_detail.html",
         {
             "novel": novel,
-            "chapters": chapters,
             "chapters": chapters_new,
             "FirstChapterId": first_chapter_id,
             "novels_123": novel123,
@@ -274,6 +364,7 @@ def user_novel_detail(request, novel_id):
             "page_obj": page_obj,
         },
     )
+
 
 
 def user_chapter_detail(request, novel_id, chapter_id):
@@ -287,12 +378,6 @@ def user_chapter_detail(request, novel_id, chapter_id):
         "novel/User/user_chapter_detail.html",
         {"chapter": chapter, "chapters": chapters, "novels": novels},
     )
-
-@admin_required
-def get_chapter(request, novel_id, chapter_id):
-    chapter = (get_object_or_404(Chapter, ChapId=chapter_id, Novel_id=novel_id),)
-    return JsonResponse({"name": chapter.Name, "content": chapter.Content})
-
 
 def get_next_chapter(request, novel_id, chapter_id):
     """Lấy chương tiếp theo của truyện"""
@@ -336,85 +421,6 @@ def get_prev_chapter(request, novel_id, chapter_id):
     else:
         return JsonResponse({"status": "error", "message": "Đây là chương đầu tiên!"})
 
-@admin_required
-@csrf_exempt
-def update_chapter(request, novel_id, chap_id):
-    if request.method == "POST":
-        try:
-            data = json.loads(request.body)
-            chapter = Chapter.objects.get(ChapId=chap_id, Novel_id=novel_id)
-
-            chapter.Name = data.get("name", chapter.Name)
-            chapter.Content = data.get("content", chapter.Content)
-            chapter.save()
-
-            return JsonResponse({"status": "success"})
-        except Chapter.DoesNotExist:
-            return JsonResponse(
-                {"status": "error", "message": "Không tìm thấy chương!"}, status=404
-            )
-        except json.JSONDecodeError:
-            return JsonResponse(
-                {"status": "error", "message": "Dữ liệu không hợp lệ!"}, status=400
-            )
-        except Exception as e:
-            return JsonResponse({"status": "error", "message": str(e)}, status=500)
-    return JsonResponse({"status": "error", "message": "Chỉ hỗ trợ POST!"}, status=405)
-
-
-@admin_required
-@csrf_exempt
-@require_POST
-def add_chapter(request, novel_id):
-    try:
-        data = json.loads(request.body)
-        name = data.get('name')
-        number = data.get('number')
-        content = data.get('content')
-
-        if not all([name, number, content]):
-            return JsonResponse({'status': 'error', 'message': 'Thiếu thông tin bắt buộc'}, status=400)
-
-        novel = get_object_or_404(Novel, NovelId=novel_id)
-        if Chapter.objects.filter(Novel=novel, Number=number).exists():
-            return JsonResponse({'status': 'error', 'message': 'Số chương đã tồn tại'}, status=400)
-
-        # Tạo chương mới
-        chapter = Chapter.objects.create(
-            Novel=novel,
-            Name=name,
-            Number=number,
-            Content=content
-        )
-
-        # Cập nhật ChapCount cho novel
-        novel.ChapCount = Chapter.objects.filter(Novel=novel).count()
-        novel.save()
-
-        return JsonResponse({
-            'status': 'success',
-            'message': 'Thêm chương thành công',
-            'chapter_id': chapter.ChapId
-        })
-    except json.JSONDecodeError:
-        return JsonResponse({'status': 'error', 'message': 'Dữ liệu không hợp lệ'}, status=400)
-    except Exception as e:
-        return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
-
-    
-
-@admin_required
-@csrf_exempt
-@require_POST
-def delete_chapter(request, novel_id, chap_id):
-    try:
-        # Lấy chapter dựa trên chap_id và novel_id
-        chapter = get_object_or_404(Chapter, ChapId=chap_id, Novel__NovelId=novel_id)
-        chapter.delete()  # Xóa chapter khỏi database
-
-        return JsonResponse({"status": "success", "message": "Xóa chương thành công"})
-    except Exception as e:
-        return JsonResponse({"status": "error", "message": str(e)}, status=500)
 
 
 def chapter_detail(request, novel_id, chapter_id):
@@ -435,10 +441,8 @@ def chapter_detail(request, novel_id, chapter_id):
     )
 
 
-@login_required
+
 def register_user(request):
-    if not request.user.is_admin:
-        return HttpResponse("Bạn không có quyền truy cập!")
     if request.method == "POST":
         form = UserRegistrationForm(request.POST)
         if form.is_valid():
@@ -459,11 +463,14 @@ def login_view(request):
         if form.is_valid():
             user = form.get_user()
             login(request, user)
-            # Kiểm tra xem người dùng có phải là admin không
-            if user.is_admin:  # Dùng is_superuser thay vì is_admin
-                return redirect("novel_list")  # Chuyển hướng đến trang admin
-            else:
-                return redirect("user_home")  # Chuyển hướng đến trang người dùng
+
+            # Tạo một token mới cho mỗi lần đăng nhập
+            login_token = str(uuid.uuid4())
+
+            response = redirect("novel_list" if user.is_superuser else "user_home")
+            response.set_cookie("login_token", login_token, max_age=3600)  # Hết hạn sau 1 giờ
+            
+            return response
         else:
             return render(request, "novel/404.html")
     else:
@@ -473,5 +480,8 @@ def login_view(request):
 
 
 def logout_view(request):
+    response = redirect("user_home")
+    response.delete_cookie("login_token")  # Xóa token khi đăng xuất
     logout(request)
-    return redirect("user_home")  # Chuyển hướng đến trang chủ sau khi đăng xuất
+    return response
+

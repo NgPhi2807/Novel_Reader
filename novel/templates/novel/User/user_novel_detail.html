@@ -24,13 +24,15 @@
   <div class="container">
     <div class="truyen__details__content">
       <div class="row ">
+
+
         <div class="col-lg-3">
           <a class="book-container" href="" target="_blank" rel="noreferrer noopener">
             <div class="book">
               <div class="truyen__details__pic set-bg" {%load static%}
                 data-setbg="{% get_media_prefix %}{{novel.ImgUrl}}">
                 <div class="comment"><i class="fa fa-comments"></i> 11</div>
-                <div class="view"><i class="fa fa-eye"></i> 9141</div>
+                <div class="view"><i class="fa fa-eye"></i> {{ novel.ViewCount }}</div> <!-- Hiển thị lượt xem -->
               </div>
             </div>
           </a>
@@ -149,7 +151,7 @@
             </div>
 
             <div id="danh-sach" class="content-section">
-               
+
               <div class="col-md-12 mb-3">
                 <div class="row1">
                   <table class="table ml-2">
@@ -171,13 +173,13 @@
                 <span class="step-links">
                   {% if page_obj.has_previous %}
                   <a href="#" data-page="1" class="pagination-link">
-                    <i class="fas fa-angle-double-left"></i> 
+                    <i class="fas fa-angle-double-left"></i>
                   </a>
                   <a href="#" data-page="{{ page_obj.previous_page_number }}" class="pagination-link">
-                    <i class="fas fa-arrow-left"></i> 
+                    <i class="fas fa-arrow-left"></i>
                   </a>
                   {% endif %}
-                
+
                   {% for num in page_obj.paginator.page_range %}
                   {% if num == page_obj.number %}
                   <span class="current-page">{{ num }}</span>
@@ -185,13 +187,13 @@
                   <a href="#" data-page="{{ num }}" class="pagination-link">{{ num }}</a>
                   {% endif %}
                   {% endfor %}
-                
+
                   {% if page_obj.has_next %}
                   <a href="#" data-page="{{ page_obj.next_page_number }}" class="pagination-link" title="Next">
-                    <i class="fas fa-arrow-right"></i> 
+                    <i class="fas fa-arrow-right"></i>
                   </a>
                   <a href="#" data-page="{{ page_obj.paginator.num_pages }}" class="pagination-link" title="Last">
-                    <i class="fas fa-angle-double-right"></i> 
+                    <i class="fas fa-angle-double-right"></i>
                   </a>
                   {% endif %}
                 </span>
@@ -200,17 +202,17 @@
 
             <script>
               function loadChapters(pageNumber) {
-                const url = "?page=" + pageNumber; 
+                const url = "?page=" + pageNumber;
 
                 fetch(url)
                   .then(response => {
                     if (!response.ok) {
                       throw new Error("Lỗi khi tải dữ liệu từ server: " + response.status);
                     }
-                    return response.text(); 
+                    return response.text();
                   })
                   .then(data => {
-                    console.log("Response data:", data); 
+                    console.log("Response data:", data);
 
                     const parser = new DOMParser();
                     const doc = parser.parseFromString(data, 'text/html');
@@ -237,11 +239,11 @@
                 if (paginationContainer) {
                   paginationContainer.addEventListener('click', function (event) {
                     if (event.target && event.target.tagName === 'A') {
-                      event.preventDefault(); 
+                      event.preventDefault();
 
                       const pageNumber = event.target.getAttribute('data-page');
                       if (pageNumber) {
-                        loadChapters(pageNumber); 
+                        loadChapters(pageNumber);
                       } else {
                         console.error("Không tìm thấy thuộc tính data-page trong liên kết phân trang.");
                       }

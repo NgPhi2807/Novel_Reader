@@ -89,6 +89,7 @@ DATABASES = {
     }
 }
 
+DJONGO_SQL_TRANSLATOR = 'djongo.sql2mongo.SQLTranslator'
 
 # settings.py
 AUTH_USER_MODEL = 'novel.CustomUser'
