@@ -2,54 +2,61 @@
 <html lang="zxx">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="description" content="Manga Template" />
-  <meta name="keywords" content="Manga, unica, creative, html" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-  <title>Manga | Template</title>
-  <!-- Swiper CSS -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-  <!-- Swiper JS -->
-  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <meta charset="UTF-8" />
+    <meta name="description" content="Manga Template" />
+    <meta name="keywords" content="Manga, unica, creative, html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Manga | Template</title>
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
-  <!-- Google Font -->
-  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;500;600;700;800;900&display=swap"
-    rel="stylesheet" />
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined">
 
-  <!-- Css Styles -->
-  {% load static %}
-  <link rel="stylesheet" href="{% static 'novel/css/bootstrap.min.css' %}" />
-  <link rel="stylesheet" href="{% static 'novel/css/font-awesome.min.css' %}" />
-  <link rel="stylesheet" href="{% static 'novel/css/elegant-icons.css' %}" />
-  <link rel="stylesheet" href="{% static 'novel/css/plyr.css' %}" />
-  <link rel="stylesheet" href="{% static 'novel/css/nice-select.css' %}" />
-  <link rel="stylesheet" href="{% static 'novel/css/owl.carousel.min.css' %}" />
-  <link rel="stylesheet" href="{% static 'novel/css/slicknav.min.css' %}" />
-  <link rel="stylesheet" href="{% static 'novel/css/style.css' %}" />
-  <link rel="stylesheet" href="{% static 'novel/css/base.css' %}" />
-  <link rel="stylesheet" href="{% static 'novel/css/footer.css' %}" />
-  <link rel="stylesheet" href="{% static 'novel/css/header.css' %}" />
-  {% block extra_css %}{% endblock %}
+    <!-- Css Styles -->
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'novel/css/bootstrap.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'novel/css/font-awesome.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'novel/css/elegant-icons.css' %}" />
+    <link rel="stylesheet" href="{% static 'novel/css/plyr.css' %}" />
+    <link rel="stylesheet" href="{% static 'novel/css/nice-select.css' %}" />
+    <link rel="stylesheet" href="{% static 'novel/css/owl.carousel.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'novel/css/slicknav.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'novel/css/style.css' %}" />
+    <link rel="stylesheet" href="{% static 'novel/css/base.css' %}" />
+    <link rel="stylesheet" href="{% static 'novel/css/footer.css' %}" />
+    <link rel="stylesheet" href="{% static 'novel/css/header.css' %}" />
+    {% block extra_css %}{% endblock %}
 
 </head>
+
 
 <!-- Thay thế phần modal cũ bằng phần này -->
 <div id="login-modal" class="modal-overlay hidden">
     <div class="modal-content">
-        <button class="btn-close-modal" id="close-login-modal">&times;</button>
         <div class="card1 shadow-lg p-4">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <img src="https://assets.metruyencv.com/build/assets/logo-776b73c9.png" alt="Logo" height="40">
-                <h3 class="fw-bold">Đăng nhập</h3>
+            <!-- Header with logo on left, title in center, close button on right -->
+            <!-- Header with logo on left, title in center, close button on right -->
+            <div class="modal-header-custom">
+                <img src="https://assets.metruyencv.com/build/assets/logo-776b73c9.png" alt="Logo" class="modal-logo">
+                <h3 class="modal-title">Đăng nhập</h3>
+                <button class="btn-close-modal" id="close-login-modal" type="button">X</button>
             </div>
-
-            <form action="{% url 'login' %}" method="POST">
+            <!-- Form content -->
+            <form id="login-form"class="p-4" action="{% url 'login' %}" method="POST">
                 {% csrf_token %}
                 <div class="mb-3">
-                  <input type="text" name="username" class="form-control" placeholder="Nhập username" required>
+                    <label class="form-label d-flex justify-content-between">
+                        <span>Tài khoản</span>
+                    </label>
+                    <input type="text" name="username" class="form-control" placeholder="Nhập username" required>
                 </div>
 
                 <div class="mb-3">
@@ -66,13 +73,212 @@
 
                 <div class="text-center mt-3">
                     <span class="text-muted">Chưa có tài khoản?</span>
+                    <a href="#" id="open-register-modal" class="text-primary text-decoration-none">Đăng ký</a>
+                </div>
+                
+            </form>
+        </div>
+    </div>
+</div>
+<div id="register-modal" class="modal-overlay hidden">
+    <div class="modal-content">
+        <div class="card1 shadow-lg p-4">
+            <div class="modal-header-custom">
+                <img src="https://assets.metruyencv.com/build/assets/logo-776b73c9.png" alt="Logo" class="modal-logo">
+                <h3 class="modal-title">Đăng ký</h3>
+                <button class="btn-close-modal" id="close-register-modal" type="button">X</button>
+            </div>
+            <form id="register-form" class="p-4" action="{% url 'register_user' %}" method="POST">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label class="form-label d-flex justify-content-between" for="username">
+                        <span>Tài khoản</span>
+                    </label>
+                    <input type="text" name="username" id="username" class="form-control" placeholder="Nhập username" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label d-flex justify-content-between" for="email">
+                        <span>Email</span>
+                    </label>
+                    <input type="email" name="email" id="email" class="form-control" placeholder="Nhập email" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label d-flex justify-content-between" for="password">
+                        <span>Mật khẩu</span>
+                    </label>
+                    <input type="password" name="password" id="password" class="form-control" placeholder="Nhập mật khẩu" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label d-flex justify-content-between" for="sdt">
+                        <span>Số điện thoại</span>
+                    </label>
+                    <input type="text" name="sdt" id="sdt" class="form-control" placeholder="Nhập số điện thoại" required>
+                </div>
+                <div class="d-flex justify-content-center">
+                    <button type="submit" class="btn btn-primary w-50">Đăng ký</button>
+                </div>
+                <div class="text-center mt-3">
+                    <span>Đã có tài khoản? <a href="#" id="open-login-modal-link" class="text-primary text-decoration-none">Đăng nhập</a></span>
                 </div>
             </form>
         </div>
     </div>
 </div>
 
-<!-- Cập nhật phần style -->
+
+
+<!-- Thay thế phần JavaScript cũ bằng phần này -->
+<script>
+    
+    document.addEventListener("DOMContentLoaded", function () {
+  const loginModal = document.getElementById("login-modal");
+  const registerModal = document.getElementById("register-modal");
+  const openLoginBtn = document.getElementById("open-login-modal");
+  const closeLoginBtn = document.getElementById("close-login-modal");
+  const openRegisterBtn = document.getElementById("open-register-modal");
+  const closeRegisterBtn = document.getElementById("close-register-modal");
+  const openLoginModalLink = document.getElementById("open-login-modal-link");
+
+  // Kiểm tra nếu người dùng đã đăng nhập trước khi tải lại trang
+  if (localStorage.getItem("loginCompleted") === "true") {
+    // Nếu đã đăng nhập, ẩn modal
+    loginModal.classList.add("hidden");
+  } else {
+    // Nếu chưa đăng nhập, hiển thị modal đăng nhập
+    loginModal.classList.remove("hidden");
+  }
+
+  // Mở modal đăng nhập
+  openLoginBtn.addEventListener("click", function (event) {
+    event.preventDefault();
+    loginModal.classList.remove("hidden");
+    document.body.style.overflow = 'hidden';
+  });
+
+  // Đóng modal đăng nhập
+  closeLoginBtn.addEventListener("click", function () {
+    loginModal.classList.add("hidden");
+    document.body.style.overflow = '';
+  });
+
+  // Mở modal đăng ký
+  openRegisterBtn.addEventListener("click", function (event) {
+    event.preventDefault();
+    loginModal.classList.add("hidden");
+    registerModal.classList.remove("hidden");
+  });
+
+  // Đóng modal đăng ký
+  closeRegisterBtn.addEventListener("click", function () {
+    registerModal.classList.add("hidden");
+  });
+
+  // Mở modal đăng nhập khi nhấn vào liên kết "Đăng nhập" dưới form đăng ký
+  openLoginModalLink.addEventListener("click", function (event) {
+    event.preventDefault();
+    registerModal.classList.add("hidden");
+    loginModal.classList.remove("hidden");
+  });
+
+  // Xử lý phản hồi từ server (đăng nhập hoặc đăng ký)
+  function handleResponse(response) {
+    if (response.success) {
+      if (response.redirect_url) {
+        // Chuyển hướng đến URL được cung cấp
+        window.location.href = response.redirect_url;
+      } else if (response.show_login_popup) {
+        // Nếu đăng ký thành công, quay lại popup đăng nhập
+        registerModal.classList.add("hidden");
+        loginModal.classList.remove("hidden");
+      }
+
+      // Ẩn tất cả các modal khi đăng nhập thành công
+      loginModal.classList.add("hidden");
+      registerModal.classList.add("hidden");
+      document.body.style.overflow = ''; // Khôi phục lại cuộn trang nếu cần
+
+      // Lưu trạng thái đăng nhập vào localStorage
+      localStorage.setItem("loginCompleted", "true");
+    } else {
+      alert(response.message || "Có lỗi xảy ra: " + (response.errors || "Vui lòng kiểm tra lại."));
+    }
+  }
+
+  // Xử lý form đăng nhập
+  const loginForm = document.getElementById("login-form");
+  if (loginForm) {
+    loginForm.addEventListener("submit", function (event) {
+      event.preventDefault();
+      const formData = new FormData(event.target);
+
+      fetch('login/', {  // Đảm bảo URL khớp với urls.py
+        method: 'POST',
+        body: formData,
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest'
+        }
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then(data => {
+          if (data.success) {
+            // Nếu đăng nhập thành công, ẩn modal và lưu trạng thái trong localStorage
+            loginModal.classList.add("hidden");
+            localStorage.setItem("loginCompleted", "true");  // Đánh dấu đã đăng nhập thành công
+            document.body.style.overflow = '';  // Khôi phục lại cuộn trang
+
+            // Chuyển hướng trang nếu có URL được trả về
+            if (data.redirect_url) {
+              window.location.href = data.redirect_url;
+            }
+          } else {
+            alert("Có lỗi xảy ra: " + (data.errors || "Vui lòng kiểm tra lại."));
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          alert('Có lỗi xảy ra khi đăng nhập. Vui lòng thử lại.');
+        });
+    });
+  }
+
+  // Xử lý form đăng ký
+  const registerForm = document.getElementById("register-form");
+  if (registerForm) {
+    registerForm.addEventListener("submit", function (event) {
+      event.preventDefault();
+      const formData = new FormData(event.target);
+
+      fetch('register/', {
+        method: 'POST',
+        body: formData,
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest'
+        }
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then(data => handleResponse(data))
+        .catch(error => {
+          console.error('Error:', error);
+          alert('Có lỗi xảy ra khi đăng ký. Vui lòng thử lại.');
+        });
+    });
+  }
+});
+
+
+
+</script>
+
 <style>
     .hidden {
         display: none !important;
@@ -84,220 +290,268 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background: rgba(0, 0, 0, 0.5);
+        background: rgba(0, 0, 0, 0.6);
+        /* Làm mờ nền */
         display: flex;
         justify-content: center;
         align-items: center;
         z-index: 9999;
-    }
-    
-    .modal-content {
-        background: white;
-        padding: 20px;
-        border-radius: 10px;
-        width: 400px;
-        position: relative;
-        max-width: 90%;
-    }
-    
-    .btn-close-modal {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        background: none;
-        border: none;
-        font-size: 24px;
-        cursor: pointer;
-        padding: 0;
-        line-height: 1;
-        z-index: 1;
+        animation: fadeIn 0.3s ease-in-out;
     }
 
-    .card {
+    .modal-content {
+        background: #fff;
+        border-radius: 12px;
+        max-width: 500px;
+        /* Adjust as needed */
+        width: 100%;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        transform: scale(0.95);
+        animation: scaleUp 0.3s ease-in-out forwards;
+        position: relative;
+    }
+
+    .btn-close-modal {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        background: none;
         border: none;
+        font-size: 22px;
+        cursor: pointer;
+        color: #555;
+        transition: color 0.2s;
+    }
+
+    .modal-header-custom {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        /* Chia thành 3 phần: logo - tiêu đề - nút đóng */
+        width: 100%;
+        padding: 10px 20px;
+        position: relative;
+    }
+
+    .modal-logo {
+        height: 40px;
+        /* Điều chỉnh kích thước logo */
+    }
+
+    .modal-title {
+        flex-grow: 1;
+        /* Cho phép tiêu đề mở rộng để căn giữa */
+        text-align: center;
+        font-weight: bold;
+        margin: 0;
+        font-size: 25px;
+    }
+
+    .btn-close-modal {
+        background: none;
+        border: none;
+        font-size: 25px;
+        cursor: pointer;
+        color: #555;
+        transition: color 0.2s;
+    }
+
+    .btn-close-modal:hover {
+        color: #d9534f;
+    }
+
+    .card1 {
+        border: none;
+        background: #fff;
+        padding: 20px;
+        border-radius: 8px;
+    }
+
+    .form-control {
+        border-radius: 6px;
+        border: 1px solid #ced4da;
+        padding: 10px;
+        transition: border-color 0.3s, box-shadow 0.3s;
     }
 
     .form-control:focus {
         border-color: #0d6efd;
-        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+        box-shadow: 0 0 8px rgba(13, 110, 253, 0.3);
     }
+
+    .btn-primary {
+        background: #0d6efd;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 6px;
+        transition: background 0.3s ease-in-out;
+    }
+
+    .btn-primary:hover {
+        background: #025ce2;
+    }
+
+    /* Hiệu ứng mở modal */
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
+
+    @keyframes scaleUp {
+        from {
+            transform: scale(0.9);
+        }
+
+        to {
+            transform: scale(1);
+        }
+    }
+
 </style>
 
-<!-- Thay thế phần JavaScript cũ bằng phần này -->
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-    const loginModal = document.getElementById("login-modal");
-    const openLoginBtn = document.getElementById("open-login-modal");
-    const closeLoginBtn = document.getElementById("close-login-modal");
-    const modalContent = document.querySelector(".modal-content");
 
-    // Mở modal
-    openLoginBtn.addEventListener("click", function (event) {
-        event.preventDefault();
-        loginModal.classList.remove("hidden");
-        document.body.style.overflow = 'hidden'; // Prevent scrolling when modal is open
-    });
-
-    // Đóng modal khi click nút đóng
-    closeLoginBtn.addEventListener("click", function () {
-        loginModal.classList.add("hidden");
-        document.body.style.overflow = ''; // Restore scrolling
-    });
-
-    // Đóng modal khi click bên ngoài
-    loginModal.addEventListener("click", function (event) {
-        if (event.target === loginModal) {
-            loginModal.classList.add("hidden");
-            document.body.style.overflow = ''; // Restore scrolling
-        }
-    });
-
-    // Ngăn chặn sự kiện click từ modal content lan ra ngoài
-    modalContent.addEventListener("click", function (event) {
-        event.stopPropagation();
-    });
-
-    // Đóng modal khi nhấn ESC
-    document.addEventListener("keydown", function (event) {
-        if (event.key === "Escape" && !loginModal.classList.contains("hidden")) {
-            loginModal.classList.add("hidden");
-            document.body.style.overflow = ''; // Restore scrolling
-        }
-    });
-});
-</script>
 
 <body>
-  <!-- Page Preloder -->
-  <div id="preloder">
-    <div class="loader"></div>
-  </div>
-  <!-- Header Section Begin -->
-  <!-- Header Section Begin -->
-<header class="header">
-  <div class="container">
-      <div class="row">
-          <div class="col-lg-2 col-md-2">
-              <div class="header__logo">
-                  <a href="{% url 'user_home' %}">
-                      <img class="logo" src="../../static/novel/img/logo.png" alt="" />
-                  </a>
-              </div>
-          </div>
-          <div class="col-lg-8 pt-1">
-              <div class="header__nav">
-                  <nav class="header__menu mobile-menu">
-                      <ul>
-                          <li class="active"><a href="{% url 'user_home' %}">Trang chủ</a></li>
-                          <li>
-                              <a href="./categories.html">
-                                  Thể loại <span class="arrow_carrot-down"></span>
-                              </a>
-                              <ul class="dropdown">
-                                  {% for category in novels_base %}
-                                  <li><a href="#">{{ category.Name }}</a></li>
-                                  {% endfor %}
-                              </ul>
-                          </li>
-                          <li><a href="#">Danh sách</a></li>
-                      </ul>
-                  </nav>
-              </div>
-          </div>
-          <div class="col-lg-2 pt-2">
-              <div class="header__right">
-                  <a class="search-button1" href="/search">
-                      <i class="fa fa-search"></i>
-                  </a>
-
-                  {% if user.is_authenticated %}
-                  <!-- Hiển thị icon và dropdown nếu người dùng đã đăng nhập -->
-                  <div class="sign-in-container">
-                      <a href="#" class="user-button">
-                          <i class="far fa-user-circle"></i>
-                      </a>
-                      <ul class="user-dropdown">
-                          <li><a href="#"><i class="fas fa-user"></i> Tài khoản</a></li>
-                          <li><a href="#"><i class="fas fa-history"></i> Lịch sử</a></li>
-                          <li><a href="#"><i class="fas fa-bookmark"></i> Theo dõi</a></li>
-                          <li><a href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Thoát</a></li>
-                      </ul>
-                  </div>
-                  {% else %}
-                  <div class="sign-in-container1">
-                    <a href="#" class="user-button1" id="open-login-modal">
-                       Đăng nhập
-                    </a>
-                </div>                
-                  {% endif %}
-              </div>
-          </div>
-      </div>
-  </div>
-</header>
-
-<!-- Header End -->
-
-  <!-- Header End -->
-
-  {% block content %}
-  {% endblock %}
-
-  <!-- Footer Section Begin -->
-  <footer class="footer">
-    <div class="page-up">
-      <a href="#" id="scrollToTopButton"><span class="arrow_carrot-up"></span></a>
+    <!-- Page Preloder -->
+    <div id="preloder">
+        <div class="loader"></div>
     </div>
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-12">
-          <h4 class="footer-title">Về Mê Truyện Chữ</h4>
-          <p class="footer-text py-2">
-            <a href="#" class="text-primary">Mê Truyện Chữ</a> là nền tảng
-            <a href="#" class="text-primary">đọc truyện chữ</a>,
-            <a href="#" class="text-primary">truyện hay</a> online miễn phí
-            được convert hoặc dịch kỹ lưỡng. Website luôn cập nhật những bộ
-            <a href="#" class="text-primary">truyện hot</a> thuộc các thể loại
-            đặc sắc như <a href="#" class="text-primary">truyện tiên hiệp</a>,
-            <a href="#" class="text-primary">truyện kiếm hiệp</a>, hay
-            <a href="#" class="text-primary">truyện ngôn tình</a> một cách
-            nhanh nhất, cùng
-            <a href="#" class="text-primary">blog tin tức truyện chữ</a> chi
-            tiết. Hỗ trợ mọi thiết bị như di động và máy tính bảng.
-          </p>
+    <!-- Header Section Begin -->
+    <!-- Header Section Begin -->
+    <header class="header">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-2 col-md-2">
+                    <div class="header__logo">
+                        <a href="{% url 'user_home' %}">
+                            <img class="logo" src="../../static/novel/img/logo.png" alt="" />
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-8 pt-1">
+                    <div class="header__nav">
+                        <nav class="header__menu mobile-menu">
+                            <ul>
+                                <li class="active"><a href="{% url 'user_home' %}">Trang chủ</a></li>
+                                <li>
+                                    <a href="./categories.html">
+                                        Thể loại <span class="arrow_carrot-down"></span>
+                                    </a>
+                                    <ul class="dropdown">
+                                        {% for category in novels_base %}
+                                        <li><a href="#">{{ category.Name }}</a></li>
+                                        {% endfor %}
+                                    </ul>
+                                </li>
+                                <li><a href="#">Danh sách</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+                <div class="col-lg-2 pt-2">
+                    <div class="header__right">
+                        <a class="search-button1" href="/search">
+                            <i class="fa fa-search"></i>
+                        </a>
 
-          <div class="text-md-center text-lg-end no-underline">
-            <a href="#" class="mx-2 link-footer">Điều khoản dịch vụ</a>
-            <a href="#" class="mx-2 link-footer">Về chúng tôi</a>
-            <a href="#" class="mx-2 link-footer">Blog</a>
-            <a href="#" class="mx-2 link-footer">Liên hệ</a>
-          </div>
+                        {% if user.is_authenticated %}
+                        <!-- Hiển thị icon và dropdown nếu người dùng đã đăng nhập -->
+                        <div class="sign-in-container">
+                            <a href="#" class="user-button ">
+                                <i class="far fa-user-circle text-decoration-none"></i>
+                            </a>
+                            <ul class="user-dropdown">
+                                <li><a href="#"><i class="fas fa-user"></i> Tài khoản</a></li>
+                                <li><a href="#"><i class="fas fa-history"></i> Lịch sử</a></li>
+                                <li><a href="#"><i class="fas fa-bookmark"></i> Theo dõi</a></li>
+                                <li><a href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Thoát</a></li>
+                            </ul>
+                        </div>
+                        {% else %}
+                        <div class="sign-in-container">
+                            <a href="#" class="sign-in-btn" id="open-login-modal">
+                                Đăng nhập
+                            </a>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  </footer>
+    </header>
+
+    <!-- Header End -->
+
+    <!-- Header End -->
+
+    {% block content %}
+    {% endblock %}
+
+    <!-- Footer Section Begin -->
+    <footer class="footer">
+        <div class="page-up">
+            <a href="#" id="scrollToTopButton"><span class="arrow_carrot-up"></span></a>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h4 class="footer-title">Về Mê Truyện Chữ</h4>
+                    <p class="footer-text py-2">
+                        <a href="#" class="text-primary">Mê Truyện Chữ</a> là nền tảng
+                        <a href="#" class="text-primary">đọc truyện chữ</a>,
+                        <a href="#" class="text-primary">truyện hay</a> online miễn phí
+                        được convert hoặc dịch kỹ lưỡng. Website luôn cập nhật những bộ
+                        <a href="#" class="text-primary">truyện hot</a> thuộc các thể loại
+                        đặc sắc như <a href="#" class="text-primary">truyện tiên hiệp</a>,
+                        <a href="#" class="text-primary">truyện kiếm hiệp</a>, hay
+                        <a href="#" class="text-primary">truyện ngôn tình</a> một cách
+                        nhanh nhất, cùng
+                        <a href="#" class="text-primary">blog tin tức truyện chữ</a> chi
+                        tiết. Hỗ trợ mọi thiết bị như di động và máy tính bảng.
+                    </p>
+
+                    <div class="text-md-center text-lg-end no-underline">
+                        <a href="#" class="mx-2 link-footer">Điều khoản dịch vụ</a>
+                        <a href="#" class="mx-2 link-footer">Về chúng tôi</a>
+                        <a href="#" class="mx-2 link-footer">Blog</a>
+                        <a href="#" class="mx-2 link-footer">Liên hệ</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
 
 
 
 
-  <!-- Js Plugins -->
-  <script src="{% static 'novel/js/jquery-3.3.1.min.js' %}"></script>
-  <script src="{% static 'novel/js/bootstrap.min.js' %}"></script>
-  <script src="{% static 'novel/js/player.js' %}"></script>
-  <script src="{% static 'novel/js/jquery.nice-select.min.js' %}"></script>
-  <script src="{% static 'novel/js/mixitup.min.js' %}"></script>
-  <script src="{% static 'novel/js/jquery.slicknav.js' %}"></script>
-  <script src="{% static 'novel/js/owl.carousel.min.js' %}"></script>
-  <script src="{% static 'novel/js/main.js' %}"></script>
-  <script src="{% static 'novel/js/sliderindex.js' %}"></script>
-  <script src="{% static 'novel/js/home-loading.js' %}"></script>
-  <script src="{% static 'novel/js/truyen-detail.js' %}"></script>
-  <script src="{% static 'novel/js/dropdown-click.js' %}"></script>
-  <script src="{% static 'novel/js/truyen-chapter.js' %}"></script>
+    <!-- Js Plugins -->
+    <script src="{% static 'novel/js/jquery-3.3.1.min.js' %}"></script>
+    <script src="{% static 'novel/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'novel/js/player.js' %}"></script>
+    <script src="{% static 'novel/js/jquery.nice-select.min.js' %}"></script>
+    <script src="{% static 'novel/js/mixitup.min.js' %}"></script>
+    <script src="{% static 'novel/js/jquery.slicknav.js' %}"></script>
+    <script src="{% static 'novel/js/owl.carousel.min.js' %}"></script>
+    <script src="{% static 'novel/js/main.js' %}"></script>
+    <script src="{% static 'novel/js/sliderindex.js' %}"></script>
+    <script src="{% static 'novel/js/home-loading.js' %}"></script>
+    <script src="{% static 'novel/js/truyen-detail.js' %}"></script>
+    <script src="{% static 'novel/js/dropdown-click.js' %}"></script>
+    <script src="{% static 'novel/js/truyen-chapter.js' %}"></script>
 
 
-
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    const modal = document.getElementById('login-modal');
+    modal.classList.add('hidden');  // Đảm bảo modal bị ẩn khi trang tải
+});
+</script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 </body>
 
 </html>

@@ -12,7 +12,7 @@ class NovelForm(forms.ModelForm):
 
 class UserRegistrationForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput, label="Mật khẩu")
-    
+
     class Meta:
         model = CustomUser
         fields = ['username', 'password', 'email', 'sdt']
@@ -22,6 +22,11 @@ class UserRegistrationForm(forms.ModelForm):
             'sdt': 'Số điện thoại',
         }
 
+    def clean_password(self):
+        password = self.cleaned_data.get("password")
+        if not password:
+            raise forms.ValidationError("Mật khẩu không được để trống.")
+        return password
 class LoginForm(AuthenticationForm):
     username = forms.CharField(max_length=150, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Tên đăng nhập'}))
     password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Mật khẩu'}))

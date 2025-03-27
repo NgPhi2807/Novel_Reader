@@ -14,9 +14,12 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 from django.utils.timezone import localtime, now
 from datetime import timedelta
+from .forms import LoginForm  # 👈 THÊM DÒNG NÀY!
+from django.urls import reverse
+
 
 # Import models from current app
-from .models import Novel, Category, CategoryNovel, Chapter, CustomUser
+from .models import Novel, Category, CategoryNovel, Chapter, CustomUser 
 
 # Import forms from current app
 from .forms import UserRegistrationForm
@@ -450,34 +453,61 @@ def register_user(request):
             user.set_password(form.cleaned_data["password"])  # Mã hóa mật khẩu
             user.is_admin = False  # Đảm bảo không phải admin
             user.save()
-            return redirect("login")
-    else:
-        form = UserRegistrationForm()
 
-    return render(request, "novel/signup.html", {"form": form})
+            # Trả về thông tin thành công và yêu cầu hiển thị popup đăng nhập
+            response_data = {
+                "success": True,
+                "message": "Đăng ký thành công! Vui lòng đăng nhập.",
+                "show_login_popup": True
+            }
+            return JsonResponse(response_data)
+        else:
+            # Trả về lỗi chi tiết để frontend hiển thị
+            return JsonResponse({
+                "success": False,
+                "message": "Đăng ký thất bại. Vui lòng kiểm tra lại thông tin.",
+                "errors": form.errors.as_json()  # Lỗi chi tiết dạng JSON
+            }, status=400)
+
+    # Nếu không phải POST, trả về lỗi phương thức không được phép
+    return JsonResponse({
+        "success": False,
+        "message": "Phương thức không được phép."
+    }, status=405)
 
 
 def login_view(request):
     if request.method == "POST":
-        form = AuthenticationForm(request, data=request.POST)
+        form = LoginForm(request, data=request.POST)
         if form.is_valid():
             user = form.get_user()
             login(request, user)
 
-            # Tạo một token mới cho mỗi lần đăng nhập
+            # Tạo token mới sau khi đăng nhập thành công
             login_token = str(uuid.uuid4())
 
-            response = redirect("novel_list" if user.is_superuser else "user_home")
-            response.set_cookie("login_token", login_token, max_age=3600)  # Hết hạn sau 1 giờ
-            
-            return response
+            # Đặt session login_completed để không hiển thị modal nữa
+            request.session['loginCompleted'] = True
+
+            # Chuyển hướng dựa trên quyền của người dùng
+            redirect_url = reverse("novel_list") if user.is_superuser else reverse("user_home")
+
+            # Trả về JSON response với các thông tin cần thiết
+            return JsonResponse({
+                'success': True,
+                'redirect_url': redirect_url,
+                'login_token': login_token,
+                'show_login_popup': False  # Thêm flag này để client ẩn modal
+            })
         else:
-            return render(request, "novel/404.html")
-    else:
-        form = AuthenticationForm()
-
-    return render(request, "novel/login.html", {"form": form})
-
+            # Trả về lỗi chi tiết nếu form không hợp lệ
+            return JsonResponse({
+                'success': False,
+                'errors': form.errors
+            }, status=400)
+    
+    # Trả về lỗi nếu không phải POST request
+    return JsonResponse({'success': False, 'message': 'Invalid request'}, status=400)
 
 def logout_view(request):
     response = redirect("user_home")
