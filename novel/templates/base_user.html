@@ -36,6 +36,137 @@
 
 </head>
 
+<!-- Thay thế phần modal cũ bằng phần này -->
+<div id="login-modal" class="modal-overlay hidden">
+    <div class="modal-content">
+        <button class="btn-close-modal" id="close-login-modal">&times;</button>
+        <div class="card1 shadow-lg p-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <img src="https://assets.metruyencv.com/build/assets/logo-776b73c9.png" alt="Logo" height="40">
+                <h3 class="fw-bold">Đăng nhập</h3>
+            </div>
+
+            <form action="{% url 'login' %}" method="POST">
+                {% csrf_token %}
+                <div class="mb-3">
+                  <input type="text" name="username" class="form-control" placeholder="Nhập username" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label d-flex justify-content-between">
+                        <span>Mật khẩu</span>
+                        <a href="#" class="text-primary text-decoration-none">Quên mật khẩu?</a>
+                    </label>
+                    <input type="password" name="password" class="form-control" placeholder="Nhập mật khẩu" required>
+                </div>
+
+                <div class="d-flex justify-content-center">
+                    <button type="submit" class="btn btn-primary w-50">Đăng nhập</button>
+                </div>
+
+                <div class="text-center mt-3">
+                    <span class="text-muted">Chưa có tài khoản?</span>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Cập nhật phần style -->
+<style>
+    .hidden {
+        display: none !important;
+    }
+    
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+    }
+    
+    .modal-content {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        width: 400px;
+        position: relative;
+        max-width: 90%;
+    }
+    
+    .btn-close-modal {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: none;
+        border: none;
+        font-size: 24px;
+        cursor: pointer;
+        padding: 0;
+        line-height: 1;
+        z-index: 1;
+    }
+
+    .card {
+        border: none;
+    }
+
+    .form-control:focus {
+        border-color: #0d6efd;
+        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+    }
+</style>
+
+<!-- Thay thế phần JavaScript cũ bằng phần này -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const loginModal = document.getElementById("login-modal");
+    const openLoginBtn = document.getElementById("open-login-modal");
+    const closeLoginBtn = document.getElementById("close-login-modal");
+    const modalContent = document.querySelector(".modal-content");
+
+    // Mở modal
+    openLoginBtn.addEventListener("click", function (event) {
+        event.preventDefault();
+        loginModal.classList.remove("hidden");
+        document.body.style.overflow = 'hidden'; // Prevent scrolling when modal is open
+    });
+
+    // Đóng modal khi click nút đóng
+    closeLoginBtn.addEventListener("click", function () {
+        loginModal.classList.add("hidden");
+        document.body.style.overflow = ''; // Restore scrolling
+    });
+
+    // Đóng modal khi click bên ngoài
+    loginModal.addEventListener("click", function (event) {
+        if (event.target === loginModal) {
+            loginModal.classList.add("hidden");
+            document.body.style.overflow = ''; // Restore scrolling
+        }
+    });
+
+    // Ngăn chặn sự kiện click từ modal content lan ra ngoài
+    modalContent.addEventListener("click", function (event) {
+        event.stopPropagation();
+    });
+
+    // Đóng modal khi nhấn ESC
+    document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape" && !loginModal.classList.contains("hidden")) {
+            loginModal.classList.add("hidden");
+            document.body.style.overflow = ''; // Restore scrolling
+        }
+    });
+});
+</script>
+
 <body>
   <!-- Page Preloder -->
   <div id="preloder">
@@ -94,16 +225,17 @@
                   </div>
                   {% else %}
                   <div class="sign-in-container1">
-                      <a href="{% url 'login' %}" class="user-button1">
-                         Đăng nhập
-                      </a>
-                  </div>
+                    <a href="#" class="user-button1" id="open-login-modal">
+                       Đăng nhập
+                    </a>
+                </div>                
                   {% endif %}
               </div>
           </div>
       </div>
   </div>
 </header>
+
 <!-- Header End -->
 
   <!-- Header End -->

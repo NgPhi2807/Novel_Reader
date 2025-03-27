@@ -25,7 +25,7 @@
               <!-- Nội dung thực tế -->
               <div class="row">
                 {% for novel in page_obj%}
-                <div class="col-lg-2 col-md-4 col-sm-6 product__item hidden">
+                <div class="col-lg-2 col-md-4 col-sm-6 product__item ">
                   {%load static %}
                   <div class="product__item__pic set-bg" data-setbg="{% get_media_prefix %}{{novel.ImgUrl}}">
                     <div class="ep">{{ novel.chapters.count }} chương</div>

@@ -16,7 +16,7 @@ from django.utils.timezone import localtime, now
 from datetime import timedelta
 
 # Import models from current app
-from .models import Novel, Category, CategoryNovel, Chapter, CustomUser 
+from .models import Novel, Category, CategoryNovel, Chapter, CustomUser
 
 # Import forms from current app
 from .forms import UserRegistrationForm

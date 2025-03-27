@@ -70,8 +70,8 @@
 
           <!-- Nội dung thực tế -->
           <div class="row">
-            {% for novel in all_novels%}
-            <div class="col-lg-2 col-md-4 col-sm-6 product__item hidden">
+            {% for novel in all_novels %}
+            <div class="col-lg-2 col-md-4 col-sm-6 product__item">
               {%load static %}
               <div class="product__item__pic set-bg" data-setbg="{% get_media_prefix %}{{novel.ImgUrl}}">
                 <div class="ep">{{ novel.chapter_count}} chương</div>
