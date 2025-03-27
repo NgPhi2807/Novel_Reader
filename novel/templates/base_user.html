@@ -189,15 +189,8 @@
       } else if (response.show_login_popup) {
         // Nếu đăng ký thành công, quay lại popup đăng nhập
         registerModal.classList.add("hidden");
-        loginModal.classList.remove("hidden");
+        loginModal.classList.remove("hidden"); // Hiển thị lại modal đăng nhập
       }
-
-      // Ẩn tất cả các modal khi đăng nhập thành công
-      loginModal.classList.add("hidden");
-      registerModal.classList.add("hidden");
-      document.body.style.overflow = ''; // Khôi phục lại cuộn trang nếu cần
-
-      // Lưu trạng thái đăng nhập vào localStorage
       localStorage.setItem("loginCompleted", "true");
     } else {
       alert(response.message || "Có lỗi xảy ra: " + (response.errors || "Vui lòng kiểm tra lại."));
@@ -266,7 +259,10 @@
           }
           return response.json();
         })
-        .then(data => handleResponse(data))
+        .then(data => {
+          // Gọi handleResponse sau khi đăng ký thành công
+          handleResponse(data);
+        })
         .catch(error => {
           console.error('Error:', error);
           alert('Có lỗi xảy ra khi đăng ký. Vui lòng thử lại.');
@@ -274,7 +270,6 @@
     });
   }
 });
-
 
 
 </script>

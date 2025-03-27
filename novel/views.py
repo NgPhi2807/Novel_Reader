@@ -476,12 +476,19 @@ def register_user(request):
     }, status=405)
 
 
+from django.contrib.auth import login
+from django.http import JsonResponse
+from django.urls import reverse
+import uuid
+
 def login_view(request):
     if request.method == "POST":
         form = LoginForm(request, data=request.POST)
+        
+        # Kiểm tra xem form có hợp lệ không
         if form.is_valid():
             user = form.get_user()
-            login(request, user)
+            login(request, user)  # Đăng nhập người dùng
 
             # Tạo token mới sau khi đăng nhập thành công
             login_token = str(uuid.uuid4())
@@ -490,6 +497,7 @@ def login_view(request):
             request.session['loginCompleted'] = True
 
             # Chuyển hướng dựa trên quyền của người dùng
+            # Người dùng có quyền superuser sẽ được chuyển hướng đến danh sách các novel
             redirect_url = reverse("novel_list") if user.is_superuser else reverse("user_home")
 
             # Trả về JSON response với các thông tin cần thiết
@@ -500,14 +508,15 @@ def login_view(request):
                 'show_login_popup': False  # Thêm flag này để client ẩn modal
             })
         else:
-            # Trả về lỗi chi tiết nếu form không hợp lệ
+            # Nếu form không hợp lệ, trả về lỗi chi tiết
             return JsonResponse({
                 'success': False,
-                'errors': form.errors
+                'errors': form.errors  # Trả về thông báo lỗi của form
             }, status=400)
     
-    # Trả về lỗi nếu không phải POST request
+    # Nếu không phải POST request, trả về lỗi
     return JsonResponse({'success': False, 'message': 'Invalid request'}, status=400)
+
 
 def logout_view(request):
     response = redirect("user_home")
