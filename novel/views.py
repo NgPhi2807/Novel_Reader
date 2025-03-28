@@ -1,6 +1,12 @@
+# Standard library imports
+import random
+import json
+import uuid
+from datetime import datetime, timedelta
+
 # Django core imports
 from django.shortcuts import render, get_object_or_404, redirect
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse, HttpResponse, HttpResponseForbidden
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import (
     login_required,
@@ -8,26 +14,31 @@ from django.contrib.auth.decorators import (
     user_passes_test,
 )
 from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.hashers import make_password
+from django.core.mail import send_mail
+from django.conf import settings
 from django.core.paginator import Paginator
 from django.db.models import Max
+from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 from django.utils.timezone import localtime, now
-from datetime import timedelta
-from .forms import LoginForm  # 👈 THÊM DÒNG NÀY!
-from django.urls import reverse
 
+# Django form imports
+from .forms import (
+    PasswordResetRequestForm,
+    PasswordResetVerifyForm,
+    LoginForm,
+    UserRegistrationForm,
+)
 
-# Import models from current app
-from .models import Novel, Category, CategoryNovel, Chapter, CustomUser 
+# Django model imports
+from .models import Novel, Category, CategoryNovel, Chapter, CustomUser
 
-# Import forms from current app
-from .forms import UserRegistrationForm
-import json
-import uuid
+# Django user model
+from django.contrib.auth import get_user_model
+User = get_user_model()
 
-
-from django.http import HttpResponseForbidden
 
 def admin_required(view_func):
     def _wrapped_view(request, *args, **kwargs):
@@ -444,83 +455,128 @@ def chapter_detail(request, novel_id, chapter_id):
     )
 
 
-
 def register_user(request):
     if request.method == "POST":
         form = UserRegistrationForm(request.POST)
         if form.is_valid():
             user = form.save(commit=False)
             user.set_password(form.cleaned_data["password"])  # Mã hóa mật khẩu
-            user.is_admin = False  # Đảm bảo không phải admin
             user.save()
+            messages.success(request, "Đăng ký thành công! Vui lòng đăng nhập.")
+            return redirect("login")  # Chuyển hướng sang trang đăng nhập
+    else:
+        form = UserRegistrationForm()
 
-            # Trả về thông tin thành công và yêu cầu hiển thị popup đăng nhập
-            response_data = {
-                "success": True,
-                "message": "Đăng ký thành công! Vui lòng đăng nhập.",
-                "show_login_popup": True
-            }
-            return JsonResponse(response_data)
-        else:
-            # Trả về lỗi chi tiết để frontend hiển thị
-            return JsonResponse({
-                "success": False,
-                "message": "Đăng ký thất bại. Vui lòng kiểm tra lại thông tin.",
-                "errors": form.errors.as_json()  # Lỗi chi tiết dạng JSON
-            }, status=400)
+    return render(request, "novel/register.html", {"form": form})
 
-    # Nếu không phải POST, trả về lỗi phương thức không được phép
-    return JsonResponse({
-        "success": False,
-        "message": "Phương thức không được phép."
-    }, status=405)
-
-
-from django.contrib.auth import login
-from django.http import JsonResponse
-from django.urls import reverse
-import uuid
 
 def login_view(request):
     if request.method == "POST":
         form = LoginForm(request, data=request.POST)
-        
-        # Kiểm tra xem form có hợp lệ không
         if form.is_valid():
             user = form.get_user()
-            login(request, user)  # Đăng nhập người dùng
+            login(request, user)
+            messages.success(request, "Đăng nhập thành công!")
 
-            # Tạo token mới sau khi đăng nhập thành công
-            login_token = str(uuid.uuid4())
+            response = redirect("novel_list" if user.is_admin else "user_home")
 
-            # Đặt session login_completed để không hiển thị modal nữa
-            request.session['loginCompleted'] = True
+            # 🔥 Lưu thời gian đăng nhập vào cookie (30 phút)
+            expiry_time = (now() + timedelta(minutes=30)).strftime("%Y-%m-%d %H:%M:%S")
+            response.set_cookie("last_active", now().isoformat(), httponly=True)
+            return response
+    else:
+        form = LoginForm()
 
-            # Chuyển hướng dựa trên quyền của người dùng
-            # Người dùng có quyền superuser sẽ được chuyển hướng đến danh sách các novel
-            redirect_url = reverse("novel_list") if user.is_superuser else reverse("user_home")
-
-            # Trả về JSON response với các thông tin cần thiết
-            return JsonResponse({
-                'success': True,
-                'redirect_url': redirect_url,
-                'login_token': login_token,
-                'show_login_popup': False  # Thêm flag này để client ẩn modal
-            })
-        else:
-            # Nếu form không hợp lệ, trả về lỗi chi tiết
-            return JsonResponse({
-                'success': False,
-                'errors': form.errors  # Trả về thông báo lỗi của form
-            }, status=400)
-    
-    # Nếu không phải POST request, trả về lỗi
-    return JsonResponse({'success': False, 'message': 'Invalid request'}, status=400)
-
+    return render(request, "novel/login.html", {"form": form})
 
 def logout_view(request):
-    response = redirect("user_home")
-    response.delete_cookie("login_token")  # Xóa token khi đăng xuất
     logout(request)
-    return response
+    return redirect("user_home")  
 
+def generate_reset_code():
+    """Tạo mã xác nhận ngẫu nhiên 6 chữ số."""
+    return str(random.randint(100000, 999999))
+
+def password_reset_request(request):
+    if request.method == "POST":
+        form = PasswordResetRequestForm(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data["email"]
+            
+            # Kiểm tra xem email có tồn tại trong hệ thống không
+            if not User.objects.filter(email=email).exists():
+                messages.error(request, "Email này không tồn tại trong hệ thống.")
+                return redirect('password_reset')
+                
+            # Tạo mã reset và gửi email
+            reset_code = generate_reset_code()
+            send_mail(
+                "Mã xác nhận đặt lại mật khẩu",
+                f"Mã xác nhận của bạn là: {reset_code}",
+                settings.DEFAULT_FROM_EMAIL,
+                [email],
+            )
+            
+            # Lưu mã và email vào session
+            request.session['reset_code'] = reset_code
+            request.session['reset_email'] = email
+            
+            # Chuyển hướng đến trang xác minh
+            return redirect('password_reset_verify')
+    else:
+        form = PasswordResetRequestForm()
+    
+    return render(request, 'novel/password_reset_form.html', {'form': form})
+
+def password_reset_verify(request):
+    email = request.session.get("reset_email")
+
+    if not email:
+        messages.error(request, "Vui lòng nhập email trước.")
+        return redirect("password_reset_request")
+
+    if request.method == "POST":
+        form = PasswordResetVerifyForm(request.POST)
+        if form.is_valid():
+            code = form.cleaned_data["code"]
+            if request.session.get("reset_code") == code:
+                # Xóa mã sau khi xác nhận thành công
+                del request.session['reset_code']
+                return redirect("password_reset_confirm")  # Chuyển sang đặt mật khẩu mới
+            else:
+                messages.error(request, "Mã xác nhận không đúng.")
+    
+    else:
+        form = PasswordResetVerifyForm()
+
+    return render(request, "novel/password_reset_verify.html", {"form": form})
+
+def password_reset_confirm(request):
+    email = request.session.get("reset_email")
+
+    if not email:
+        messages.error(request, "Vui lòng nhập email trước.")
+        return redirect("password_reset_request")
+
+    if request.method == "POST":
+        new_password = request.POST.get("new_password")
+        confirm_password = request.POST.get("confirm_password")
+
+        if new_password != confirm_password:
+            messages.error(request, "Mật khẩu không khớp!")
+            return render(request, "novel/password_reset_confirm.html")
+
+        try:
+            user = User.objects.get(email=email)
+            user.password = make_password(new_password)
+            user.save()
+
+            # Xóa session sau khi đặt mật khẩu thành công
+            del request.session["reset_email"]
+            messages.success(request, "Mật khẩu đã được đặt lại thành công!")
+            return redirect("login")  # Chuyển hướng đến trang đăng nhập
+
+        except User.DoesNotExist:
+            messages.error(request, "Không tìm thấy tài khoản!")
+    
+    return render(request, "novel/password_reset_confirm.html")

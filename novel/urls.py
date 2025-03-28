@@ -1,6 +1,9 @@
 from django.urls import path
 from . import views
-from .views import get_chapter, update_chapter, list_chapter,delete_chapter,admin_dashboard,register_user,user_page,login_view,logout_view
+from .views import get_chapter, update_chapter, list_chapter,delete_chapter,admin_dashboard,register_user,user_page,login_view,logout_view,password_reset_request,password_reset_verify,password_reset_confirm
+from django.contrib.auth import views as auth_views
+
+
 
 urlpatterns = [
 
@@ -17,6 +20,13 @@ urlpatterns = [
     path('logout/', views.logout_view, name='logout'),
     path('novel_list/', views.novel_list, name='novel_list'),  # Trang admin
     path('user_home/', views.user_home, name='user_home'),  # Trang người dùng
+
+    path("password_reset/", views.password_reset_request, name="password_reset"),
+    path("password_reset/verify/", views.password_reset_verify, name="password_reset_verify"),
+    path('password_reset/confirm/', views.password_reset_confirm, name='password_reset_confirm'),
+
+    
+
 
 
     # Chi tiết truyện
