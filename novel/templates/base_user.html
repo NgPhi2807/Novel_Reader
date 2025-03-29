@@ -7,7 +7,7 @@
     <meta name="keywords" content="Manga, unica, creative, html" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Manga | Template</title>
+    <title>Novel</title>
     <!-- Swiper CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <!-- Swiper JS -->
@@ -29,11 +29,11 @@
     <link rel="stylesheet" href="{% static 'novel/css/nice-select.css' %}" />
     <link rel="stylesheet" href="{% static 'novel/css/owl.carousel.min.css' %}" />
     <link rel="stylesheet" href="{% static 'novel/css/slicknav.min.css' %}" />
-    <link rel="stylesheet" href="{% static 'novel/css/style.css' %}" />
     <link rel="stylesheet" href="{% static 'novel/css/base.css' %}" />
     <link rel="stylesheet" href="{% static 'novel/css/footer.css' %}" />
     <link rel="stylesheet" href="{% static 'novel/css/header.css' %}" />
     {% block extra_css %}{% endblock %}
+    <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
 
 </head>
 
@@ -165,14 +165,9 @@
     <script src="{% static 'novel/js/truyen-detail.js' %}"></script>
     <script src="{% static 'novel/js/dropdown-click.js' %}"></script>
     <script src="{% static 'novel/js/truyen-chapter.js' %}"></script>
+    <script src="{% static 'novel/js/quill.js' %}"></script>
 
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-    const modal = document.getElementById('login-modal');
-    modal.classList.add('hidden');  // Đảm bảo modal bị ẩn khi trang tải
-});
-</script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 </body>
 

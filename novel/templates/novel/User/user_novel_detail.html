@@ -134,7 +134,6 @@
               </div>
             </div>
           </div>
-
           <!-- Giới thiệu và Danh sách chương -->
           <div class="section-title">
             <a href="#" class="text-black font-24 tab active" data-tab="gioi-thieu">Giới thiệu</a>
@@ -142,7 +141,6 @@
             <a href="#" class="text-black font-24 tab" data-tab="danh-sach">Danh sách chương</a>
             <div class="underline"></div>
           </div>
-
           <div class="tab-content">
             <div id="gioi-thieu" class="content-section active">
               <div class="ml-2">
@@ -256,55 +254,76 @@
 
             </script>
           </div>
-
-
           <!-- Reviews -->
           <div class="truyen__details__review mt-3">
             <div class="section-title">
               <h4 class="text-black font-24">Bình luận</h4>
             </div>
-
-            <div class="truyen__review__item d-flex align-items-start">
-              <div class="truyen__review__item__pic me-3">
-                <img src="../../static/novel/img/user/user1.png" alt="Review Image" class="rounded-circle" width="50"
-                  height="50" />
-              </div>
-              <div class="truyen__review__item__text">
-                <h6 class="mb-1">
-                  Chris Curry - <span class="text-muted">1 Hour ago</span>
-                </h6>
-                <p class="mb-0">Nhân vật chính thông minh</p>
-              </div>
-            </div>
-            <div class="truyen__review__item d-flex align-items-start">
-              <div class="truyen__review__item__pic me-3">
-                <img src="../../static/novel/img/user/user2.png " alt="Review Image" class="rounded-circle" width="50"
-                  height="50" />
-              </div>
-              <div class="truyen__review__item__text">
-                <h6 class="mb-1">
-                  Chris Curry - <span class="text-muted">1 Hour ago</span>
-                </h6>
-                <p class="mb-0">
-                  Truyện hay, mình đọc rất thích, cảm ơn bạn đã chia sẻ
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <!-- Comment Form -->
-          <div class="truyen__details__form mt-4 mb-3">
-            <form action="#">
-              <textarea class="form-control mb-2" placeholder="Your Comment" rows="3"></textarea>
-              <button type="submit" class="primary-btn">
-                <i class="fa fa-location-arrow"></i> Gửi bình luận
-              </button>
+            {% if user.is_authenticated %}
+            <form method="POST" class="mt-3">
+              {% csrf_token %}
+              <textarea name="Content" id="editor" rows="10"></textarea>
+              <button type="submit" class="btn btn-success mt-2">Đăng bình luận</button>
             </form>
+
+            {% else %}
+            <p>Vui lòng <a href="{% url 'login' %}" class="text-primary fw-bold text-decoration-underline">đăng nhập</a> để bình luận.</p>
+            {% endif %}
+
+            <style>
+              .ck-editor__editable_inline {
+                min-height: 160px !important;
+              }
+            </style>
+            {% for comment in comments %}
+            <div class="truyen__review__item d-flex align-items-start py-1 mt-3">
+              <div class="truyen__review__item__pic me-3">
+                <img src="{% static 'novel/img/user/user1.png' %}" alt="User" class="rounded-circle" width="45"
+                  height="45" />
+              </div>
+              <div class="truyen__review__item__text flex-grow-1">
+                <h6 class="mb-1 fw-bold">{{ comment.User.username }}</h6>
+                <p class="mb-1">{{ comment.Content |safe }}</p>
+                <div class="d-flex justify-content-between align-items-center">
+                  <small class="text-muted">{{ comment.time_since }}</small>
+                  <div class="d-flex gap-3">
+                    <a href="#" class="text-muted small"><i class="far fa-thumbs-up me-1"></i>Thích</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% empty %}
+            <p>Chưa có bình luận nào.</p>
+            {% endfor %}
+
+            <script>
+              ClassicEditor.create(document.querySelector('#editor'), {
+                toolbar: [
+                  'heading', '|', 'bold', 'italic', 'underline', 'strikethrough', 'link', 'bulletedList', 'numberedList',
+                  '|', 'fontSize', 'fontColor', 'fontBackgroundColor', 'emoji', '|',
+                  'imageUpload', 'insertTable', 'blockQuote', 'codeBlock', 'mediaEmbed', 'undo', 'redo', 'fullscreen'
+                ],
+                mediaEmbed: {
+                  previewsInData: true
+                },
+                simpleUpload: {
+                  uploadUrl: '/upload/', // Route upload ảnh bạn xử lý bằng Django
+                  headers: {
+                    'X-CSRFToken': '{{ csrf_token }}'
+                  }
+                }
+              })
+                .then(editor => {
+                  console.log(editor);
+                })
+                .catch(error => {
+                  console.error(error);
+                });
+            </script>
+
           </div>
-        </div>
+          </div>
       </div>
-
-
       <div class="col-lg-3 col-md-3 pt-1">
         <div class="section-title">
           <h4>Truyện Đang Hot</h4>
@@ -321,11 +340,8 @@
             {% endfor %}
           </ul>
         </div>
-
-
-
-      </div>
-    </div>
+          
+          
 </section>
 
 <!-- Truyen Section End -->

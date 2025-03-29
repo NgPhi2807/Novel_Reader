@@ -13,7 +13,6 @@ document.addEventListener("DOMContentLoaded", function () {
             }, index * 150);
           });
         } else {
-          // Khi cuộn ra khỏi phần này, ẩn sản phẩm để có thể chạy lại hiệu ứng khi cuộn vào
     
         }
       });

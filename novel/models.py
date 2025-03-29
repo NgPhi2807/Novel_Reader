@@ -60,8 +60,15 @@ class UserNovel(models.Model):
     User = models.ForeignKey(User, on_delete=models.CASCADE)
     Novel = models.ForeignKey(Novel, on_delete=models.CASCADE)
 
+
 class Comment(models.Model):
-    CommentId = models.AutoField(primary_key=True)
     Content = models.TextField()
-    User = models.ForeignKey(User, on_delete=models.CASCADE)
-    Chapter = models.ForeignKey(Chapter, on_delete=models.CASCADE)
+    User = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='comments')
+    Novel = models.ForeignKey(Novel, on_delete=models.CASCADE, related_name='comments')
+    CreatedAt = models.DateTimeField(auto_now_add=True, verbose_name="Thời gian bình luận")
+
+    class Meta:
+        ordering = ['CreatedAt']
+
+    def __str__(self):
+        return f'Bình luận của {self.User.username} về {self.Novel.Name}'

@@ -31,9 +31,10 @@ from .forms import (
     LoginForm,
     UserRegistrationForm,
 )
+from django.utils import timezone
 
 # Django model imports
-from .models import Novel, Category, CategoryNovel, Chapter, CustomUser
+from .models import Novel, Category, CategoryNovel, Chapter, CustomUser , Comment
 
 # Django user model
 from django.contrib.auth import get_user_model
@@ -344,14 +345,16 @@ def all_novel(request):
     return render(request, "novel/User/all_novel.html", {"page_obj": page_obj})
 
 
+
+
 def user_novel_detail(request, novel_id):
     novel = get_object_or_404(Novel, pk=novel_id)
 
-    # Cập nhật lượt xem, đảm bảo mỗi lần xem chỉ tăng một lần duy nhất cho mỗi user
+    # Cập nhật lượt xem
     if not request.session.get(f"viewed_{novel_id}", False):
         novel.ViewCount += 1
         novel.save()
-        request.session[f"viewed_{novel_id}"] = True  # Lưu vào session để tránh tăng nhiều lần
+        request.session[f"viewed_{novel_id}"] = True
 
     chapters = Chapter.objects.filter(Novel=novel).order_by("Number")
     chapters_new = Chapter.objects.filter(Novel=novel).order_by("-Number")[:6]
@@ -366,6 +369,32 @@ def user_novel_detail(request, novel_id):
     novel123 = Novel.objects.all()[:3]
     novel4_10 = Novel.objects.all()[3:10]
 
+    # Xử lý Bình luận
+    comments = Comment.objects.filter(Novel=novel).order_by('-CreatedAt')
+
+    # Thêm field time_since tiếng Việt cho từng comment
+    for cmt in comments:
+        cmt.time_since = viet_timesince(cmt.CreatedAt)
+
+    if request.method == 'POST':
+        content = request.POST.get('Content', '').strip()
+
+        if not request.user.is_authenticated:
+            messages.error(request, "Bạn cần đăng nhập để bình luận.")
+            return redirect('login')
+
+        if content:
+            Comment.objects.create(
+                Content=content,
+                User=request.user,
+                Novel=novel,
+                CreatedAt=timezone.now()
+            )
+            messages.success(request, "Đã thêm bình luận thành công!")
+            return redirect('user_novel_detail', novel_id=novel_id)
+        else:
+            messages.error(request, "Nội dung bình luận không được để trống.")
+
     return render(
         request,
         "novel/User/user_novel_detail.html",
@@ -376,10 +405,9 @@ def user_novel_detail(request, novel_id):
             "novels_123": novel123,
             "novels_4_10": novel4_10,
             "page_obj": page_obj,
+            "comments": comments,
         },
     )
-
-
 
 def user_chapter_detail(request, novel_id, chapter_id):
     chapter = get_object_or_404(Chapter, ChapId=chapter_id, Novel_id=novel_id)
