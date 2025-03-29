@@ -23,6 +23,7 @@ from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 from django.utils.timezone import localtime, now
+import datetime
 
 # Django form imports
 from .forms import (
@@ -483,39 +484,60 @@ def chapter_detail(request, novel_id, chapter_id):
     )
 
 
+@csrf_exempt
 def register_user(request):
     if request.method == "POST":
-        form = UserRegistrationForm(request.POST)
-        if form.is_valid():
-            user = form.save(commit=False)
-            user.set_password(form.cleaned_data["password"])  # Mã hóa mật khẩu
-            user.save()
-            messages.success(request, "Đăng ký thành công! Vui lòng đăng nhập.")
-            return redirect("login")  # Chuyển hướng sang trang đăng nhập
-    else:
-        form = UserRegistrationForm()
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+        email = request.POST.get("email")
+        sdt = request.POST.get("sdt")
 
-    return render(request, "novel/register.html", {"form": form})
+        errors = []
 
+        # Kiểm tra dữ liệu
+        if not username or not password or not email or not sdt:
+            errors.append("Vui lòng nhập đầy đủ thông tin.")
+
+        if CustomUser.objects.filter(username=username).exists():
+            errors.append("Tên tài khoản đã tồn tại.")
+
+        if CustomUser.objects.filter(email=email).exists():
+            errors.append("Email đã được sử dụng.")
+
+        if CustomUser.objects.filter(sdt=sdt).exists():
+            errors.append("Số điện thoại đã được sử dụng.")
+
+        if errors:
+            return JsonResponse({"success": False, "messages": errors})
+
+        # Tạo người dùng
+        user = CustomUser(username=username, email=email, sdt=sdt)
+        user.set_password(password)
+        user.save()
+
+        return JsonResponse({"success": True})
+
+    return JsonResponse({"success": False, "messages": ["Phương thức không hợp lệ."]})
 
 def login_view(request):
     if request.method == "POST":
-        form = LoginForm(request, data=request.POST)
-        if form.is_valid():
-            user = form.get_user()
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
             login(request, user)
-            messages.success(request, "Đăng nhập thành công!")
+            return JsonResponse({
+                "success": True,
+                "is_admin": user.is_superuser
+            })
+        else:
+            return JsonResponse({
+                "success": False,
+                "messages": ["Tên đăng nhập hoặc mật khẩu không đúng!"]
+            })
+    return JsonResponse({"success": False, "messages": ["Yêu cầu không hợp lệ."]})
 
-            response = redirect("novel_list" if user.is_admin else "user_home")
-
-            # 🔥 Lưu thời gian đăng nhập vào cookie (30 phút)
-            expiry_time = (now() + timedelta(minutes=30)).strftime("%Y-%m-%d %H:%M:%S")
-            response.set_cookie("last_active", now().isoformat(), httponly=True)
-            return response
-    else:
-        form = LoginForm()
-
-    return render(request, "novel/login.html", {"form": form})
 
 def logout_view(request):
     logout(request)
@@ -530,13 +552,19 @@ def password_reset_request(request):
         form = PasswordResetRequestForm(request.POST)
         if form.is_valid():
             email = form.cleaned_data["email"]
-            
-            # Kiểm tra xem email có tồn tại trong hệ thống không
+
+            # Kiểm tra email có tồn tại không
             if not User.objects.filter(email=email).exists():
-                messages.error(request, "Email này không tồn tại trong hệ thống.")
-                return redirect('password_reset')
-                
-            # Tạo mã reset và gửi email
+                return JsonResponse({"success": False, "messages": ["Email này không tồn tại trong hệ thống."]})
+
+            # Kiểm tra thời gian gửi gần nhất
+            last_sent_time = request.session.get("reset_last_sent_time")
+            if last_sent_time:
+                last_sent_time = now() - timedelta(seconds=60)  # Thời gian hợp lệ
+                if now() < last_sent_time:
+                    return JsonResponse({"success": False, "messages": ["Vui lòng chờ 60 giây trước khi gửi lại."]})
+
+            # Tạo mã xác nhận
             reset_code = generate_reset_code()
             send_mail(
                 "Mã xác nhận đặt lại mật khẩu",
@@ -544,67 +572,60 @@ def password_reset_request(request):
                 settings.DEFAULT_FROM_EMAIL,
                 [email],
             )
-            
-            # Lưu mã và email vào session
-            request.session['reset_code'] = reset_code
-            request.session['reset_email'] = email
-            
-            # Chuyển hướng đến trang xác minh
-            return redirect('password_reset_verify')
-    else:
-        form = PasswordResetRequestForm()
-    
-    return render(request, 'novel/password_reset_form.html', {'form': form})
+
+            # Lưu vào session
+            request.session["reset_code"] = reset_code
+            request.session["reset_email"] = email
+            request.session["reset_last_sent_time"] = now().isoformat()  # Lưu thời gian gửi
+
+            return JsonResponse({"success": True, "message": "Mã xác nhận đã được gửi qua email."})
+
+        return JsonResponse({"success": False, "messages": form.errors.get("email", ["Email không hợp lệ."])})
+
+    return JsonResponse({"success": False, "messages": ["Phương thức không hợp lệ."]})
 
 def password_reset_verify(request):
-    email = request.session.get("reset_email")
-
-    if not email:
-        messages.error(request, "Vui lòng nhập email trước.")
-        return redirect("password_reset_request")
-
     if request.method == "POST":
-        form = PasswordResetVerifyForm(request.POST)
-        if form.is_valid():
-            code = form.cleaned_data["code"]
-            if request.session.get("reset_code") == code:
-                # Xóa mã sau khi xác nhận thành công
-                del request.session['reset_code']
-                return redirect("password_reset_confirm")  # Chuyển sang đặt mật khẩu mới
-            else:
-                messages.error(request, "Mã xác nhận không đúng.")
-    
-    else:
-        form = PasswordResetVerifyForm()
+        code = request.POST.get("code", "").strip()
+        reset_code = request.session.get("reset_code")
 
-    return render(request, "novel/password_reset_verify.html", {"form": form})
+        if not reset_code:
+            return JsonResponse({
+                "success": False, 
+                "message": "Mã xác nhận đã hết hạn hoặc không hợp lệ. Vui lòng yêu cầu mã mới."
+            })
+
+        if reset_code == code:
+            del request.session["reset_code"]  # Xóa mã ngay sau khi xác thực thành công
+            return JsonResponse({
+                "success": True,
+                "message": "Xác nhận thành công"
+            })
+
+        return JsonResponse({
+            "success": False, 
+            "message": "Mã xác nhận không đúng. Vui lòng kiểm tra và thử lại."
+        })
+
 
 def password_reset_confirm(request):
     email = request.session.get("reset_email")
-
     if not email:
-        messages.error(request, "Vui lòng nhập email trước.")
-        return redirect("password_reset_request")
+        return JsonResponse({"success": False, "message": "Phiên đặt lại mật khẩu đã hết hạn. Vui lòng thử lại."})
 
-    if request.method == "POST":
-        new_password = request.POST.get("new_password")
-        confirm_password = request.POST.get("confirm_password")
-
-        if new_password != confirm_password:
-            messages.error(request, "Mật khẩu không khớp!")
-            return render(request, "novel/password_reset_confirm.html")
-
-        try:
-            user = User.objects.get(email=email)
-            user.password = make_password(new_password)
-            user.save()
-
-            # Xóa session sau khi đặt mật khẩu thành công
-            del request.session["reset_email"]
-            messages.success(request, "Mật khẩu đã được đặt lại thành công!")
-            return redirect("login")  # Chuyển hướng đến trang đăng nhập
-
-        except User.DoesNotExist:
-            messages.error(request, "Không tìm thấy tài khoản!")
+    new_password = request.POST.get("new_password", "").strip()
     
-    return render(request, "novel/password_reset_confirm.html")
+    if not new_password:
+        return JsonResponse({"success": False, "message": "Mật khẩu mới không được để trống."})
+
+    try:
+        user = User.objects.get(email=email)
+        user.password = make_password(new_password)
+        user.save()
+
+        del request.session["reset_email"]  # Xóa session sau khi thành công
+
+        return JsonResponse({"success": True, "message": "Mật khẩu đã được đặt lại thành công!"})
+
+    except User.DoesNotExist:
+        return JsonResponse({"success": False, "message": "Không tìm thấy tài khoản!"})

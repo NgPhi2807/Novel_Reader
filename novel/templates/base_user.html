@@ -81,7 +81,6 @@
                         </a>
 
                         {% if user.is_authenticated %}
-                        <!-- Hiển thị icon và dropdown nếu người dùng đã đăng nhập -->
                         <div class="sign-in-container">
                             <a href="#" class="user-button ">
                                 <i class="far fa-user-circle text-decoration-none"></i>
@@ -95,10 +94,10 @@
                         </div>
                         {% else %}
                         <div class="sign-in-container">
-                            <a href="{% url 'login' %}" class="sign-in-btn">
-                                Đăng nhập
-                            </a>
+                            <button class="sign-in-btn"onclick="openPopup('loginModal')">Đăng nhập</button>
+                            {% include 'novel/login_popup.html' %}
                         </div>
+                        
                         
                         {% endif %}
                     </div>
@@ -149,8 +148,6 @@
     </footer>
 
 
-
-
     <!-- Js Plugins -->
     <script src="{% static 'novel/js/jquery-3.3.1.min.js' %}"></script>
     <script src="{% static 'novel/js/bootstrap.min.js' %}"></script>
@@ -166,8 +163,8 @@
     <script src="{% static 'novel/js/dropdown-click.js' %}"></script>
     <script src="{% static 'novel/js/truyen-chapter.js' %}"></script>
     <script src="{% static 'novel/js/quill.js' %}"></script>
-
-
+ 
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 </body>
 
