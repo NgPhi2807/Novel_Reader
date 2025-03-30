@@ -8,17 +8,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Novel</title>
+
     <!-- Swiper CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-    <!-- Swiper JS -->
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-
-    <!-- Google Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;500;600;700;800;900&display=swap"
-        rel="stylesheet" />
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined">
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
 
     <!-- Css Styles -->
     {% load static %}
@@ -32,123 +31,30 @@
     <link rel="stylesheet" href="{% static 'novel/css/base.css' %}" />
     <link rel="stylesheet" href="{% static 'novel/css/footer.css' %}" />
     <link rel="stylesheet" href="{% static 'novel/css/header.css' %}" />
+    
+    <!-- Extra CSS for pages -->
     {% block extra_css %}{% endblock %}
-    <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
 
+    <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
 </head>
 
 <body>
-    <!-- Page Preloder -->
-    <div id="preloder">
-        <div class="loader"></div>
-    </div>
-    <!-- Header Section Begin -->
-    <!-- Header Section Begin -->
-    <header class="header">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-2 col-md-2">
-                    <div class="header__logo">
-                        <a href="{% url 'user_home' %}">
-                            <img class="logo" src="../../static/novel/img/logo.png" alt="" />
-                        </a>
-                    </div>
-                </div>
-                <div class="col-lg-8 pt-1">
-                    <div class="header__nav">
-                        <nav class="header__menu mobile-menu">
-                            <ul>
-                                <li class="active"><a href="{% url 'user_home' %}">Trang chủ</a></li>
-                                <li>
-                                    <a href="./categories.html">
-                                        Thể loại <span class="arrow_carrot-down"></span>
-                                    </a>
-                                    <ul class="dropdown">
-                                        {% for category in novels_base %}
-                                        <li><a href="#">{{ category.Name }}</a></li>
-                                        {% endfor %}
-                                    </ul>
-                                </li>
-                                <li><a href="#">Danh sách</a></li>
-                            </ul>
-                        </nav>
-                    </div>
-                </div>
-                <div class="col-lg-2 pt-2">
-                    <div class="header__right">
-                        <a class="search-button1" href="/search">
-                            <i class="fa fa-search"></i>
-                        </a>
 
-                        {% if user.is_authenticated %}
-                        <div class="sign-in-container">
-                            <a href="#" class="user-button ">
-                                <i class="far fa-user-circle text-decoration-none"></i>
-                            </a>
-                            <ul class="user-dropdown">
-                                <li><a href="#"><i class="fas fa-user"></i> Tài khoản</a></li>
-                                <li><a href="#"><i class="fas fa-history"></i> Lịch sử</a></li>
-                                <li><a href="#"><i class="fas fa-bookmark"></i> Theo dõi</a></li>
-                                <li><a href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Thoát</a></li>
-                            </ul>
-                        </div>
-                        {% else %}
-                        <div class="sign-in-container">
-                            <button class="sign-in-btn"onclick="openPopup('loginModal')">Đăng nhập</button>
-                            {% include 'novel/login_popup.html' %}
-                        </div>
-                        
-                        
-                        {% endif %}
-                    </div>
-                </div>
-            </div>
-        </div>
+    <!-- Header -->
+    <header>
+        {% include "header.html" %}
     </header>
 
-    <!-- Header End -->
+    <!-- Main Content -->
+    <main>
+        {% block content %}{% endblock %}
+    </main>
 
-    <!-- Header End -->
-
-    {% block content %}
-    {% endblock %}
-
-    <!-- Footer Section Begin -->
-    <footer class="footer">
-        <div class="page-up">
-            <a href="#" id="scrollToTopButton"><span class="arrow_carrot-up"></span></a>
-        </div>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <h4 class="footer-title">Về Mê Truyện Chữ</h4>
-                    <p class="footer-text py-2">
-                        <a href="#" class="text-primary">Mê Truyện Chữ</a> là nền tảng
-                        <a href="#" class="text-primary">đọc truyện chữ</a>,
-                        <a href="#" class="text-primary">truyện hay</a> online miễn phí
-                        được convert hoặc dịch kỹ lưỡng. Website luôn cập nhật những bộ
-                        <a href="#" class="text-primary">truyện hot</a> thuộc các thể loại
-                        đặc sắc như <a href="#" class="text-primary">truyện tiên hiệp</a>,
-                        <a href="#" class="text-primary">truyện kiếm hiệp</a>, hay
-                        <a href="#" class="text-primary">truyện ngôn tình</a> một cách
-                        nhanh nhất, cùng
-                        <a href="#" class="text-primary">blog tin tức truyện chữ</a> chi
-                        tiết. Hỗ trợ mọi thiết bị như di động và máy tính bảng.
-                    </p>
-
-                    <div class="text-md-center text-lg-end no-underline">
-                        <a href="#" class="mx-2 link-footer">Điều khoản dịch vụ</a>
-                        <a href="#" class="mx-2 link-footer">Về chúng tôi</a>
-                        <a href="#" class="mx-2 link-footer">Blog</a>
-                        <a href="#" class="mx-2 link-footer">Liên hệ</a>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <!-- Footer -->
+    <footer>
+        {% include "footer.html" %}
     </footer>
 
-
-    <!-- Js Plugins -->
     <script src="{% static 'novel/js/jquery-3.3.1.min.js' %}"></script>
     <script src="{% static 'novel/js/bootstrap.min.js' %}"></script>
     <script src="{% static 'novel/js/player.js' %}"></script>
@@ -166,6 +72,9 @@
  
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    {% block extra_js %}{% endblock %}
+    <!-- FontAwesome -->
+    
 </body>
 
 </html>

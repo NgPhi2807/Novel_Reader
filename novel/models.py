@@ -18,6 +18,8 @@ class Novel(models.Model):
     ChapCount = models.IntegerField(default=0)
     ImgUrl = models.ImageField(upload_to='novel_images/')
     dateUpdate = models.DateTimeField(auto_now=True)
+    TotalComments = models.IntegerField(default=0)
+
 
     class Meta:
         permissions = [

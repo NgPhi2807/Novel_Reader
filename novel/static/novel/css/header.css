@@ -4,7 +4,6 @@
 
 .header {
   background-color: #ffffff !important;
-  border: 2px solid #e0e0e0;
 }
 
 .header__logo {
@@ -133,13 +132,12 @@
 .sign-in-btn {
   font-size: clamp(14px, 2.5vw, 16px);
   font-weight: bold;
-  padding: clamp(3px, 1vw, 5px) clamp(8px, 2vw, 12px);
-  border: 1.5px solid #1f2129;
   border-radius: 5px;
   color: #1f2129;
   background-color: transparent;
   transition: all 0.3s ease;
   z-index: 100; /* Đảm bảo nút luôn nằm trên các phần tử khác */
+  border:none
 }
 
 .sign-in-btn:focus {
@@ -298,10 +296,10 @@ ul.dropdown li a:hover {
   color: #1f2129;
 }
 .search-button1 i {
-  font-size: 22px;
+  font-size: 20px;
 }
 .user-button i {
-  font-size:22px;
+  font-size:20px;
 }
 .user-button:focus,
 .search-button1:hover {
@@ -310,6 +308,7 @@ ul.dropdown li a:hover {
 .sign-in-container {
   position: relative;
   display: inline-block;
+  
 }
 
 .user-dropdown {

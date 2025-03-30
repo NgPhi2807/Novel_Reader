@@ -387,8 +387,10 @@ def user_novel_detail(request, novel_id):
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
 
-    novel123 = Novel.objects.all()[:3]
-    novel4_10 = Novel.objects.all()[3:10]
+    # Lấy top 10 truyện có lượt xem cao nhất
+    hot_novels = Novel.objects.all().order_by('-ViewCount')
+    novels_123 = hot_novels[:3]  # Top 3
+    novels_4_10 = hot_novels[3:10]  # Top 4-10
 
     # Xử lý Bình luận
     comments = Comment.objects.filter(Novel=novel).order_by('-CreatedAt')
@@ -411,6 +413,11 @@ def user_novel_detail(request, novel_id):
                 Novel=novel,
                 CreatedAt=timezone.now()
             )
+
+            # Cập nhật tổng số bình luận của truyện
+            novel.TotalComments = Comment.objects.filter(Novel=novel).count()
+            novel.save()
+
             messages.success(request, "Đã thêm bình luận thành công!")
             return redirect('user_novel_detail', novel_id=novel_id)
         else:
@@ -423,12 +430,13 @@ def user_novel_detail(request, novel_id):
             "novel": novel,
             "chapters": chapters_new,
             "FirstChapterId": first_chapter_id,
-            "novels_123": novel123,
-            "novels_4_10": novel4_10,
+            "novels_123": novels_123,
+            "novels_4_10": novels_4_10,
             "page_obj": page_obj,
             "comments": comments,
         },
     )
+
 
 def user_chapter_detail(request, novel_id, chapter_id):
     chapter = get_object_or_404(Chapter, ChapId=chapter_id, Novel_id=novel_id)

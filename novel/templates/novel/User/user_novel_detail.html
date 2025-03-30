@@ -5,6 +5,7 @@
 {% endblock %}
 {% block content %}
 <!-- Breadcrumb Begin -->
+
 <div class="breadcrumb-option">
   <div class="container">
     <div class="row">
@@ -197,7 +198,6 @@
                 </span>
               </div>
             </div>
-
             <script>
               function loadChapters(pageNumber) {
                 const url = "?page=" + pageNumber;
@@ -267,7 +267,8 @@
             </form>
 
             {% else %}
-            <p>Vui lòng <a href="{% url 'login' %}" class="text-primary fw-bold text-decoration-underline">đăng nhập</a> để bình luận.</p>
+            <p>Vui lòng <a href="{% url 'login' %}" class="text-primary fw-bold text-decoration-underline">đăng nhập</a>
+              để bình luận.</p>
             {% endif %}
 
             <style>
@@ -322,28 +323,162 @@
             </script>
 
           </div>
-          </div>
+        </div>
       </div>
       <div class="col-lg-3 col-md-3 pt-1">
         <div class="section-title">
-          <h4>Truyện Đang Hot</h4>
+          <h4 class="">Truyện Đọc nhiều</h4>
         </div>
-        <div class="category-list">
-          <ul>
-            {% for novel in novels_123 %}
-            <li><a href="#" class="book-item book-rank-{{ forloop.counter }}"> {{ forloop.counter }} . {{ novel.Name }}
-              </a></li>
-            {% endfor %}
-            {% for novel in novels_4_10 %}
-            <li><a href="#" class="book-item book-rank-{{ forloop.counter|add:3 }}"> {{ forloop.counter|add:3 }} . {{
-                novel.Name }} </a></li>
-            {% endfor %}
-          </ul>
+        <div class="hot-novels">
+          {% for novel in novels_123 %}
+          <div class="hot-novel-item rank-{{ forloop.counter }}">
+            <!-- Huy chương chỉ hiển thị cho top 3 -->
+            <div class="rank-medal">
+              {% if forloop.counter == 1 %}
+              <i class="fas fa-medal medal-gold"></i>
+              {% elif forloop.counter == 2 %}
+              <i class="fas fa-medal medal-silver"></i>
+              {% else %}
+              <i class="fas fa-medal medal-bronze"></i>
+              {% endif %}
+            </div>
+            
+            <div class="novel-info">
+              {% if forloop.counter == 1 %}
+              <img src="{% get_media_prefix %}{{ novel.ImgUrl }}" alt="{{ novel.Name }}" class="hot-novel-img">
+              {% endif %}
+            
+              <div class="hot-novel-details">
+                <a href="{% url 'user_novel_detail' novel.NovelId %}" class="hot-novel-title">
+                  {{ novel.Name }}
+                </a>
+      
+                {% if forloop.counter == 1 %}
+                <span class="hot-novel-author">
+                  <i class="fas fa-user"></i> {{ novel.Author }}
+                </span>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+          {% for novel in novels_4_10 %}
+          <div class="hot-novel-item rank-other">
+            <div class="rank-number">{{ forloop.counter|add:3 }}</div>
+            <div class="novel-info">
+              <div class="hot-novel-details">
+                <a href="{% url 'user_novel_detail' novel.NovelId %}" class="hot-novel-title">
+                  {{ novel.Name }}
+                </a>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
         </div>
-          
-          
+      </div>
+      
+      
+    </div>
+  </div>
 </section>
-
 <!-- Truyen Section End -->
+
+<style>
+/* Tổng quan danh sách truyện */
+.hot-novels {
+  background: #fff;
+  padding: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+/* Tác giả */
+.hot-novel-author {
+  font-size: 12px;
+  color: #777;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 2px;
+}
+
+.hot-novel-author i {
+  font-size: 12px;
+  color: #999;
+}
+/* Item truyện */
+.hot-novel-item {
+  display: flex;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid #ddd;
+  transition: all 0.2s;
+}
+
+.hot-novel-item:last-child {
+  border-bottom: none;
+}
+
+.hot-novel-item:hover {
+  background: #f8f9fa;
+}
+
+/* Huy chương */
+.rank-medal {
+  width: 24px;
+  text-align: center;
+}
+
+.rank-medal i {
+  font-size: 18px;
+}
+
+.medal-gold { color: #FFD700; }
+.medal-silver { color: #C0C0C0; }
+.medal-bronze { color: #CD7F32; }
+
+/* Số thứ tự */
+.rank-number {
+  font-size: 16px;
+  font-weight: bold;
+  width: 24px;
+  text-align: center;
+  color: #555;
+}
+
+/* Ảnh của truyện top 1 */
+.hot-novel-img {
+  width: 50px;
+  height: 70px;
+  object-fit: cover;
+  border-radius: 5px;
+  margin-right: 10px;
+}
+
+/* Canh chỉnh thông tin truyện */
+.novel-info {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.hot-novel-details {
+  flex: 1;
+}
+
+/* Tiêu đề truyện */
+.hot-novel-title {
+  font-size: 14px;
+  color: #333;
+  font-weight: bold;
+  text-decoration: none;
+  display: block;
+}
+
+.hot-novel-title:hover {
+  text-decoration: underline;
+  color: inherit;
+}
+
+</style>
 
 {% endblock %}

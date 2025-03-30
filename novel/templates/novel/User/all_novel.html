@@ -39,12 +39,6 @@
   color: #288ad6; /* Màu chữ khi hover vào sẽ chuyển thành xanh */
 }
 
-
-
-
-
-
-
 </style>
 <script>
   // Chạy khi trang được tải xong
@@ -83,7 +77,7 @@
                 <div class="col-lg-2 col-md-4 col-sm-6 product__item1">
                     {% load static %}
                     <div class="product__item__pic set-bg" data-setbg="{% get_media_prefix %}{{ novel.ImgUrl }}">
-                        <div class="ep">{{ novel.chapter_count}}  chương</div>
+                        <div class="ep">{{ novel.chapter_count }} chương</div>
                         <p class="Name">{{ novel.Name }}</p>
                     </div>
                     <div class="product__item__text">

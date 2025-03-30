@@ -69,11 +69,20 @@
 }
 
 .custom-prev {
-  left: clamp(15%, 15vw, 25%);
+  left: 3%;
 }
 
 .custom-next {
-  right: clamp(15%, 15vw, 25%);
+  right: 3%;
+}
+
+@media (min-width: 1200px) {
+  .custom-prev {
+    left: 10%;
+  }
+  .custom-next {
+    right: 10%;
+  }
 }
 
 
@@ -579,7 +588,7 @@ ul.dropdown li a:hover {
 }
 
 .product__item:hover {
-  transform: scale(1.05) !important; /* Phóng to nhẹ */
+  transform: scale(1.03) !important;
 }
 
 .product__item1 {
@@ -1034,7 +1043,7 @@ ul.dropdown li a:hover {
 
 @media only screen and (min-width: 1200px) {
   .container {
-    max-width: 1170px;
+    max-width: 1300px;
   }
 }
 

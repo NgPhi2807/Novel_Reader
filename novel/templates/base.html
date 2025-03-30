@@ -13,7 +13,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;500;600;700;800;900&display=swap"
     rel="stylesheet" />
- 
+
   <!-- Css Styles -->
   <!-- Css Styles -->
   {% load static %}
@@ -28,7 +28,7 @@
   <link rel="stylesheet" href="{% static 'novel/css/footer.css' %}" type="text/css">
   <link rel="stylesheet" href="{% static 'novel/css/header.css' %}" type="text/css">
   <link rel="stylesheet" href="{% static 'novel/css/admin.css' %}" type="text/css">
-  
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.7.1/tinymce.min.js"></script>
 
 
@@ -38,209 +38,79 @@
 </head>
 
 <body>
-  <!-- Page Preloder -->
-  <div id="preloder">
-    <div class="loader"></div>
-  </div>
 
-  <!-- Header Section Begin -->
-  <header class="header">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-2 col-md-2">
-          <div class="header__logo">
-            <a href="{% url 'user_home' %}">
-              <img class="logo" src="../../static/novel/img/logo.png" alt="" />
-            </a>
+  <header>
+    {% include "header.html" %}
+  </header>
+
+  <main>
+    <div class="container mt-4 mb-5">
+      <!-- Banner -->
+      <div class="banner shadow">
+        <img id="banner-img" src="../../static/novel/img/metruyenchu.png" alt="Banner" />
+        <label class="upload-icon">
+          <i class="fas fa-upload"></i>
+          <input type="file" id="banner-input" accept="image/*" hidden />
+        </label>
+      </div>
+
+      <!-- Profile Section -->
+      <div class="profile-container p-3 shadow">
+        <div class="d-flex align-items-center">
+          <!-- Ảnh đại diện -->
+          <div class="avatar-container">
+            <img id="avatar-img" src="../../static/novel/img/user/user1.png" alt="Ảnh đại diện" />
+            <label class="upload-avatar">
+              <i class="fas fa-camera"></i>
+              <input type="file" id="avatar-input" accept="image/*" hidden />
+            </label>
+          </div>
+
+          <!-- Thông tin người dùng -->
+          <div class="ml-3 thong-tin">
+            <h4 class="mb-1 fo">Nguyễn Hùng Phi</h4>
+            <p class="mb-1 text-muted">Chức vụ: <strong>Admin</strong></p>
+            <p class="text-muted">ID: <strong>123456789</strong></p>
           </div>
         </div>
-        <div class="col-lg-8 pt-1">
-          <div class="header__nav">
-            <nav class="header__menu mobile-menu">
-              <ul>
-                <li class="active"><a href="{% url 'user_home' %}">Trang chủ</a></li>
-                <li>
-                  <a href="./categories.html">
-                    Thể loại <span class="arrow_carrot-down"></span>
-                  </a>
-                  <ul class="dropdown">
-                    {%for category in novels_base%}
-                    <li><a href="#">{{category.Name}}</a></li>
-                    {% endfor %}
+      </div>
 
- 
-                  </ul>
-                </li>
-                <li><a href="#">Danh sách</a></li>
-              </ul>
-            </nav>
-          </div>
-        </div>
-        <div class="col-lg-2 pt-2">
-          <div class="header__right">
-            <a class="search-button1" href="/search">
-              <i class="fa fa-search"></i>
-            </a>
-            <div class="sign-in-container">
-              <a href="#" class="user-button">
-                <i class="far fa-user-circle"></i>
-              </a>
-              <ul class="user-dropdown">
+      <!-- Content -->
+      <div class="row mt-4">
+        <div class="col-lg-3 col-md-3">
+
+          <div class="section-box">
+            <div>
+              <ul class="list-unstyled">
                 <li>
-                  <a href="#"><i class="fas fa-user"></i> Tài khoản</a>
+                  <a href="{% url 'novel_list' %}"><i class="fas fa-book icon-book"></i> Danh sách truyện</a>
                 </li>
                 <li>
-                  <a href="#"><i class="fas fa-history"></i> Lịch sử</a>
+                  <a href="{% url 'novel_create' %}"><i class="fas fa-plus-circle icon-add"></i> Thêm Truyện</a>
                 </li>
                 <li>
-                  <a href="#"><i class="fas fa-bookmark"></i> Theo dõi</a>
+
+                  <a href="/adminui/list_truyen.html"><i class="fas fa-history icon-history"></i> Danh sách
+                    truyện</a>
                 </li>
                 <li>
-                  <a href="#"><i class="fas fa-sign-out-alt"></i> Thoát</a>
+                  <a href="#"><i class="fas fa-sign-out-alt text-danger"></i> Thoát</a>
                 </li>
               </ul>
             </div>
           </div>
         </div>
-      </div>
-      <div id="mobile-menu-wrap"></div>
-    </div>
-  </header>
-  <!-- Header End -->
-
-  <!-- Chapter Section Begin -->
-  <div class="container mt-4 mb-5">
-    <!-- Banner -->
-    <div class="banner shadow">
-      <img id="banner-img" src="../../static/novel/img/metruyenchu.png" alt="Banner" />
-      <label class="upload-icon">
-        <i class="fas fa-upload"></i>
-        <input type="file" id="banner-input" accept="image/*" hidden />
-      </label>
-    </div>
-
-    <!-- Profile Section -->
-    <div class="profile-container p-3 shadow">
-      <div class="d-flex align-items-center">
-        <!-- Ảnh đại diện -->
-        <div class="avatar-container">
-          <img id="avatar-img" src="../../static/novel/img/user/user1.png" alt="Ảnh đại diện" />
-          <label class="upload-avatar">
-            <i class="fas fa-camera"></i>
-            <input type="file" id="avatar-input" accept="image/*" hidden />
-          </label>
-        </div>
-
-        <!-- Thông tin người dùng -->
-        <div class="ml-3 thong-tin">
-          <h4 class="mb-1 fo">Nguyễn Hùng Phi</h4>
-          <p class="mb-1 text-muted">Chức vụ: <strong>Admin</strong></p>
-          <p class="text-muted">ID: <strong>123456789</strong></p>
-        </div>
+        {% block content %}
+        {% endblock %}
       </div>
     </div>
-
-    <!-- Content -->
-    <div class="row mt-4">
-
-      <div class="col-lg-3 col-md-3">
-
-        <div class="section-box">
-          <div>
-            <ul class="list-unstyled">
-              <li>
-                <a href="{% url 'novel_list' %}"><i class="fas fa-book icon-book"></i> Danh sách truyện</a>
-              </li>
-              <li>
-                <a href="{% url 'novel_create' %}"><i class="fas fa-plus-circle icon-add"></i> Thêm Truyện</a>
-              </li>
-              <li>
-
-                <a href="/adminui/list_truyen.html"><i class="fas fa-history icon-history"></i> Danh sách
-                  truyện</a>
-              </li>
-              <li>
-                <a href="#"><i class="fas fa-sign-out-alt text-danger"></i> Thoát</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      {% block content %}
-      {% endblock %}
-    </div>
-  </div>
-
-  <script>
-    // Xử lý upload ảnh banner
-    document
-      .getElementById("banner-input")
-      .addEventListener("change", function (event) {
-        const file = event.target.files[0];
-        if (file) {
-          const reader = new FileReader();
-          reader.onload = function (e) {
-            document.getElementById("banner-img").src = e.target.result;
-          };
-          reader.readAsDataURL(file);
-        }
-      });
-
-    // Xử lý upload ảnh đại diện
-    document
-      .getElementById("avatar-input")
-      .addEventListener("change", function (event) {
-        const file = event.target.files[0];
-        if (file) {
-          const reader = new FileReader();
-          reader.onload = function (e) {
-            document.getElementById("avatar-img").src = e.target.result;
-          };
-          reader.readAsDataURL(file);
-        }
-      });
-  </script>
-  <!-- Chapter Section End -->
+  </main>
 
   <!-- Footer Section Begin -->
-  <footer class="footer">
-    <div class="page-up">
-      <a href="#" id="scrollToTopButton"><span class="arrow_carrot-up"></span></a>
-    </div>
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-12">
-          <h4 class="footer-title">Về Mê Truyện Chữ</h4>
-          <p class="footer-text py-2">
-            <a href="#" class="text-primary">Mê Truyện Chữ</a> là nền tảng
-            <a href="#" class="text-primary">đọc truyện chữ</a>,
-            <a href="#" class="text-primary">truyện hay</a> online miễn phí
-            được convert hoặc dịch kỹ lưỡng. Website luôn cập nhật những bộ
-            <a href="#" class="text-primary">truyện hot</a> thuộc các thể loại
-            đặc sắc như <a href="#" class="text-primary">truyện tiên hiệp</a>,
-            <a href="#" class="text-primary">truyện kiếm hiệp</a>, hay
-            <a href="#" class="text-primary">truyện ngôn tình</a> một cách
-            nhanh nhất, cùng
-            <a href="#" class="text-primary">blog tin tức truyện chữ</a> chi
-            tiết. Hỗ trợ mọi thiết bị như di động và máy tính bảng.
-          </p>
-
-          <div class="text-md-center text-lg-end no-underline">
-            <a href="#" class="mx-2 link-footer">Điều khoản dịch vụ</a>
-            <a href="#" class="mx-2 link-footer">Về chúng tôi</a>
-            <a href="#" class="mx-2 link-footer">Blog</a>
-            <a href="#" class="mx-2 link-footer">Liên hệ</a>
-          </div>
-        </div>
-      </div>
-    </div>
+  <footer>
+    {% include "footer.html" %}
   </footer>
   <!-- Footer Section End -->
-
-  <!-- Search model Begin -->
-
-  <!-- Search model end -->
 
   <!-- Js Plugins -->
   <script src="{% static 'novel/js/jquery-3.3.1.min.js' %}"></script>
