@@ -582,6 +582,15 @@ ul.dropdown li a:hover {
   transform: scale(1.05) !important; /* Phóng to nhẹ */
 }
 
+.product__item1 {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.15s ease-in-out;
+  margin-bottom: clamp(20px, 3vw, 30px);
+}
+
+
+
 .full-link {
   position: absolute;
   top: 0;

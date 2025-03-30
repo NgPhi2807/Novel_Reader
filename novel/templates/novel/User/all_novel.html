@@ -3,6 +3,61 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'novel/css/home.css' %}">
+<style>
+  .latest-chapters {
+    padding: 8px;
+    font-size: 0.85em;
+    
+  }
+  .chapter-item {
+    padding: 4px 0;
+    border-bottom: 1px solid #eee;
+
+  }
+  .chapter-item:last-child {
+    border: none;
+  }
+  .chapter-link {
+    color: #444;
+    display: block;
+  }
+  .chapter-time {
+    font-size: 0.8em;
+    color: #666;
+    font-style: italic;
+  }
+  .product__item1 {
+  margin-bottom: 20px;
+}
+.chapter {
+  color: #000000; /* Màu chữ mặc định là đen */
+  text-decoration: none; /* Xóa gạch chân */
+  font-weight: 700;
+}
+
+.chapter:hover {
+  color: #288ad6; /* Màu chữ khi hover vào sẽ chuyển thành xanh */
+}
+
+
+
+
+
+
+
+</style>
+<script>
+  // Chạy khi trang được tải xong
+  document.addEventListener("DOMContentLoaded", function () {
+    const chapters = document.querySelectorAll(".chapter");
+    
+    chapters.forEach(function (chapter) {
+      chapter.addEventListener("click", function () {
+        chapter.style.color = "#288ad6"; // Giữ màu xanh sau khi click
+      });
+    });
+  });
+</script>
 {% endblock %}
 
 {% block content %}
@@ -24,24 +79,37 @@
             <div id="trending-section" class="trending__product">
               <!-- Nội dung thực tế -->
               <div class="row">
-                {% for novel in page_obj%}
-                <div class="col-lg-2 col-md-4 col-sm-6 product__item ">
-                  {%load static %}
-                  <div class="product__item__pic set-bg" data-setbg="{% get_media_prefix %}{{novel.ImgUrl}}">
-                    <div class="ep">{{ novel.chapters.count }} chương</div>
-                    <p class="Name">{{novel.Name}}</p>
-                  </div>
-                  <div class="product__item__text">
-                    <ul>
-                      {% for category in novel.categorynovel_set.all|slice:":4" %}
-                      <li>{{category.Category.Name}}</li>
-                      {% endfor %}
-                    </ul>
-                  </div>
-                  <a href="{% url 'user_novel_detail' novel.NovelId %}" class="full-link"></a>
+                {% for novel in page_obj %}
+                <div class="col-lg-2 col-md-4 col-sm-6 product__item1">
+                    {% load static %}
+                    <div class="product__item__pic set-bg" data-setbg="{% get_media_prefix %}{{ novel.ImgUrl }}">
+                        <div class="ep">{{ novel.chapter_count}}  chương</div>
+                        <p class="Name">{{ novel.Name }}</p>
+                    </div>
+                    <div class="product__item__text">
+                        <div class="latest-chapters">
+                            {% if novel.latest_chapters %}
+                                {% for chapter in novel.latest_chapters %}
+                                <div class="chapter-item text-decoration-none d-flex justify-content-between align-items-center">
+                                    <a class="chapter" href="{% url 'user_chapter_detail' novel.NovelId chapter.ChapId %}">
+                                        Chương {{ chapter.Number }}
+                                    </a>
+                                    <span class="chapter-time">{{ novel.latest_update_display }}</span>
+                                </div>
+                                {% endfor %}
+                            {% else %}
+                                <div class="chapter-item">
+                                    <span>Chưa có chương mới</span>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <a href="{% url 'user_novel_detail' novel.NovelId %}"></a>
                 </div>
                 {% endfor %}
-              </div>
+            </div>
+            
+            
             </div>
           </div>
       </div>

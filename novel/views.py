@@ -328,22 +328,42 @@ def user_home(request):
 
 
 def all_novel(request):
-    novels_list = Novel.objects.all().order_by(
-        "-NovelId"
-    )  # Sắp xếp truyện theo NovelId giảm dần
-    paginator = Paginator(novels_list, 12)  # Hiển thị 10 truyện mỗi trang
+    # Lấy danh sách tất cả truyện, sắp xếp theo NovelId giảm dần
+    novels_list = Novel.objects.all().order_by("-NovelId")
+    paginator = Paginator(novels_list, 12)  # Hiển thị 12 truyện mỗi trang
 
-    page_number = request.GET.get("page", 1)  # Lấy số trang từ request, mặc định là 1
+    # Lấy số trang từ request, mặc định là trang 1
+    page_number = request.GET.get("page", 1)
     try:
         page_obj = paginator.page(page_number)
     except PageNotAnInteger:
         page_obj = paginator.page(1)  # Nếu không phải số nguyên, quay về trang đầu
     except EmptyPage:
-        page_obj = paginator.page(
-            paginator.num_pages
-        )  # Nếu vượt quá số trang, hiển thị trang cuối cùng
+        page_obj = paginator.page(paginator.num_pages)  # Nếu vượt quá số trang, hiển thị trang cuối cùng
 
-    return render(request, "novel/User/all_novel.html", {"page_obj": page_obj})
+    # Xử lý dữ liệu cho các truyện trong trang hiện tại
+    novels_with_chapters = []
+    for novel in page_obj.object_list:
+        # Đếm số chương của truyện
+        novel.chapter_count = novel.chapter_set.count()
+        
+        latest_chapters = novel.chapter_set.order_by("-ChapId")[:2]
+        novel.latest_chapters = latest_chapters
+
+        if latest_chapters:
+            novel.latest_chapter = latest_chapters[0]
+            novel.latest_update = localtime(novel.latest_chapter.dateUpdate)
+            novel.latest_update_display = viet_timesince(novel.latest_update)
+        else:
+            novel.latest_update_display = "Chưa có chương nào cập nhật"
+
+        novels_with_chapters.append(novel)
+
+    # Trả về template với các truyện và các chương cuối cùng
+    return render(request, "novel/User/all_novel.html", {
+        "page_obj": page_obj,
+        "novels_with_chapters": novels_with_chapters  # Truyền danh sách truyện với các chương cuối cùng
+    })
 
 
 
