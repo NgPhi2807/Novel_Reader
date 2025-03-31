@@ -32,7 +32,7 @@
             <div class="book">
               <div class="truyen__details__pic set-bg" {%load static%}
                 data-setbg="{% get_media_prefix %}{{novel.ImgUrl}}">
-                <div class="comment"><i class="fa fa-comments"></i> 11</div>
+                <div class="comment"><i class="fa fa-comments"></i> {{novel.TotalComments}} </div>
                 <div class="view"><i class="fa fa-eye"></i> {{ novel.ViewCount }}</div> <!-- Hiển thị lượt xem -->
               </div>
             </div>
@@ -285,7 +285,7 @@
               <div class="truyen__review__item__text flex-grow-1">
                 <h6 class="mb-1 fw-bold">{{ comment.User.username }}</h6>
                 <p class="mb-1">{{ comment.Content |safe }}</p>
-                <div class="d-flex justify-content-between align-items-center">
+                <div class="d-flex justify-content-between align-items-center mt-3">
                   <small class="text-muted">{{ comment.time_since }}</small>
                   <div class="d-flex gap-3">
                     <a href="#" class="text-muted small"><i class="far fa-thumbs-up me-1"></i>Thích</a>

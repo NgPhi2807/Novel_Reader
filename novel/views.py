@@ -1,8 +1,8 @@
 # Standard library imports
 import random
 import json
-import uuid
-from datetime import datetime, timedelta
+
+from datetime import timedelta
 
 # Django core imports
 from django.shortcuts import render, get_object_or_404, redirect
@@ -10,8 +10,6 @@ from django.http import JsonResponse, HttpResponse, HttpResponseForbidden
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import (
     login_required,
-    permission_required,
-    user_passes_test,
 )
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.hashers import make_password
@@ -55,13 +53,11 @@ def admin_dashboard(request):
     users_count = CustomUser.objects.count()
     novels_count = Novel.objects.count()
     chapters_count = Chapter.objects.count()
-    visits_count = VisitLog.objects.count()  # Đếm số lượt truy cập
 
     context = {
         "users_count": users_count,
         "novels_count": novels_count,
         "chapters_count": chapters_count,
-        "visits_count": visits_count,
     }
 
     return render(request, "novel/dashboard.html", context)
@@ -273,7 +269,7 @@ def get_chapter(request, novel_id, chapter_id):
     chapter = (get_object_or_404(Chapter, ChapId=chapter_id, Novel_id=novel_id),)
     return JsonResponse({"name": chapter.Name, "content": chapter.Content})
 
-####   USER
+#### USER
 def viet_timesince(time):
     if not time:
         return "Không có dữ liệu"
@@ -364,7 +360,6 @@ def all_novel(request):
         "page_obj": page_obj,
         "novels_with_chapters": novels_with_chapters  # Truyền danh sách truyện với các chương cuối cùng
     })
-
 
 
 
@@ -657,3 +652,34 @@ def password_reset_confirm(request):
 
     except User.DoesNotExist:
         return JsonResponse({"success": False, "message": "Không tìm thấy tài khoản!"})
+    
+
+    
+def user_list(request):
+    search_query = request.GET.get('search', '').strip()
+    
+    if search_query:
+        users = User.objects.filter(username__icontains=search_query) | \
+                User.objects.filter(email__icontains=search_query)
+    else:
+        users = User.objects.all()
+    
+    return render(request, "novel/user_list.html", {
+        "users": users,
+        "search_query": search_query
+    })
+
+
+@login_required
+@admin_required
+def delete_user(request, user_id):
+    if request.method == "POST":
+        user = get_object_or_404(User, id=user_id)
+
+        if user.is_superuser:  
+            return JsonResponse({"error": "Không thể xóa admin"}, status=403)
+
+        user.delete()
+        return redirect("user_list")  
+
+    return JsonResponse({"error": "Yêu cầu không hợp lệ"}, status=400)

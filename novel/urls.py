@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from .views import get_chapter, update_chapter, list_chapter,delete_chapter,admin_dashboard,register_user,user_page,login_view,logout_view,password_reset_request,password_reset_verify,password_reset_confirm
+from .views import get_chapter, update_chapter, list_chapter,delete_chapter,admin_dashboard,register_user,user_page,login_view,logout_view,password_reset_request,password_reset_verify,password_reset_confirm,user_list
 from django.contrib.auth import views as auth_views
 
 
@@ -14,6 +14,7 @@ urlpatterns = [
     ),  
 
     path('admin/dashboard/', views.admin_dashboard, name='admin_dashboard'),
+    path('admin/profile/', views.user_list, name='user_list'),
     path('register/', views.register_user, name='register_user'),
     path('user/', views.user_page, name='user_page'),
     path('login/', views.login_view, name='login'),
@@ -26,9 +27,6 @@ urlpatterns = [
     path('password_reset/confirm/', views.password_reset_confirm, name='password_reset_confirm'),
 
     
-
-
-
     # Chi tiết truyện
     path("<int:novel_id>/list_chapter/", views.list_chapter, name="list_chapter"),
     
@@ -53,4 +51,6 @@ urlpatterns = [
     ),
     path("<int:novel_id>/add_chapter/add/", views.add_chapter, name="add_chapter"),
     path('<int:novel_id>/list_chapter/delete/<int:chap_id>/', delete_chapter, name='delete_chapter'),  # URL mới
+    path('users/<int:user_id>/delete/', views.delete_user, name='delete_user'),
+    
 ]

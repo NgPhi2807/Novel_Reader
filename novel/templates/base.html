@@ -28,11 +28,7 @@
   <link rel="stylesheet" href="{% static 'novel/css/footer.css' %}" type="text/css">
   <link rel="stylesheet" href="{% static 'novel/css/header.css' %}" type="text/css">
   <link rel="stylesheet" href="{% static 'novel/css/admin.css' %}" type="text/css">
-
   <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.7.1/tinymce.min.js"></script>
-
-
-
   {% block extra_css %}{% endblock %}
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
 </head>
@@ -68,9 +64,13 @@
 
           <!-- Thông tin người dùng -->
           <div class="ml-3 thong-tin">
+            
             <h4 class="mb-1 fo">Nguyễn Hùng Phi</h4>
             <p class="mb-1 text-muted">Chức vụ: <strong>Admin</strong></p>
-            <p class="text-muted">ID: <strong>123456789</strong></p>
+
+            {% if request.user.is_authenticated %}
+            <p class="text-muted">ID: <strong>{{ request.user.id }}</strong></p>
+        {% endif %}
           </div>
         </div>
       </div>
@@ -83,18 +83,19 @@
             <div>
               <ul class="list-unstyled">
                 <li>
-                  <a href="{% url 'novel_list' %}"><i class="fas fa-book icon-book"></i> Danh sách truyện</a>
+                  <a href="{% url 'admin_dashboard' %}"><i class="fas fa-history icon-history"></i> Thống kê</a>
+                </li>
+                <li>
+                  <a href="{% url 'user_list' %}"><i class="fas fa-history icon-history"></i> Quản lý tài khoản</a>
                 </li>
                 <li>
                   <a href="{% url 'novel_create' %}"><i class="fas fa-plus-circle icon-add"></i> Thêm Truyện</a>
                 </li>
                 <li>
-
-                  <a href="/adminui/list_truyen.html"><i class="fas fa-history icon-history"></i> Danh sách
-                    truyện</a>
-                </li>
+                  <a href="{% url 'novel_list' %}"><i class="fas fa-book icon-book"></i> Danh sách truyện</a>
+                </li>            
                 <li>
-                  <a href="#"><i class="fas fa-sign-out-alt text-danger"></i> Thoát</a>
+                  <a href="{% url 'logout' %}"><i class="fas fa-sign-out-alt text-danger"></i> Thoát</a>
                 </li>
               </ul>
             </div>
@@ -126,12 +127,12 @@
   <script src="{% static 'novel/js/add-chapter.js' %}"></script>
   <script src="{% static 'novel/js/quill.js' %}"></script>
   <script src="{% static 'novel/js/dropdown-click.js' %}"></script>
-
+  
   <script src="{% static 'novel/js/update-chapter.js' %}"></script>
-  <script src="{% static 'novel/js/selecttheloai.js' %}"></script>
+  
 
   <script src="{% static 'novel/js/reloadpicture.js' %}"></script>
-
+  {% block extra_js %}{% endblock %}
 
 </body>
 

@@ -16,7 +16,7 @@
 }
 
 .sw1 {
-  height: clamp(20px, 5vw, 30px) !important; /* Linh hoạt chiều cao */
+  height: clamp(20px, 5vw, 40px) !important; /* Linh hoạt chiều cao */
 }
 
 .swiper-slide {
