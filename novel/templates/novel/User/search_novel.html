@@ -4,14 +4,87 @@
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'novel/css/home.css' %}">
 <style>
+  /* General search section style */
+  .search-section {
+    margin-bottom: 40px;
+    margin-top:40px;
+   
+  }
+
+  /* Center the search container */
+  .search-container {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .search-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.search-box-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.search-box {
+  width: 100%;
+  padding: 12px 20px 12px 40px;  /* Thêm padding bên trái để tạo không gian cho biểu tượng */
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 50px;
+  background: #fff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.search-box:focus {
+  outline: none;
+  border-color: #288ad6;
+  box-shadow: 0 0 10px rgba(40, 138, 214, 0.2);
+}
+
+.search-icon {
+  position: absolute;
+  left: 15px;  /* Căn trái biểu tượng trong ô tìm kiếm */
+  top: 50%;
+  transform: translateY(-50%);
+  color: #aaa;  /* Màu biểu tượng */
+}
+  /* Results section styling */
+  .search-results {
+    padding: 0 15px;
+    margin-top: 30px;
+  }
+
+  .search-results h4 {
+    color: #333;
+    font-size: 1.4em;
+    font-weight: bold;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 3px solid #288ad6;
+  }
+
+  /* No results found message styling */
+  .no-results {
+    text-align: center;
+    padding: 30px;
+    font-size: 18px;
+    color: #888;
+  }
+
   .latest-chapters {
     padding: 8px;
     font-size: 0.85em;
+
   }
 
   .chapter-item {
     padding: 4px 0;
     border-bottom: 1px solid #eee;
+
   }
 
   .chapter-item:last-child {
@@ -35,64 +108,59 @@
 
   .chapter {
     color: #000000;
+    /* Màu chữ mặc định là đen */
     text-decoration: none;
+    /* Xóa gạch chân */
     font-weight: 700;
   }
 
   .chapter:hover {
     color: #288ad6;
+    /* Màu chữ khi hover vào sẽ chuyển thành xanh */
   }
-
-  .search-container {
-    margin: 20px 0;
-    padding: 0 15px;
-  }
-
-  .search-box {
-    width: 100%;
-    max-width: 500px;
-    padding: 10px 15px;
-    border: 2px solid #ddd;
-    border-radius: 25px;
-    font-size: 16px;
-    transition: all 0.3s ease;
-  }
-
-  .search-box:focus {
-    outline: none;
-    border-color: #288ad6;
-    box-shadow: 0 0 5px rgba(40, 138, 214, 0.3);
-  }
-
-  .search-wrapper {
-    position: relative;
-    max-width: 500px;
-    margin: 0 auto;
-  }
-
-  .search-icon {
-    position: absolute;
-    right: 15px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #666;
-  }
+  
 </style>
 
 {% endblock %}
 
 {% block content %}
-<!-- Hero Section Begin -->
 <section class="truyen">
-  <div class="container">
-    <!-- Add search box -->
-    <div class="search-container">
-      <div class="search-wrapper">
-        <input type="text" id="novelSearch" class="search-box" placeholder="Nhập tên truyện cần tìm...">
-        <i class="fa fa-search search-icon"></i>
+  <!-- Search Section -->
+  <section class="search-section">
+    <div class="container">
+      <div class="search-container">
+        <form action="{% url 'search_novel' %}" method="GET" class="search-wrapper">
+          <div class="search-box-wrapper">
+            <!-- SVG Icon -->
+            <span class="search-icon">
+              <i class="fa fa-search"></i>
+            </span>
+            <!-- Search Input -->
+            <input type="text" name="search" class="search-box" placeholder="Nhập tên truyện cần tìm..." value="{{ search_query }}">
+          </div>
+        </form>
       </div>
+      
+    </div>
+  </section>
+
+  <div class="container">
+    <!-- Search Results Heading -->
+    <div class="search-results">
+      {% if search_query %}
+        <h4>Kết quả tìm kiếm cho "{{ search_query }}"</h4>
+        {% if not page_obj %}
+          <div class="no-results">
+            <i class="fa fa-search fa-3x mb-3"></i>
+            <p>Không tìm thấy truyện nào phù hợp với từ khóa tìm kiếm.</p>
+          </div>
+        {% endif %}
+      {% else %}
+        <h4>Tất cả truyện</h4>
+      {% endif %}
     </div>
 
+    <!-- Novel List Section -->
     <section class="product">
       <div class="trending__product">
         <!-- Nội dung thực tế -->
@@ -167,5 +235,4 @@
     </div>
   </div>
 </section>
-<!-- Product Section End -->
 {% endblock %}

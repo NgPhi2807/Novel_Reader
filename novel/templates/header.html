@@ -30,7 +30,7 @@
             </div>
             <div class="col-lg-2 pt-3">
                 <div class="header__right">
-                    <a class="search-button1" href="/search">
+                    <a class="search-button1" href="{% url 'search_novel' %}">
                         <i class="fa fa-search"></i>
                     </a>
                     {% if user.is_authenticated %}

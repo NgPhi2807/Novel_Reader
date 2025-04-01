@@ -337,7 +337,19 @@ def password_reset_confirm(request):
         return JsonResponse({"success": False, "message": "Không tìm thấy tài khoản!"})
     
 def search_novel(request):
+    search_query = request.GET.get('search', '').strip()
+
+    # Get all novels
     novels_list = Novel.objects.all().order_by("-ChapCount", "-NovelId")
+
+    # If there's a search query, filter the novels
+    if search_query:
+        novels_list = novels_list.filter(Name__icontains=search_query)
+
+    # If no novels found, inform the user
+    if not novels_list:
+        messages.info(request, "Không tìm thấy cuốn tiểu thuyết nào với từ khóa này.")
+
     paginator = Paginator(novels_list, 12)
     page_number = request.GET.get("page", 1)
     page_obj = paginator.get_page(page_number)
@@ -359,5 +371,6 @@ def search_novel(request):
 
     return render(request, "novel/User/search_novel.html", {
         "page_obj": page_obj,
-        "novels_with_chapters": novels_with_chapters
+        "novels_with_chapters": novels_with_chapters,
+        "search_query": search_query
     })

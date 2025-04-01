@@ -7,11 +7,13 @@
   .latest-chapters {
     padding: 8px;
     font-size: 0.85em;
+
   }
 
   .chapter-item {
     padding: 4px 0;
     border-bottom: 1px solid #eee;
+
   }
 
   .chapter-item:last-child {
@@ -35,72 +37,25 @@
 
   .chapter {
     color: #000000;
+    /* Màu chữ mặc định là đen */
     text-decoration: none;
+    /* Xóa gạch chân */
     font-weight: 700;
   }
 
   .chapter:hover {
     color: #288ad6;
-  }
-
-  .search-container {
-    margin: 20px 0;
-    padding: 0 15px;
-  }
-
-  .search-box {
-    width: 100%;
-    max-width: 500px;
-    padding: 10px 15px;
-    border: 2px solid #ddd;
-    border-radius: 25px;
-    font-size: 16px;
-    transition: all 0.3s ease;
-  }
-
-  .search-box:focus {
-    outline: none;
-    border-color: #288ad6;
-    box-shadow: 0 0 5px rgba(40, 138, 214, 0.3);
-  }
-
-  .search-wrapper {
-    position: relative;
-    max-width: 500px;
-    margin: 0 auto;
-  }
-
-  .search-icon {
-    position: absolute;
-    right: 15px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #666;
+    /* Màu chữ khi hover vào sẽ chuyển thành xanh */
   }
 </style>
 <script>
+  // Chạy khi trang được tải xong
   document.addEventListener("DOMContentLoaded", function () {
     const chapters = document.querySelectorAll(".chapter");
 
     chapters.forEach(function (chapter) {
       chapter.addEventListener("click", function () {
-        chapter.style.color = "#288ad6";
-      });
-    });
-
-    const searchBox = document.getElementById('novelSearch');
-    const novelItems = document.querySelectorAll('.product__item1');
-
-    searchBox.addEventListener('input', function () {
-      const searchTerm = this.value.toLowerCase().trim();
-
-      novelItems.forEach(item => {
-        const novelName = item.querySelector('.Name').textContent.toLowerCase();
-        if (novelName.includes(searchTerm)) {
-          item.style.display = '';
-        } else {
-          item.style.display = 'none';
-        }
+        chapter.style.color = "#288ad6"; // Giữ màu xanh sau khi click
       });
     });
   });
@@ -111,6 +66,51 @@
 <!-- Hero Section Begin -->
 <section class="truyen">
   <div class="container">
+    <!-- <div class="row mt-3">
+        <div class="col-lg-12">
+          <div class="breadcrumb__links">
+            <a href="{% url 'user_home' %}"><i class="fa fa-home"></i> Home</a>
+            <span class="current">{{novel.Name}}</span>
+          </div>
+        </div>
+      </div> -->
+    <section class="product">
+      <div class="trending__product">
+        <!-- Nội dung thực tế -->
+        <div class="col-lg-12">
+          <div id="trending-section" class="trending__product">
+            <!-- Nội dung thực tế -->
+            <div class="row">
+              {% for novel in page_obj %}
+              <div class="col-lg-2 col-md-4 col-sm-6 product__item1">
+                {% load static %}
+                <div class="product__item__pic set-bg" data-setbg="{% get_media_prefix %}{{ novel.ImgUrl }}">
+                  <div class="ep">{{ novel.chapter_count }} chương</div>
+                  <p class="Name">{{ novel.Name }}</p>
+                </div>
+                <div class="product__item__text">
+                  <div class="latest-chapters">
+                    {% if novel.latest_chapters %}
+                    {% for chapter in novel.latest_chapters %}
+                    <div class="chapter-item text-decoration-none d-flex justify-content-between align-items-center">
+                      <a class="chapter" href="{% url 'user_chapter_detail' novel.NovelId chapter.ChapId %}">
+                        Chương {{ chapter.Number }}
+                      </a>
+                      <span class="chapter-time">{{ novel.latest_update_display }}</span>
+                    </div>
+                    {% endfor %}
+                    {% else %}
+                    <div class="chapter-item">
+                      <span>Chưa có chương mới</span>
+                    </div>
+                    {% endif %}
+                  </div>
+                </div>
+                <a href="{% url 'user_novel_detail' novel.NovelId %}"></a>
+              </div>
+              {% endfor %}
+            </div>
+
           </div>
         </div>
       </div>
