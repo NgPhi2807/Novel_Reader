@@ -286,3 +286,5 @@ def toggle_admin(request, user_id):
         user.is_admin = not user.is_admin  # Đảo trạng thái Admin
         user.save()
     return redirect('user_list')
+
+
