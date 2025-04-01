@@ -1,56 +1,54 @@
 from django.urls import path
-from . import views
-from .views import get_chapter, update_chapter, list_chapter,delete_chapter,admin_dashboard,register_user,user_page,login_view,logout_view,password_reset_request,password_reset_verify,password_reset_confirm,user_list
-from django.contrib.auth import views as auth_views
-
-
+from . import views_admin, views_user
+from .views_admin import (
+    get_chapter, update_chapter, list_chapter, delete_chapter,
+    admin_dashboard, user_list
+)
+from .views_user import (
+    register_user, login_view, logout_view,
+    password_reset_request, password_reset_verify, password_reset_confirm,
+    search_novel
+)
 
 urlpatterns = [
+    # 🌟 Trang chính
+    path("", views_user.user_home, name="user_home"),
 
-    path('admin/', views.novel_list, name='novel_list'),  # Danh sách truyện
-    path("create/", views.add_novel, name="novel_create"),  # Tạo truyện mới
-    path(
-        "edit/<int:novel_id>/", views.edit_novel, name="novel_edit"
-    ),  
+    # 🌟 Quản lý người dùng
+    path('register/', register_user, name='register_user'),
+    path('login/', login_view, name='login'),
+    path('logout/', logout_view, name='logout'),
+    path('user_home/', views_user.user_home, name='user_home'),
 
-    path('admin/dashboard/', views.admin_dashboard, name='admin_dashboard'),
-    path('admin/profile/', views.user_list, name='user_list'),
-    path('register/', views.register_user, name='register_user'),
-    path('user/', views.user_page, name='user_page'),
-    path('login/', views.login_view, name='login'),
-    path('logout/', views.logout_view, name='logout'),
-    path('novel_list/', views.novel_list, name='novel_list'),  # Trang admin
-    path('user_home/', views.user_home, name='user_home'),  # Trang người dùng
+    # 🔐 Quản lý mật khẩu
+    path("password_reset/", password_reset_request, name="password_reset"),
+    path("password_reset/verify/", password_reset_verify, name="password_reset_verify"),
+    path('password_reset/confirm/', password_reset_confirm, name='password_reset_confirm'),
 
-    path("password_reset/", views.password_reset_request, name="password_reset"),
-    path("password_reset/verify/", views.password_reset_verify, name="password_reset_verify"),
-    path('password_reset/confirm/', views.password_reset_confirm, name='password_reset_confirm'),
+    # 📚 Quản lý truyện (Admin)
+    path('admin/', views_admin.novel_list, name='novel_list'),
+    path("create/", views_admin.add_novel, name="novel_create"),
+    path("edit/<int:novel_id>/", views_admin.edit_novel, name="novel_edit"),
+    path('all-novels/', views_user.all_novel, name='all_novel'),
+    path('search/', views_user.search_novel, name='search_novel'),
 
+    # 📊 Quản lý Admin Dashboard
+    path('admin/dashboard/', admin_dashboard, name='admin_dashboard'),
+    path('admin/userlist/', user_list, name='user_list'),
+    path('admin/<int:user_id>/delete/', views_admin.delete_user, name='delete_user'),
+
+    # 📖 Chi tiết truyện
+    path("detail/<int:novel_id>/", views_user.user_novel_detail, name="user_novel_detail"),
     
-    # Chi tiết truyện
-    path("<int:novel_id>/list_chapter/", views.list_chapter, name="list_chapter"),
-    
-    path("", views.user_home, name="user_home"),
-    path('all-novels/', views.all_novel, name='all_novel'),  # Thêm đường dẫn này
+    # 📖 Quản lý chương truyện
+    path("<int:novel_id>/list_chapter/", list_chapter, name="list_chapter"),
+    path("<int:novel_id>/list_chapter/get_chapter/<int:chapter_id>/", get_chapter, name="get_chapter"),
+    path("<int:novel_id>/list_chapter/update/<int:chap_id>/", update_chapter, name="update_chapter"),
+    path("<int:novel_id>/add_chapter/add/", views_admin.add_chapter, name="add_chapter"),
+    path('<int:novel_id>/list_chapter/delete/<int:chap_id>/', delete_chapter, name='delete_chapter'),
 
-    path("detail/<int:novel_id>/", views.user_novel_detail, name="user_novel_detail"),
-    
-    path("detail/<int:novel_id>/<int:chapter_id>", views.user_chapter_detail, name="user_chapter_detail"),
-     path('next_chapter/<int:novel_id>/<int:chapter_id>/', views.get_next_chapter, name='get_next_chapter'),
-    path('prev_chapter/<int:novel_id>/<int:chapter_id>/', views.get_prev_chapter, name='get_prev_chapter'),
-
-    path(
-        "<int:novel_id>/list_chapter/get_chapter/<int:chapter_id>/",
-        views.get_chapter,
-        name="get_chapter",
-    ),
-    path(
-        "<int:novel_id>/list_chapter/update/<int:chap_id>/",
-        views.update_chapter,
-        name="update_chapter",
-    ),
-    path("<int:novel_id>/add_chapter/add/", views.add_chapter, name="add_chapter"),
-    path('<int:novel_id>/list_chapter/delete/<int:chap_id>/', delete_chapter, name='delete_chapter'),  # URL mới
-    path('users/<int:user_id>/delete/', views.delete_user, name='delete_user'),
-    
+    # ⏭️ Điều hướng chương truyện
+    path("detail/<int:novel_id>/<int:chapter_id>/", views_user.user_chapter_detail, name="user_chapter_detail"),
+    path('next_chapter/<int:novel_id>/<int:chapter_id>/', views_user.get_next_chapter, name='get_next_chapter'),
+    path('prev_chapter/<int:novel_id>/<int:chapter_id>/', views_user.get_prev_chapter, name='get_prev_chapter'),
 ]

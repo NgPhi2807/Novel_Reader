@@ -20,14 +20,6 @@ class Novel(models.Model):
     dateUpdate = models.DateTimeField(auto_now=True)
     TotalComments = models.IntegerField(default=0)
 
-
-    class Meta:
-        permissions = [
-            ("can_edit_novel", "Can edit novel"),
-            ("can_delete_novel", "Can delete novel"),
-        ]
-
-
 class Chapter(models.Model):
     ChapId = models.AutoField(primary_key=True)
     Novel = models.ForeignKey(Novel, on_delete=models.CASCADE)
@@ -36,13 +28,7 @@ class Chapter(models.Model):
     Content = models.TextField()
     dateUpdate = models.DateTimeField(auto_now=True)
 
-    class Meta:
-        permissions = [
-            ("can_edit_chapter", "Can edit chapter"),
-            ("can_delete_chapter", "Can delete chapter"),
-        ]
 
-    
 class Category(models.Model):
     CategoryId = models.AutoField(primary_key=True)
     Name = models.CharField(max_length=255)

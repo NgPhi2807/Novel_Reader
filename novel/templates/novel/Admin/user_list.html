@@ -1,0 +1,190 @@
+{% extends "base_admin.html" %}
+{% load static %}
+
+{% block extra_css %}
+<style>
+    .user-table {
+        width: 100%;
+        background: white;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    }
+
+    .table-header {
+        background: linear-gradient(135deg, #6C5CE7 0%, #574bd6 100%);
+        color: white;
+        padding: 20px;
+    }
+
+    .user-list-header {
+        display: grid;
+        grid-template-columns: 2fr 3fr 1fr;
+        padding: 15px 20px;
+        background: #2c3e50;
+        color: white;
+        font-weight: 600;
+        border-bottom: 1px solid #eee;
+    }
+
+    .user-list {
+        padding: 0;
+        margin: 0;
+    }
+
+    .user-item {
+        display: grid;
+        grid-template-columns: 2fr 3fr 1fr;
+        padding: 15px 20px;
+        border-bottom: 1px solid #eee;
+        align-items: center;
+    }
+
+
+    .user-username {
+        color: #2c3e50;
+        font-weight: 600;
+    }
+
+    .user-email {
+        color: #636e72;
+    }
+
+    .user-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: #e9ecef;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 15px;
+    }
+
+    .search-container {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+
+    .search-box {
+        flex: 1;
+        padding: 12px 20px;
+        border: 2px solid #e2e8f0;
+        border-radius: 10px;
+        font-size: 14px;
+    }
+
+    .search-box:focus {
+        border-color: #4e73df;
+        box-shadow: 0 0 0 3px rgba(78, 115, 223, 0.1);
+        outline: none;
+    }
+
+    .search-btn {
+        padding: 12px 24px;
+        background: #2c3e50;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-size: 14px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .search-btn:hover {
+        background: #34495e;
+        transform: translateY(-1px);
+    }
+
+    .search-icon {
+        margin-right: 8px;
+    }
+
+    .action-btn {
+        border-radius: 6px;
+        border: none;
+        cursor: pointer;
+        font-size: 14px;
+        transition: all 0.3s ease;
+    }
+
+    .delete-btn {
+        background: transparent;
+    }
+
+    .delete-btn:hover {
+        transform: scale(1.05);
+        /* Phóng to đều cả chiều ngang và dọc */
+    }
+</style>
+{% endblock %}
+
+{% block title %}Danh Sách Người Dùng{% endblock %}
+
+{% block content %}
+
+<div class="col-md-9 col-lg-9 mx-auto">
+
+    <div class="card p-4 shadow-lg">
+        <div class="d-flex align-items-center gap-3 mb-4">
+            {% load static %}
+            <img src="{% static 'novel/img/open-an-account-svgrepo-com.svg' %}"
+                alt width="40" />
+            <h4 class="ml-2 mb-0 text-primary fo">Danh Sách Người Dùng</h4>
+        </div>
+
+        <form method="GET" action="{% url 'user_list' %}"
+            class="search-container">
+            <input type="text" name="search" class="search-box"
+                placeholder="Tìm kiếm theo tên hoặc email..."
+                value="{{ search_query }}">
+            <button type="submit" class="search-btn">
+                <i class="fas fa-search search-icon"></i> Tìm kiếm
+            </button>
+        </form>
+
+        <div class="user-table">
+            <div class="user-list-header">
+                <div>Tên đăng nhập</div>
+                <div>Email</div>
+                <div>Thao tác</div>
+            </div>
+
+                    <div class="user-list">
+                {% for user in users %}
+                    {% if not user.is_superuser %}
+                        <div class="user-item">
+                            <div class="user-username">{{ user.username }}</div>
+                            <div class="user-email">{{ user.email }}</div>
+                            <div class="action-column">
+                                <form id="delete-user-form-{{ user.id }}" 
+                                      method="POST"
+                                      action="{% url 'delete_user' user.id %}">
+                                    {% csrf_token %}
+                                    <button type="button" 
+                                            class="action-btn delete-btn"
+                                            onclick="confirmDelete('{{ user.id }}', '{{ user.username }}')"
+                                            {% if user.is_superuser or user.is_admin %}disabled{% endif %}>
+                                        {% load static %}
+                                        <img src="{% static 'novel/img/delete.svg' %}" 
+                                             alt="Delete user"
+                                             width="40">
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function confirmDelete(userId, username) {
+        if (confirm(`Bạn có chắc chắn muốn xóa người dùng "${username}"?`)) {
+            document.getElementById(`delete-user-form-${userId}`).submit();
+        }
+    }
+</script>
+{% endblock %}

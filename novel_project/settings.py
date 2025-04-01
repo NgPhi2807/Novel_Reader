@@ -69,7 +69,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'djongo',
         'NAME': 'novel_db',
-        'ENFORCE_SCHEMA': False,
+        'ENFORCE_SCHEMA': True,  # Thêm tùy chọn này nếu cần
         'CLIENT': {
             'host': 'mongodb+srv://ngphi039:456123nhp@cluster0.jvf7l.mongodb.net/?retryWrites=true&w=majority',
             'authSource': 'admin',
@@ -97,7 +97,7 @@ EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = "iconictk2@gmail.com"
-EMAIL_HOST_PASSWORD = "jthh fxnn qout ayld"  # Use App Password, not the real password
+EMAIL_HOST_PASSWORD = "jthh fxnn qout ayld"  
 
 # Internationalization
 LANGUAGE_CODE = 'en-us'

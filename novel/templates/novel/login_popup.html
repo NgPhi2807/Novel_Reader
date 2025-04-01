@@ -668,10 +668,52 @@ window.onclick = function (event) {
 };
 
 // Đóng modal bằng nút close
-document.querySelectorAll(".close-modal").forEach(button => {
+document.querySelectorAll(".btn-close-modal").forEach(button => {
     button.addEventListener("click", function () {
         closeAllPopups();
     });
 })
     });
 </script>
+
+
+
+<!-- <div id="alertBox" class="custom-alert">
+    <i class="fa fa-check-circle"></i> 
+    <span id="alertMessage"></span>
+</div>
+
+<style>
+    custom-alert {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #c0fcd6;
+    border-left: 5px solid #329F5D;
+    color: #329F5D;
+    padding: 1rem 1.5rem;
+    border-radius: 6px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 12px;  /* Tạo khoảng cách giữa icon và nội dung */
+    max-width: 300px;  /* Giới hạn chiều rộng để trông đẹp hơn */
+    font-size: 1rem;
+    z-index: 1000;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    display:none;
+}
+
+.custom-alert i {
+    font-size: 1.5rem;
+    color: #329F5D;
+    flex-shrink: 0; /* Ngăn icon co lại */
+}
+
+.custom-alert.show {
+    display: flex;
+    transform: translateY(0);
+    opacity: 1;
+}
+
+</style> -->

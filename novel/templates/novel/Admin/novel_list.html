@@ -1,8 +1,38 @@
-{% extends "base.html" %}
+{% extends "base_admin.html" %}
 
 {% load static %}
 {% block extra_css %}
     <link rel="stylesheet" href="{% static 'novel/css/listnovel.css' %}">
+    <style>
+        .search-container {
+            margin-bottom: 20px;
+        }
+        .search-box {
+            position: relative;
+            max-width: 400px;
+        }
+        .search-input {
+            width: 100%;
+            padding: 10px 15px;
+            padding-right: 45px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        .search-input:focus {
+            border-color: #4e73df;
+            box-shadow: 0 0 0 3px rgba(78, 115, 223, 0.1);
+            outline: none;
+        }
+        .search-icon {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #718096;
+        }
+    </style>
 {% endblock %}
 
 
@@ -13,12 +43,23 @@
 
   <div class="card p-4 shadow-lg">
     <div class="d-flex align-items-center gap-3 mb-3">
-      <img
-        src="../../static/novel/img/book-shelf-books-education-learning-school-study-svgrepo-com.svg"
-        alt="Book Shelf"
+      <img src="{% static 'novel/img/danhsach.svg' %}" 
+        alt=""
         width="40"
       />
       <h4 class="ml-2 mb-0 text-primary fo">Danh sách truyện</h4>
+    </div>
+
+    <!-- Add search box here -->
+    <div class="search-container">
+        <form method="GET" action="" class="search-box">
+            <input type="text" 
+                   name="search" 
+                   class="search-input" 
+                   placeholder="Tìm kiếm truyện..."
+                   value="{{ request.GET.search }}">
+            <i class="fas fa-search search-icon"></i>
+        </form>
     </div>
 
     <div class="table-responsive">

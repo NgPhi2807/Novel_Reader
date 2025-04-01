@@ -1,6 +1,4 @@
-
-
-{% extends "base.html" %}
+{% extends "base_admin.html" %}
 {% block title %}Thêm Truyện{% endblock %}
 
 {% load static %}
@@ -9,11 +7,9 @@
 {% endblock %}
 {% block extra_js %}
 <script src="{% static 'novel/js/selecttheloai.js' %}"></script>
-
 {% endblock %}
 {% block content %}
   <div class="col-md-9">
-
           <div class="card p-4">
             <h4 class=" fw-bold text-primary fo">Thêm Truyện</h4>
             <form method="post" enctype="multipart/form-data" class="mt-3">

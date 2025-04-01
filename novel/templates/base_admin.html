@@ -43,7 +43,7 @@
     <div class="container mt-4 mb-5">
       <!-- Banner -->
       <div class="banner shadow">
-        <img id="banner-img" src="../../static/novel/img/metruyenchu.png" alt="Banner" />
+        <img id="banner-img" src="{% static 'novel/img/metruyenchu.png' %}" alt="Banner" />
         <label class="upload-icon">
           <i class="fas fa-upload"></i>
           <input type="file" id="banner-input" accept="image/*" hidden />
@@ -55,7 +55,8 @@
         <div class="d-flex align-items-center">
           <!-- Ảnh đại diện -->
           <div class="avatar-container">
-            <img id="avatar-img" src="../../static/novel/img/user/user1.png" alt="Ảnh đại diện" />
+            {% load static %}
+            <img id="avatar-img" src="{% static 'novel/img/admin.png' %}" %} />
             <label class="upload-avatar">
               <i class="fas fa-camera"></i>
               <input type="file" id="avatar-input" accept="image/*" hidden />
@@ -81,25 +82,67 @@
 
           <div class="section-box">
             <div>
-              <ul class="list-unstyled">
-                <li>
-                  <a href="{% url 'admin_dashboard' %}"><i class="fas fa-history icon-history"></i> Thống kê</a>
-                </li>
-                <li>
-                  <a href="{% url 'user_list' %}"><i class="fas fa-history icon-history"></i> Quản lý tài khoản</a>
-                </li>
-                <li>
-                  <a href="{% url 'novel_create' %}"><i class="fas fa-plus-circle icon-add"></i> Thêm Truyện</a>
-                </li>
-                <li>
-                  <a href="{% url 'novel_list' %}"><i class="fas fa-book icon-book"></i> Danh sách truyện</a>
-                </li>            
-                <li>
-                  <a href="{% url 'logout' %}"><i class="fas fa-sign-out-alt text-danger"></i> Thoát</a>
-                </li>
-              </ul>
+                <ul class="list-unstyled">
+                    <li>
+                        <a href="{% url 'admin_dashboard' %}">
+                            <!-- Icon thống kê (biểu đồ) -->
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M3 3v18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                <path d="M7 14v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                <path d="M11 10v8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                <path d="M15 7v11" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                <path d="M19 4v14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            </svg> 
+                            Thống kê
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'user_list' %}">
+                            <!-- Icon người dùng -->
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2"/>
+                                <path d="M4 21v-2a6 6 0 0 1 12 0v2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            </svg> 
+                            Quản lý tài khoản
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'novel_create' %}">
+                            <!-- Icon thêm truyện -->
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 5v14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                <path d="M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            </svg> 
+                            Thêm Truyện
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'novel_list' %}">
+                            <!-- Icon danh sách truyện (cuốn sách) -->
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M4 19.5v-15a2 2 0 0 1 2-2h11a3 3 0 0 1 3 3v15" stroke="currentColor" stroke-width="2"/>
+                                <path d="M4 19.5a2 2 0 0 0 2-2h11a3 3 0 0 1 3 3" stroke="currentColor" stroke-width="2"/>
+                                <path d="M12 5v15" stroke="currentColor" stroke-width="2"/>
+                            </svg> 
+                            Danh sách truyện
+                        </a>
+                    </li>            
+                    <li>
+                      <a href="{% url 'logout' %}">
+                          <!-- Icon đăng xuất mới -->
+                          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24">
+                              <path d="M10 2H4C3.44772 2 3 2.44772 3 3V21C3 21.5523 3.44772 22 4 22H10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                              <path d="M14 17L19 12L14 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                              <path d="M19 12H7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                          </svg>
+                          <span class="">Đăng xuất</span>
+                      </a>
+                  </li>
+                  
+                </ul>
             </div>
-          </div>
+        </div>
+        
         </div>
         {% block content %}
         {% endblock %}

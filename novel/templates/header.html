@@ -23,7 +23,7 @@
                                     {% endfor %}
                                 </ul>
                             </li>
-                            <li><a href="#">Danh sách</a></li>
+                            <li><a href="{% url 'all_novel' %}">Danh sách</a></li>
                         </ul>
                     </nav>
                 </div>
@@ -39,7 +39,7 @@
                             <i class="far fa-user-circle"></i>
                         </a>
                         <ul class="user-dropdown">
-                            <li><a href="#"><i class="fas fa-user"></i> Tài khoản</a></li>
+                            <li><a href="{% url 'admin_dashboard' %}"><i class="fas fa-user"></i> Tài khoản</a></li>
                             <li><a href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i>Thoát</a></li>
                         </ul>
                     </div>

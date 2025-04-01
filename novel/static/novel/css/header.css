@@ -301,8 +301,8 @@ ul.dropdown li a:hover {
 .user-button i {
   font-size:20px;
 }
-.user-button:focus,
-.search-button1:hover {
+.user-button a i:focus
+ {
   color: #1f2129; 
 }
 .sign-in-container {
