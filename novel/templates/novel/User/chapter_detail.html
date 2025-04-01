@@ -40,11 +40,12 @@
 
               <select id="chapterSelect" class="chapter-select" data-novel-id="{{ novel.NovelId }}">
                 {% for chapter_item in chapters %}
-                    <option value="{{ chapter_item.ChapId }}" {% if chapter_item.ChapId == chapter.ChapId %}selected{% endif %}>
-                        Chương {{ chapter_item.Number }}: {{ chapter_item.Name }}
-                    </option>
+                <option value="{{ chapter_item.ChapId }}" {% if chapter_item.ChapId==chapter.ChapId %}selected{% endif
+                  %}>
+                  Chương {{ chapter_item.Number }}: {{ chapter_item.Name }}
+                </option>
                 {% endfor %}
-            </select>
+              </select>
 
               <button class="btn-custom active"
                 onclick="fetchNextChapter({{ chapter.Novel.NovelId }}, {{ chapter.ChapId }})">
@@ -85,9 +86,6 @@
             {{ chapter.Content|safe }}
           </div>
 
-
-
-
           <!-- Nút điều khiển chương dưới nội dung -->
           <div class="chapter-controls bottom-controls">
             <button class="btn-custom" onclick="fetchPrevChapter({{ chapter.Novel.NovelId }}, {{ chapter.ChapId }})">
@@ -119,18 +117,18 @@
             <div class="col-lg-2 col-md-4 col-sm-6 product__item hidden">
               {%load static %}
               <div class="product__item__pic set-bg" data-setbg="{% get_media_prefix %}{{novel.ImgUrl}}">
-                  <div class="ep">{{novel.ChapCount}} chương</div>
-                  <p class="Name">{{novel.Name}}</p>
+                <div class="ep">{{novel.ChapCount}} chương</div>
+                <p class="Name">{{novel.Name}}</p>
               </div>
               <div class="product__item__text">
-                  <ul>
-                      {% for category in novel.categorynovel_set.all|slice:":4" %}
-                      <li>{{category.Category.Name}}</li>
-                      {% endfor %}
-                  </ul>
+                <ul>
+                  {% for category in novel.categorynovel_set.all|slice:":4" %}
+                  <li>{{category.Category.Name}}</li>
+                  {% endfor %}
+                </ul>
               </div>
               <a href="{% url 'user_novel_detail' novel.NovelId %}" class="full-link"></a>
-          </div>
+            </div>
             {% endfor %}
           </div>
         </div>

@@ -166,42 +166,45 @@ def edit_novel(request, novel_id):
 @admin_required
 def add_novel(request):
     if request.method == "POST":
-        name = request.POST.get("name")
-        description = request.POST.get("description")
-        author = request.POST.get("author")
-        state = request.POST.get("state")
-        chap_count = 0
-
+        name = request.POST.get("name", "").strip()
+        description = request.POST.get("description", "").strip()
+        author = request.POST.get("author", "").strip()
+        state = request.POST.get("state", "").strip()
         img = request.FILES.get("img")
         category_ids = request.POST.get("categories", "")
 
-        # Chuyển chuỗi thành danh sách số nguyên
-        category_ids = category_ids.split(",")
-        category_ids = [int(cat_id) for cat_id in category_ids if cat_id.isdigit()]
+        # Kiểm tra dữ liệu bắt buộc
+        if not name or not description or not author or not state:
+            return HttpResponse("Vui lòng điền đầy đủ thông tin.")
 
-        # Tạo NovelId mới (bạn có thể thay thế bằng logic tạo id phù hợp)
-        novel_id = Novel.objects.count() + 1  # Sử dụng một phương pháp thích hợp để tạo id duy nhất.
+        # Tạo NovelId duy nhất
+        last_novel = Novel.objects.order_by("-NovelId").first()
+        novel_id = last_novel.NovelId + 1 if last_novel else 1
 
+        # Tạo tiểu thuyết mới
         novel = Novel(
             NovelId=novel_id,
             Name=name,
             Description=description,
             Author=author,
             State=state,
-            ChapCount=int(chap_count) if chap_count else 0,
+            ChapCount=0,  
         )
 
+        
         if img:
             novel.ImgUrl = img
+
         try:
             novel.save()
         except IntegrityError:
-            return HttpResponse("NovelId already exists, please try again.")
+            return HttpResponse("Lỗi: NovelId bị trùng, vui lòng thử lại.")
 
-        # Liên kết thể loại
+        category_ids = [int(cat_id) for cat_id in category_ids.split(",") if cat_id.isdigit()]
         for category_id in category_ids:
-            category = Category.objects.get(pk=category_id)
-            CategoryNovel.objects.create(Novel=novel, Category=category)
+            category = Category.objects.filter(pk=category_id).first()
+            if category:
+                CategoryNovel.objects.create(Novel=novel, Category=category)
 
         return redirect("novel_list")
 
@@ -231,6 +234,7 @@ def list_chapter(request, novel_id):
 def get_chapter(request, novel_id, chapter_id):
     chapter = get_object_or_404(Chapter, ChapId=chapter_id, Novel_id=novel_id)
     return JsonResponse({"name": chapter.Name, "content": chapter.Content})
+
 
 @admin_required    
 def user_list(request):
@@ -274,3 +278,11 @@ def admin_dashboard(request):
     }
 
     return render(request, "novel/Admin/dashboard.html", context)
+
+@admin_required
+def toggle_admin(request, user_id):
+    user = get_object_or_404(User, id=user_id)
+    if not user.is_superuser:  # Không cho phép thay đổi quyền của Superuser
+        user.is_admin = not user.is_admin  # Đảo trạng thái Admin
+        user.save()
+    return redirect('user_list')

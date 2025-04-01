@@ -18,7 +18,7 @@
 
     .user-list-header {
         display: grid;
-        grid-template-columns: 2fr 3fr 1fr;
+        grid-template-columns: 2fr 2.5fr 1.2fr 0.8fr;
         padding: 15px 20px;
         background: #2c3e50;
         color: white;
@@ -33,12 +33,11 @@
 
     .user-item {
         display: grid;
-        grid-template-columns: 2fr 3fr 1fr;
+        grid-template-columns: 2fr 2.5fr 1.2fr 0.8fr;
         padding: 15px 20px;
         border-bottom: 1px solid #eee;
         align-items: center;
     }
-
 
     .user-username {
         color: #2c3e50;
@@ -110,11 +109,34 @@
 
     .delete-btn {
         background: transparent;
+        border: none;
+        padding: 5px;
+        cursor: pointer;
+        opacity: 0.9;
+        transition: opacity 0.3s;
     }
 
     .delete-btn:hover {
-        transform: scale(1.05);
-        /* Phóng to đều cả chiều ngang và dọc */
+        opacity: 1;
+    }
+
+    .user-role {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .settings-btn {
+        background: transparent;
+        border: none;
+        padding: 5px;
+        cursor: pointer;
+        opacity: 0.9;
+        transition: opacity 0.3s;
+    }
+
+    .settings-btn:hover {
+        opacity: 1;
     }
 </style>
 {% endblock %}
@@ -147,36 +169,43 @@
             <div class="user-list-header">
                 <div>Tên đăng nhập</div>
                 <div>Email</div>
+                <div>Quyền</div>
                 <div>Thao tác</div>
             </div>
-
-                    <div class="user-list">
+            <div class="user-list">
                 {% for user in users %}
-                    {% if not user.is_superuser %}
+                   
                         <div class="user-item">
                             <div class="user-username">{{ user.username }}</div>
                             <div class="user-email">{{ user.email }}</div>
-                            <div class="action-column">
-                                <form id="delete-user-form-{{ user.id }}" 
-                                      method="POST"
-                                      action="{% url 'delete_user' user.id %}">
+                            <div class="user-role">
+                                {% if user.is_admin %}
+                                    <span class="badge bg-success text-white p-2 role-badge admin-role ">Admin</span>
+                                {% else %}
+                                    <span class="badge bg-success text-white p-2 role-badge user-role">User</span>
+                                {% endif %}
+                                <form method="POST" action="{% url 'toggle_admin' user.id %}" class="d-inline">
                                     {% csrf_token %}
-                                    <button type="button" 
-                                            class="action-btn delete-btn"
-                                            onclick="confirmDelete('{{ user.id }}', '{{ user.username }}')"
-                                            {% if user.is_superuser or user.is_admin %}disabled{% endif %}>
-                                        {% load static %}
-                                        <img src="{% static 'novel/img/delete.svg' %}" 
-                                             alt="Delete user"
-                                             width="40">
+                                    <button type="submit" class="settings-btn">
+                                        <img src="{% static 'novel/img/setting-svgrepo-com.svg' %}" alt="Toggle admin" width="30">
+                                    </button>
+                                </form>
+                            </div>
+                            <div class="action-column">
+                                <form id="delete-user-form-{{ user.id }}" method="POST" action="{% url 'delete_user' user.id %}">
+                                    {% csrf_token %}
+                                    <button type="button" class="action-btn delete-btn" 
+                                            onclick="confirmDelete('{{ user.id }}', '{{ user.username }}')">
+                                        <img src="{% static 'novel/img/delete.svg' %}" alt="Delete user" width="30">
                                     </button>
                                 </form>
                             </div>
                         </div>
-                    {% endif %}
+                   
                 {% endfor %}
             </div>
         </div>
+        
     </div>
 </div>
 

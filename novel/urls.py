@@ -2,12 +2,12 @@ from django.urls import path
 from . import views_admin, views_user
 from .views_admin import (
     get_chapter, update_chapter, list_chapter, delete_chapter,
-    admin_dashboard, user_list
+    admin_dashboard, user_list,toggle_admin
 )
 from .views_user import (
     register_user, login_view, logout_view,
     password_reset_request, password_reset_verify, password_reset_confirm,
-    search_novel
+    search_novel, 
 )
 
 urlpatterns = [
@@ -19,6 +19,8 @@ urlpatterns = [
     path('login/', login_view, name='login'),
     path('logout/', logout_view, name='logout'),
     path('user_home/', views_user.user_home, name='user_home'),
+    path('toggle-admin/<int:user_id>/', views_admin.toggle_admin, name='toggle_admin'),
+
 
     # 🔐 Quản lý mật khẩu
     path("password_reset/", password_reset_request, name="password_reset"),

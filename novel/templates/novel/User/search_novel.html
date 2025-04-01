@@ -171,13 +171,16 @@
               {% for novel in page_obj %}
               <div class="col-lg-2 col-md-4 col-sm-6 product__item1">
                 {% load static %}
-                <div class="product__item__pic set-bg" data-setbg="{% get_media_prefix %}{{ novel.ImgUrl }}">
-                  <div class="ep">{{ novel.chapter_count }} chương</div>
-                  <p class="Name">{{ novel.Name }}</p>
-                </div>
+                <a href="{% url 'user_novel_detail' novel.NovelId %}" class="product__item__link">
+                  <div class="product__item__pic set-bg" data-setbg="{% get_media_prefix %}{{ novel.ImgUrl }}">
+                      <div class="ep">{{ novel.chapter_count }} chương</div>
+                      <p class="Name">{{ novel.Name }}</p>
+                  </div>
+              </a>
+              
                 <div class="product__item__text">
                   <div class="latest-chapters">
-                    {% if novel.latest_chapters %}
+                    {% if novel %}
                     {% for chapter in novel.latest_chapters %}
                     <div class="chapter-item text-decoration-none d-flex justify-content-between align-items-center">
                       <a class="chapter" href="{% url 'user_chapter_detail' novel.NovelId chapter.ChapId %}">
