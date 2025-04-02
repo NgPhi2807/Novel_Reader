@@ -107,35 +107,36 @@
       </table>
       
     </div>
-    <div class="pagination mb-3">
-      <span class="step-links">
-          {% if page_obj.has_previous %}
-          <a href="?page=1" class="pagination-link">
-              <i class="fas fa-angle-double-left"></i> 
-          </a>
-          <a href="?page={{ page_obj.previous_page_number }}" class="pagination-link">
-              <i class="fas fa-arrow-left"></i> 
-          </a>
-          {% endif %}
-  
-          {% for num in page_obj.paginator.page_range %}
-              {% if num == page_obj.number %}
-                  <span class="current-page">{{ num }}</span>
-              {% else %}
-                  <a href="?page={{ num }}" class="pagination-link">{{ num }}</a>
-              {% endif %}
-          {% endfor %}
-  
-          {% if page_obj.has_next %}
-          <a href="?page={{ page_obj.next_page_number }}" class="pagination-link">
-              <i class="fas fa-arrow-right"></i> 
-          </a>
-          <a href="?page={{ page_obj.paginator.num_pages }}" class="pagination-link">
-              <i class="fas fa-angle-double-right"></i> 
-          </a>
-          {% endif %}
-      </span>
-  </div>
+    <div class="pagination mb-3 text-center">
+        <span class="step-links">
+            {% for page_num in page_range %}
+                {% if page_obj.number == page_num %}
+                    <span class="current-page">{{ page_num }}</span>
+                {% else %}
+                    <a href="?page={{ page_num }}" class="pagination-link">{{ page_num }}</a>
+                {% endif %}
+            {% endfor %}
+            
+            {% if page_obj.has_previous %}
+                <a href="?page={{ page_obj.previous_page_number }}" class="pagination-link">
+                    <i class="fas fa-arrow-left"></i>
+                </a>
+            {% endif %}
+            
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}" class="pagination-link">
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            {% endif %}
+            
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.paginator.num_pages }}" class="pagination-link">
+                    <i class="fas fa-angle-double-right"></i>
+                </a>
+            {% endif %}
+        </span>
+    </div>
+    
   
   </div>
 </div>

@@ -68,11 +68,11 @@ def download_image(img_url, story_name):
         print(f"Lỗi khi tải ảnh {img_url}: {str(e)}")
         return "Download failed"
 
-def get_stories(page_limit=3):
-    """ Lấy danh sách truyện từ nhiều trang """
+def get_stories(start_page=1, end_page=3):
+    """ Lấy danh sách truyện từ nhiều trang, nhập trang bắt đầu và trang kết thúc """
     all_stories = []
-    
-    for page in range(1, page_limit + 1):
+
+    for page in range(start_page, end_page + 1):
         if page == 1:
             url = f'{BASE_URL}/danh-sach/truyen-hot'
         else:
@@ -151,9 +151,8 @@ def get_stories(page_limit=3):
     print(f'Đã lưu danh sách {len(all_stories)} truyện vào stories.json')
     get_story_details(all_stories)  # Gọi hàm lấy chi tiết truyện sau khi đã lưu danh sách
 
-
-
     return all_stories  # Trả về danh sách truyện lấy được
+
 
 # Danh sách thể loại và ID tương ứng
 category_mapping = {
@@ -257,7 +256,7 @@ def get_story_details(stories):
                 'ChapCount': 0,
                 'ImgUrl': img_path,  # Lưu ảnh chi tiết
                 'Categories': category_ids,  # Lưu danh sách ID thể loại (category_ids)
-                'dateUpdate': {"$date": date_update},  # Định dạng ngày tháng theo MongoDB
+                'dateUpdate': date_update,  # Định dạng ngày tháng theo MongoDB
                 'TotalComments': 0
             })
 
@@ -271,4 +270,5 @@ def get_story_details(stories):
         except requests.RequestException as e:
             print(f'Lỗi khi lấy thông tin từ {url}: {e}')
 
-get_stories(page_limit=1)
+get_stories(start_page=3, end_page=5)
+

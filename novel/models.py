@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from djongo import models
+from django.contrib.auth import get_user_model
 
 class CustomUser(AbstractUser):
     sdt = models.CharField(max_length=15, blank=True, null=True, verbose_name="Số điện thoại")  
@@ -50,10 +52,11 @@ class UserNovel(models.Model):
 
 
 class Comment(models.Model):
+    CommentId = models.IntegerField()
     Content = models.TextField()
-    User = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='comments')
-    Novel = models.ForeignKey(Novel, on_delete=models.CASCADE, related_name='comments')
-    CreatedAt = models.DateTimeField(auto_now_add=True, verbose_name="Thời gian bình luận")
+    User = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    Novel = models.ForeignKey(Novel, on_delete=models.CASCADE)
+    CreatedAt = models.DateTimeField()
 
     class Meta:
         ordering = ['CreatedAt']

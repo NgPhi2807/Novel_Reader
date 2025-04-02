@@ -1,182 +1,542 @@
 [
   {
-    "title": "Toàn Chức Cao Thủ: Như Bóng Với Hình",
-    "url": "https://metruyenchu.com.vn/toan-chuc-cao-thu-nhu-bong-voi-hinh",
-    "author": "Nhất Phiến Tàm",
+    "title": "Thần Chỉ: Từ Goblin Bắt Đầu",
+    "url": "https://metruyenchu.com.vn/than-chi-tu-goblin-bat-dau",
+    "author": "Hôi Hôi Hôi Đích Hôi",
+    "genre": "Khoa Huyễn",
+    "chapters": "",
+    "views": "Lượt xem :",
+    "image_url": "https://metruyenchu.com.vn/media/book/tu-goblin-bat-dau.jpg"
+  },
+  {
+    "title": "Quỷ Dị Kỷ Nguyên: Mỗi Tháng Một Cái Chuyên Chúc Thiên Phú",
+    "url": "https://metruyenchu.com.vn/quy-di-ky-nguyen-moi-thang-mot-cai-chuyen-chuc-thien-phu",
+    "author": "Vạn Niên Lão Tổ",
     "genre": "Võng Du",
     "chapters": "",
     "views": "Lượt xem :",
-    "image_url": "https://metruyenchu.com.vn/media/book/nhu-bong-voi-hinh.jpeg"
+    "image_url": "https://metruyenchu.com.vn/media/book/moi-thang-mot-cai-chuyen-chuc-thien-phu.jpeg"
   },
   {
-    "title": "Từ Tam Quốc Bắt Đầu Tu Tiên",
-    "url": "https://metruyenchu.com.vn/tu-tam-quoc-bat-dau-tu-tien",
-    "author": "Phàm Nhân Nhậm",
-    "genre": "Tiên Hiệp",
+    "title": "Cái Này Minh Tinh Hợp Pháp Nhưng Có Bệnh",
+    "url": "https://metruyenchu.com.vn/cai-nay-minh-tinh-hop-phap-nhung-co-benh",
+    "author": "Minh Vương Tinh Thoại Sự Nhân",
+    "genre": "Ngôn Tình",
     "chapters": "",
     "views": "Lượt xem :",
-    "image_url": "https://metruyenchu.com.vn/media/book/tu-tam-quoc-bat-dau-tu-tien.jpg"
+    "image_url": "https://metruyenchu.com.vn/media/book/cai-nay-minh-tinh-hop-phap-nhung-co-benh.jpg"
   },
   {
-    "title": "Võng Du Tam Quốc: Thăng Cấp Dòng, Giết Địch Thành Chí Cao",
-    "url": "https://metruyenchu.com.vn/vong-du-tam-quoc-thang-cap-dong-giet-dich-thanh-chi-cao",
-    "author": "Thủy Võng",
-    "genre": "Võng Du",
-    "chapters": "",
-    "views": "Lượt xem :",
-    "image_url": "https://metruyenchu.com.vn/media/book/thang-cap-dong-giet-dich-thanh-chi-cao.jpg"
-  },
-  {
-    "title": "Toàn Chức Cao Thủ: Đỉnh Phong Súng Pháo",
-    "url": "https://metruyenchu.com.vn/toan-chuc-cao-thu-dinh-phong-sung-phao",
-    "author": "Bát Bảo Vị Bát Bảo Chúc",
-    "genre": "Đồng Nhân",
-    "chapters": "",
-    "views": "Lượt xem :",
-    "image_url": "https://metruyenchu.com.vn/media/book/dinh-phong-sung-phao.jpg"
-  },
-  {
-    "title": "(Lấp Hố)Toàn Chức Cao Thủ Chi Bạch Phong Mộc Tuyết",
-    "url": "https://metruyenchu.com.vn/lap-hotoan-chuc-cao-thu-chi-bach-phong-moc-tuyet",
-    "author": "Vô Doãn Chi Ngôn",
+    "title": "Ẩn Thế Ma Tôn, Nữ Đế Mang Em Bé Tới Cửa Cầu Phụ Trách",
+    "url": "https://metruyenchu.com.vn/an-the-ma-ton-nu-de-mang-em-be-toi-cua-cau-phu-trach",
+    "author": "Ốc Thượng Lại Miêu",
     "genre": "Huyền Huyễn",
     "chapters": "",
     "views": "Lượt xem :",
-    "image_url": "https://metruyenchu.com.vn/media/book/lap-hotoan-chuc-cao-thu-chi-bach-phong-moc-tuyet.jpg"
+    "image_url": "https://metruyenchu.com.vn/media/book/an-the-ma-ton-nu-de-mang-em-be-toi-cua-cau-phu-trach.jpg"
   },
   {
-    "title": "Chia Tay Sau Ta Dựa Cá Mặn Bạo Hồng Giới Giải Trí",
-    "url": "https://metruyenchu.com.vn/chia-tay-sau-ta-dua-ca-man-bao-hong-gioi-giai-tri",
-    "author": "Phong Đoản Đoản",
+    "title": "Ta Xuyên Thành Tinh Linh Quốc Ấu Tể [ Tây Huyễn ]",
+    "url": "https://metruyenchu.com.vn/ta-xuyen-thanh-tinh-linh-quoc-au-te-tay-huyen",
+    "author": "Thanh Tôn",
     "genre": "Đam Mỹ",
     "chapters": "",
     "views": "Lượt xem :",
-    "image_url": "https://metruyenchu.com.vn/media/book/chia-tay-sau-ta-dua-ca-man-bao-hong-gioi-giai-tri.jpeg"
+    "image_url": "https://metruyenchu.com.vn/media/book/ta-xuyen-thanh-tinh-linh-quoc-au-te-tay-huyen.jpeg"
   },
   {
-    "title": "Tiên Lộ Bình Thường",
-    "url": "https://metruyenchu.com.vn/tien-lo-binh-thuong",
-    "author": "Nhất Giới Tư Văn",
+    "title": "Võ Đạo Độc Tôn: Từ Hổ Gầm Kim Chung Tráo Bắt Đầu",
+    "url": "https://metruyenchu.com.vn/vo-dao-doc-ton-tu-ho-gam-kim-chung-trao-bat-dau",
+    "author": "Văn Thuật Sinh",
     "genre": "Tiên Hiệp",
     "chapters": "",
     "views": "Lượt xem :",
-    "image_url": "https://metruyenchu.com.vn/media/book/tien-lo-binh-thuong.jpg"
+    "image_url": "https://metruyenchu.com.vn/media/book/tu-ho-gam-kim-chung-trao-bat-dau_21.jpeg"
   },
   {
-    "title": "Bắt Đầu Triệu Hoán Lý Tầm Hoan, Cẩu Tại Phía Sau Màn Vô Địch",
-    "url": "https://metruyenchu.com.vn/bat-dau-trieu-hoan-ly-tam-hoan-cau-tai-phia-sau-man-vo-dich",
-    "author": "Cấp Ngã Cá Phi Cơ Tạc Đạn",
-    "genre": "Huyền Huyễn",
+    "title": "Nỗi Phiền Muộn Của Công Chúa Ma Cà Rồng Hikikomori",
+    "url": "https://metruyenchu.com.vn/noi-phien-muon-cua-cong-chua-ma-ca-rong-hikikomori",
+    "author": "Kobayashi Kotei",
+    "genre": "Light Novel",
     "chapters": "",
     "views": "Lượt xem :",
-    "image_url": "https://metruyenchu.com.vn/media/book/bat-dau-trieu-hoan-ly-tam-hoan-cau-tai-phia-sau-man-vo-dich_54.jpg"
+    "image_url": "https://metruyenchu.com.vn/media/book/noi-phien-muon-cua-cong-chua-ma-ca-rong-hikikomori.jpeg"
   },
   {
-    "title": "Xuyên Qua Chi Bà Bà Đại Tuyển Tập",
-    "url": "https://metruyenchu.com.vn/xuyen-qua-chi-ba-ba-dai-tuyen-tap",
-    "author": "Kim Bì Thị Tử",
+    "title": "Triệu Hoán Yếu Nhất? Bắt Đầu Ác Ma Khế Ước Thiên Phú Kéo Căng",
+    "url": "https://metruyenchu.com.vn/trieu-hoan-yeu-nhat-bat-dau-ac-ma-khe-uoc-thien-phu-keo-cang",
+    "author": "Thị Jojo A",
+    "genre": "Võng Du",
+    "chapters": "",
+    "views": "Lượt xem :",
+    "image_url": "https://metruyenchu.com.vn/media/book/trieu-hoan-yeu-nhat-bat-dau-ac-ma-khe-uoc-thien-phu-keo-cang.jpg"
+  },
+  {
+    "title": "Hùng Học Phái Astarte",
+    "url": "https://metruyenchu.com.vn/hung-hoc-phai-astarte",
+    "author": "Nhĩ Càn Ma Nha Nhĩ",
     "genre": "Ngôn Tình",
     "chapters": "",
     "views": "Lượt xem :",
-    "image_url": "https://metruyenchu.com.vn/media/book/xuyen-qua-chi-ba-ba-dai-tuyen-tap.jpg"
+    "image_url": "https://metruyenchu.com.vn/media/book/hung-hoc-phai-astarte.jpg"
   },
   {
-    "title": "Thần Y Hoàng Hậu",
-    "url": "https://metruyenchu.com.vn/than-y-hoang-hau",
-    "author": "Tô Tiểu Noãn",
-    "genre": "Ngôn Tình",
-    "chapters": "",
-    "views": "Lượt xem :",
-    "image_url": "https://metruyenchu.com.vn/media/book/than-y-hoang-hau.jpg"
-  },
-  {
-    "title": "Hậu Duệ Kiếm Thần Truyện",
-    "url": "https://metruyenchu.com.vn/hau-due-kiem-than-truyen",
-    "author": "Thanh Phong",
+    "title": "Toàn Võng Hắc Sau Đại Lão Nàng Làm Nghiên Cứu Khoa Học Nội Cuốn Bạo Hồng",
+    "url": "https://metruyenchu.com.vn/toan-vong-hac-sau-dai-lao-nang-lam-nghien-cuu-khoa-hoc-noi-cuon-bao-hong",
+    "author": "Xuyên Việt Ngân Hà Đích Khố Xái Hiệp",
     "genre": "Unknown",
     "chapters": "",
     "views": "Lượt xem :",
-    "image_url": "https://metruyenchu.com.vn/media/book/hau-due-kiem-than-truyen.jpeg"
+    "image_url": "https://metruyenchu.com.vn/media/book/toan-vong-hac-sau-dai-lao-nang-lam-nghien-cuu-khoa-hoc-noi-cuon-bao-hong.jpeg"
   },
   {
-    "title": "Thập Niên 80: Mẹ Kế Xinh Đẹp Gả Cho Xưởng Trưởng Nuôi Con Truyện",
-    "url": "https://metruyenchu.com.vn/thap-nien-80-me-ke-xinh-dep-ga-cho-xuong-truong-nuoi-con-truyen",
-    "author": "Hoắc Bắc Sơn",
+    "title": "Phản Phái: Phu Nhân, Ngươi Cũng Không Muốn Trương Vô Kỵ Xảy Ra Chuyện A?",
+    "url": "https://metruyenchu.com.vn/phan-phai-phu-nhan-nguoi-cung-khong-muon-truong-vo-ky-xay-ra-chuyen-a",
+    "author": "Lệ Thú Cùng Kỳ",
+    "genre": "Huyền Huyễn",
+    "chapters": "",
+    "views": "Lượt xem :",
+    "image_url": "https://metruyenchu.com.vn/media/book/phu-nhan-nguoi-cung-khong-muon-truong-vo-ky-xay-ra-chuyen-a.jpeg"
+  },
+  {
+    "title": "Cho Đại Đế Nhặt Xác, Ta Tăng Vọt Vạn Năm Tu Vi!",
+    "url": "https://metruyenchu.com.vn/cho-dai-de-nhat-xac-ta-tang-vot-van-nam-tu-vi",
+    "author": "Thanh Sơn Kiếm Ma",
+    "genre": "Huyền Huyễn",
+    "chapters": "",
+    "views": "Lượt xem :",
+    "image_url": "https://metruyenchu.com.vn/media/book/cho-dai-de-nhat-xac-ta-tang-vot-van-nam-tu-vi.jpg"
+  },
+  {
+    "title": "Thịnh Đường Bài Ca Phúng Điếu",
+    "url": "https://metruyenchu.com.vn/thinh-duong-bai-ca-phung-dieu",
+    "author": "Huề Kiếm Viễn Hành",
+    "genre": "Kiếm Hiệp",
+    "chapters": "",
+    "views": "Lượt xem :",
+    "image_url": "https://metruyenchu.com.vn/media/book/thinh-duong-bai-ca-phung-dieu.jpeg"
+  },
+  {
+    "title": "Ta Có Thể Thấy Quy Tắc",
+    "url": "https://metruyenchu.com.vn/ta-co-the-thay-quy-tac",
+    "author": "Bảo Khí Cô Lỗ",
     "genre": "Ngôn Tình",
     "chapters": "",
     "views": "Lượt xem :",
-    "image_url": "https://metruyenchu.com.vn/media/book/me-ke-xinh-dep-ga-cho-xuong-truong-nuoi-con-truyen.jpeg"
+    "image_url": "https://metruyenchu.com.vn/media/book/ta-co-the-thay-quy-tac.jpeg"
   },
   {
-    "title": "Võ Phu",
-    "url": "https://metruyenchu.com.vn/vo-phu",
-    "author": "Bình Sinh Vị Tri Hàn",
+    "title": "Trọng Sinh: Ta Ở Mạt Thế Đương Di Động Tiểu Bán Hàng Rong",
+    "url": "https://metruyenchu.com.vn/trong-sinh-ta-o-mat-the-duong-di-dong-tieu-ban-hang-rong",
+    "author": "Đoản Thối Tiểu Bát",
+    "genre": "Ngôn Tình",
+    "chapters": "",
+    "views": "Lượt xem :",
+    "image_url": "https://metruyenchu.com.vn/media/book/ta-o-mat-the-duong-di-dong-tieu-ban-hang-rong.jpeg"
+  },
+  {
+    "title": "Thần Vũ Đế Chủ (Thần Võ Đế Chủ)",
+    "url": "https://metruyenchu.com.vn/than-vu-de-chu",
+    "author": "Phong Thượng",
     "genre": "Huyền Huyễn",
     "chapters": "",
     "views": "Lượt xem :",
-    "image_url": "https://metruyenchu.com.vn/media/book/vo-phu.jpg"
+    "image_url": "https://metruyenchu.com.vn/media/book/than-vu-de-chu-than-vo-de-chu.jpeg"
   },
   {
-    "title": "Ngự Thú: Thần Thoại Cấp Thiên Phú, Vô Hạn Tiến Hóa",
-    "url": "https://metruyenchu.com.vn/ngu-thu-than-thoai-cap-thien-phu-vo-han-tien-hoa",
-    "author": "Lệ Chi Điểm",
+    "title": "Quỷ Dị Xâm Lấn",
+    "url": "https://metruyenchu.com.vn/quy-di-xam-lan",
+    "author": "Lê Thiên",
     "genre": "Huyền Huyễn",
     "chapters": "",
     "views": "Lượt xem :",
-    "image_url": "https://metruyenchu.com.vn/media/book/than-thoai-cap-thien-phu-vo-han-tien-hoa.jpg"
+    "image_url": "https://metruyenchu.com.vn/media/book/quy-di-xam-lan.jpg"
   },
   {
-    "title": "Ta Tại Tu Tiên Giới Chủng Trường Sinh",
-    "url": "https://metruyenchu.com.vn/ta-tai-tu-tien-gioi-chung-truong-sinh",
-    "author": "Đương Niên Yên Hỏa",
+    "title": "Ai Làm Hắn Tu Tiên!",
+    "url": "https://metruyenchu.com.vn/ai-lam-han-tu-tien",
+    "author": "Tối Bạch Đích Ô Nha",
+    "genre": "Tiên Hiệp",
+    "chapters": "",
+    "views": "Lượt xem :",
+    "image_url": "https://metruyenchu.com.vn/media/book/ai-lam-han-tu-tien.jpg"
+  },
+  {
+    "title": "Thật Xin Lỗi, Ta Tinh Tế Hạm Đội Chỉ Chiêu Nữ Binh",
+    "url": "https://metruyenchu.com.vn/that-xin-loi-ta-tinh-te-ham-doi-chi-chieu-nu-binh",
+    "author": "Thất Cân Lưu Niên",
+    "genre": "Khoa Huyễn",
+    "chapters": "",
+    "views": "Lượt xem :",
+    "image_url": "https://metruyenchu.com.vn/media/book/that-xin-loi-ta-tinh-te-ham-doi-chi-chieu-nu-binh.jpg"
+  },
+  {
+    "title": "Đấu Phá Chi Từ Không Quan Trọng Đến Đấu Đế",
+    "url": "https://metruyenchu.com.vn/dau-pha-chi-tu-khong-quan-trong-den-dau-de",
+    "author": "Kim Thiên Dã Yếu Khoái Nhạc Nha",
     "genre": "Huyền Huyễn",
     "chapters": "",
     "views": "Lượt xem :",
-    "image_url": "https://metruyenchu.com.vn/media/book/ta-tai-tu-tien-gioi-chung-truong-sinh.jpeg"
+    "image_url": "https://metruyenchu.com.vn/media/book/dau-pha-chi-tu-khong-quan-trong-den-dau-de.jpeg"
   },
   {
-    "title": "Này Bầy Người Chơi So Quỷ Càng Quỷ",
-    "url": "https://metruyenchu.com.vn/nay-bay-nguoi-choi-so-quy-cang-quy",
-    "author": "Ba Trăm Cân Cười Mỉm",
+    "title": "Quỷ Dị Sống Lại: Ta Lấy Quỷ Dị Chế Tạo Thế Giới",
+    "url": "https://metruyenchu.com.vn/quy-di-song-lai-ta-lay-quy-di-che-tao-the-gioi",
+    "author": "Đắc Nhất Tinh Hỏa",
+    "genre": "Đô Thị",
+    "chapters": "",
+    "views": "Lượt xem :",
+    "image_url": "https://metruyenchu.com.vn/media/book/ta-lay-quy-di-che-tao-the-gioi.jpeg"
+  },
+  {
+    "title": "Xét Nhà Lưu Đày, Dọn Không Hoàng Gia Nhà Kho Làm Giàu",
+    "url": "https://metruyenchu.com.vn/xet-nha-luu-day-don-khong-hoang-gia-nha-kho-lam-giau",
+    "author": "Thị Không Hữu Nha",
+    "genre": "Ngôn Tình",
+    "chapters": "",
+    "views": "Lượt xem :",
+    "image_url": "https://metruyenchu.com.vn/media/book/xet-nha-luu-day-don-khong-hoang-gia-nha-kho-lam-giau.jpeg"
+  },
+  {
+    "title": "Xuyên Nhanh: Pháo Hôi Nữ Phụ Nghịch Tập Ký",
+    "url": "https://metruyenchu.com.vn/xuyen-nhanh-phao-hoi-nu-phu-nghich-tap-ky",
+    "author": "Rất Là Làm Ra Vẻ",
+    "genre": "Ngôn Tình",
+    "chapters": "",
+    "views": "Lượt xem :",
+    "image_url": "https://metruyenchu.com.vn/media/book/phao-hoi-nu-phu-nghich-tap-ky.jpg"
+  },
+  {
+    "title": "Khai Cục Một Công Pháp, Ta Dựa Tu Tiên Mạt Thế Độn Hóa",
+    "url": "https://metruyenchu.com.vn/khai-cuc-mot-cong-phap-ta-dua-tu-tien-mat-the-don-hoa",
+    "author": "Đào Hoa Tô Tô",
+    "genre": "Ngôn Tình",
+    "chapters": "",
+    "views": "Lượt xem :",
+    "image_url": "https://metruyenchu.com.vn/media/book/khai-cuc-mot-cong-phap-ta-dua-tu-tien-mat-the-don-hoa.jpg"
+  },
+  {
+    "title": "Toàn Dân Mạt Nhật: Ta, Virus Quân Vương",
+    "url": "https://metruyenchu.com.vn/toan-dan-mat-nhat-ta-virus-quan-vuong",
+    "author": "Quỷ Thần Diêm La",
+    "genre": "Huyền Huyễn",
+    "chapters": "",
+    "views": "Lượt xem :",
+    "image_url": "https://metruyenchu.com.vn/media/book/ta-virus-quan-vuong.jpg"
+  },
+  {
+    "title": "Ta Một Cái Bệnh Tâm Thần, Không Sợ Quỷ Rất Hợp Lý Đi",
+    "url": "https://metruyenchu.com.vn/ta-mot-cai-benh-tam-than-khong-so-quy-rat-hop-ly-di",
+    "author": "Tam Phong 11",
+    "genre": "Đô Thị",
+    "chapters": "",
+    "views": "Lượt xem :",
+    "image_url": "https://metruyenchu.com.vn/media/book/ta-mot-cai-benh-tam-than-khong-so-quy-rat-hop-ly-di.jpg"
+  },
+  {
+    "title": "Trọng Khải Thần Thoại",
+    "url": "https://metruyenchu.com.vn/trong-khai-than-thoai",
+    "author": "Phượng Trào Hoàng",
+    "genre": "Huyền Huyễn",
+    "chapters": "",
+    "views": "Lượt xem :",
+    "image_url": "https://metruyenchu.com.vn/media/book/trong-khai-than-thoai.jpg"
+  },
+  {
+    "title": "Người Chơi Thỉnh Lên Xe",
+    "url": "https://metruyenchu.com.vn/nguoi-choi-thinh-len-xe",
+    "author": "Hải Yến Sơn",
     "genre": "Võng Du",
     "chapters": "",
     "views": "Lượt xem :",
-    "image_url": "https://metruyenchu.com.vn/media/book/nay-bay-nguoi-choi-so-quy-cang-quy.jpeg"
+    "image_url": "https://metruyenchu.com.vn/media/book/nguoi-choi-thinh-len-xe.jpg"
   },
   {
-    "title": "Trọng Sinh Phi Dương Niên Đại",
-    "url": "https://metruyenchu.com.vn/trong-sinh-phi-duong-nien-dai",
-    "author": "Kim Thiềm Lão Tổ",
+    "title": "Này Nhân Vật Chính Rất Mạnh Lại Cẩn Thận",
+    "url": "https://metruyenchu.com.vn/nay-nhan-vat-chinh-rat-manh-lai-can-than",
+    "author": "Thâu Thần Nguyệt Tuế",
+    "genre": "Tiên Hiệp",
+    "chapters": "",
+    "views": "Lượt xem :",
+    "image_url": "https://metruyenchu.com.vn/media/book/nay-nhan-vat-chinh-rat-manh-lai-can-than.jpg"
+  },
+  {
+    "title": "Bắt Đầu Làm Tông Chủ: Quy Củ Của Ta Có Chút Dã",
+    "url": "https://metruyenchu.com.vn/bat-dau-lam-tong-chu-quy-cu-cua-ta-co-chut-da",
+    "author": "Ny Na Phù",
+    "genre": "Huyền Huyễn",
+    "chapters": "",
+    "views": "Lượt xem :",
+    "image_url": "https://metruyenchu.com.vn/media/book/quy-cu-cua-ta-co-chut-da.jpg"
+  },
+  {
+    "title": "Linh Khí Khôi Phục: Ta Tại Phía Sau Màn Cẩu Đến Vô Địch",
+    "url": "https://metruyenchu.com.vn/linh-khi-khoi-phuc-ta-tai-phia-sau-man-cau-den-vo-dich",
+    "author": "Nhất Tràng Mộng A",
+    "genre": "Đô Thị",
+    "chapters": "",
+    "views": "Lượt xem :",
+    "image_url": "https://metruyenchu.com.vn/media/book/ta-tai-phia-sau-man-cau-den-vo-dich.jpg"
+  },
+  {
+    "title": "Ngự Linh Thiếu Nữ: Khai Cục Khế Ước Sss Cấp Giáo Hoa",
+    "url": "https://metruyenchu.com.vn/ngu-linh-thieu-nu-khai-cuc-khe-uoc-sss-cap-giao-hoa",
+    "author": "Phong Xuy Hữu Điểm Hàm",
+    "genre": "Tiên Hiệp",
+    "chapters": "",
+    "views": "Lượt xem :",
+    "image_url": "https://metruyenchu.com.vn/media/book/khai-cuc-khe-uoc-sss-cap-giao-hoa.jpg"
+  },
+  {
+    "title": "Vứt Bỏ Vô Tình Đạo Kiếm Tôn Sau",
+    "url": "https://metruyenchu.com.vn/vut-bo-vo-tinh-dao-kiem-ton-sau",
+    "author": "Phù Tang Tri Ngã",
+    "genre": "Tiên Hiệp",
+    "chapters": "",
+    "views": "Lượt xem :",
+    "image_url": "https://metruyenchu.com.vn/media/book/vut-bo-vo-tinh-dao-kiem-ton-sau.jpg"
+  },
+  {
+    "title": "Hoan Nghênh Đi Vào Địa Ngục Của Ta",
+    "url": "https://metruyenchu.com.vn/hoan-nghenh-di-vao-dia-nguc-cua-ta",
+    "author": "Mặc Linh",
+    "genre": "Khoa Huyễn",
+    "chapters": "",
+    "views": "Lượt xem :",
+    "image_url": "https://metruyenchu.com.vn/media/book/hoan-nghenh-di-vao-dia-nguc-cua-ta.jpeg"
+  },
+  {
+    "title": "Luận Cảnh Giáo Tổ Cùng Ma Pháp Thiếu Nữ Thích Xứng Độ",
+    "url": "https://metruyenchu.com.vn/luan-canh-giao-to-cung-ma-phap-thieu-nu-thich-xung-do",
+    "author": "Thập Nguyệt Tinh Ly Tử",
     "genre": "Ngôn Tình",
     "chapters": "",
     "views": "Lượt xem :",
-    "image_url": "https://metruyenchu.com.vn/media/book/trong-sinh-phi-duong-nien-dai.jpg"
+    "image_url": "https://metruyenchu.com.vn/media/book/luan-canh-giao-to-cung-ma-phap-thieu-nu-thich-xung-do.jpg"
   },
   {
-    "title": "Xuyên Nhanh: Nữ Xứng, Bình Tĩnh Một Chút",
-    "url": "https://metruyenchu.com.vn/xuyen-nhanh-nu-xung-binh-tinh-mot-chut",
-    "author": "Đỗ Liễu Liễu",
+    "title": "Toàn Dân Chuyển Chức: Tử Linh Pháp Sư! Ta Tức Là Thiên Tai",
+    "url": "https://metruyenchu.com.vn/toan-dan-chuyen-chuc-tu-linh-phap-su-ta-tuc-la-thien-tai",
+    "author": "Mạn Đồ Đích Trư",
+    "genre": "Võng Du",
+    "chapters": "",
+    "views": "Lượt xem :",
+    "image_url": "https://metruyenchu.com.vn/media/book/tu-linh-phap-su-ta-tuc-la-thien-tai.jpg"
+  },
+  {
+    "title": "Kim Đan Là Hằng Tinh, Ngươi Quản Cái Này Kêu Tu Tiên?",
+    "url": "https://metruyenchu.com.vn/kim-dan-la-hang-tinh-nguoi-quan-cai-nay-keu-tu-tien",
+    "author": "Tẩu Địa Hạc",
+    "genre": "Tiên Hiệp",
+    "chapters": "",
+    "views": "Lượt xem :",
+    "image_url": "https://metruyenchu.com.vn/media/book/kim-dan-la-hang-tinh-nguoi-quan-cai-nay-keu-tu-tien.jpg"
+  },
+  {
+    "title": "Ta Mỗi Tuần Tùy Cơ Một Cái Tân Chức Nghiệp",
+    "url": "https://metruyenchu.com.vn/ta-moi-tuan-tuy-co-mot-cai-tan-chuc-nghiep",
+    "author": "Vô Hữu",
     "genre": "Ngôn Tình",
     "chapters": "",
     "views": "Lượt xem :",
-    "image_url": "https://metruyenchu.com.vn/media/book/nu-xung-binh-tinh-mot-chut.jpeg"
+    "image_url": "https://metruyenchu.com.vn/media/book/ta-moi-tuan-tuy-co-mot-cai-tan-chuc-nghiep.jpg"
   },
   {
-    "title": "Xuyên Nhanh: Vai Ác Nam Thần, Đừng Hắc Hóa",
-    "url": "https://metruyenchu.com.vn/xuyen-nhanh-vai-ac-nam-than-dung-hac-hoa-truyen",
-    "author": "Y Thiên Hạm",
-    "genre": "Đam Mỹ",
-    "chapters": "",
-    "views": "Lượt xem :",
-    "image_url": "https://metruyenchu.com.vn/media/book/vai-ac-nam-than-dung-hac-hoa.jpeg"
-  },
-  {
-    "title": "Vạn Thú Triều Hoàng Truyện",
-    "url": "https://metruyenchu.com.vn/van-thu-trieu-hoang-truyen",
-    "author": "Vũ Phiến Hoạ Thuỷ",
+    "title": "Đều Trọng Sinh Ai Còn Yêu Đương A",
+    "url": "https://metruyenchu.com.vn/deu-trong-sinh-ai-con-yeu-duong-a",
+    "author": "Thác Na Nhi Liễu",
     "genre": "Ngôn Tình",
     "chapters": "",
     "views": "Lượt xem :",
-    "image_url": "https://metruyenchu.com.vn/media/book/van-thu-trieu-hoang-truyen.jpeg"
+    "image_url": "https://metruyenchu.com.vn/media/book/deu-trong-sinh-ai-con-yeu-duong-a.jpg"
+  },
+  {
+    "title": "Đô Thị: Hệ Thống Bức Ta Tiêu Tiền, Ta Mua Một Tòa Thành",
+    "url": "https://metruyenchu.com.vn/do-thi-he-thong-buc-ta-tieu-tien-ta-mua-mot-toa-thanh",
+    "author": "Kim Sơn Thần Thoại",
+    "genre": "Huyền Huyễn",
+    "chapters": "",
+    "views": "Lượt xem :",
+    "image_url": "https://metruyenchu.com.vn/media/book/he-thong-buc-ta-tieu-tien-ta-mua-mot-toa-thanh.jpg"
+  },
+  {
+    "title": "Vạn Cổ Đệ Nhất Tông Môn",
+    "url": "https://metruyenchu.com.vn/van-co-de-nhat-tong-mon",
+    "author": "Giang Hồ Tái Kiến",
+    "genre": "Huyền Huyễn",
+    "chapters": "",
+    "views": "Lượt xem :",
+    "image_url": "https://metruyenchu.com.vn/media/book/van-co-de-nhat-tong-mon_38.jpg"
+  },
+  {
+    "title": "Uống Máu, Bá Đao, Độc Hành Khách",
+    "url": "https://metruyenchu.com.vn/uong-mau-ba-dao-doc-hanh-khach",
+    "author": "Relax",
+    "genre": "Tiên Hiệp",
+    "chapters": "",
+    "views": "Lượt xem :",
+    "image_url": "https://metruyenchu.com.vn/media/book/uong-mau-ba-dao-doc-hanh-khach.jpg"
+  },
+  {
+    "title": "Đa Tử Đa Phúc, Từ Nắm Cửu U Nữ Đế Bắt Đầu!",
+    "url": "https://metruyenchu.com.vn/da-tu-da-phuc-tu-nam-cuu-u-nu-de-bat-dau",
+    "author": "Đa Tử Đa Phúc, Từ Nắm Cửu U Nữ Đế Bắt Đầu!",
+    "genre": "Huyền Huyễn",
+    "chapters": "",
+    "views": "Lượt xem :",
+    "image_url": "https://metruyenchu.com.vn/media/book/da-tu-da-phuc-tu-nam-cuu-u-nu-de-bat-dau.jpg"
+  },
+  {
+    "title": "Trùng Sinh Không Làm Hiệp Sĩ Đổ Vỏ, Kiếp Trước Lão Bà Nàng Gấp",
+    "url": "https://metruyenchu.com.vn/trung-sinh-khong-lam-hiep-si-do-vo-kiep-truoc-lao-ba-nang-gap",
+    "author": "Thạch Đầu Hội Trường Đại",
+    "genre": "Đô Thị",
+    "chapters": "",
+    "views": "Lượt xem :",
+    "image_url": "https://metruyenchu.com.vn/media/book/trung-sinh-khong-lam-hiep-si-do-vo-kiep-truoc-lao-ba-nang-gap.jpg"
+  },
+  {
+    "title": "Ta Mỗi Ngày Tùy Cơ Một Cái Mới Hệ Thống",
+    "url": "https://metruyenchu.com.vn/ta-moi-ngay-tuy-co-mot-cai-moi-he-thong",
+    "author": "Công Tử Tiếu Ca",
+    "genre": "Huyền Huyễn",
+    "chapters": "",
+    "views": "Lượt xem :",
+    "image_url": "https://metruyenchu.com.vn/media/book/ta-moi-ngay-tuy-co-mot-cai-moi-he-thong.jpg"
+  },
+  {
+    "title": "Toàn Dân Ngự Linh, Linh Sủng Của Ta Là Nữ Cương Thi",
+    "url": "https://metruyenchu.com.vn/toan-dan-ngu-linh-linh-sung-cua-ta-la-nu-cuong-thi",
+    "author": "Thất Thất Gia Nãi",
+    "genre": "Huyền Huyễn",
+    "chapters": "",
+    "views": "Lượt xem :",
+    "image_url": "https://metruyenchu.com.vn/media/book/toan-dan-ngu-linh-linh-sung-cua-ta-la-nu-cuong-thi.jpg"
+  },
+  {
+    "title": "Tuyệt, Vừa Chuyển Chức Liền Triệu Hoán Diệt Thế Thanh Long",
+    "url": "https://metruyenchu.com.vn/tuyet-vua-chuyen-chuc-lien-trieu-hoan-diet-the-thanh-long",
+    "author": "Lam Diệp Thư Sinh",
+    "genre": "Đô Thị",
+    "chapters": "",
+    "views": "Lượt xem :",
+    "image_url": "https://metruyenchu.com.vn/media/book/tuyet-vua-chuyen-chuc-lien-trieu-hoan-diet-the-thanh-long.jpg"
+  },
+  {
+    "title": "Người Tại Tu Tiên Thế Giới, Cùng Ai Đều Có Thể Chia Năm Năm",
+    "url": "https://metruyenchu.com.vn/nguoi-tai-tu-tien-the-gioi-cung-ai-deu-co-the-chia-nam-nam",
+    "author": "Xuân Phong Yếu Khai Tâm",
+    "genre": "Huyền Huyễn",
+    "chapters": "",
+    "views": "Lượt xem :",
+    "image_url": "https://metruyenchu.com.vn/media/book/nguoi-tai-tu-tien-the-gioi-cung-ai-deu-co-the-chia-nam-nam.jpg"
+  },
+  {
+    "title": "Phệ Thiên Long Đế",
+    "url": "https://metruyenchu.com.vn/phe-thien-long-de",
+    "author": "Chưởng Thượng Bảo",
+    "genre": "Tiên Hiệp",
+    "chapters": "",
+    "views": "Lượt xem :",
+    "image_url": "https://metruyenchu.com.vn/media/book/phe-thien-long-de.jpg"
+  },
+  {
+    "title": "Đô Thị Mạnh Nhất Võ Đế",
+    "url": "https://metruyenchu.com.vn/do-thi-manh-nhat-vo-de",
+    "author": "Thừa Nặc Quá Đích Thương",
+    "genre": "Tiên Hiệp",
+    "chapters": "",
+    "views": "Lượt xem :",
+    "image_url": "https://metruyenchu.com.vn/media/book/do-thi-manh-nhat-vo-de.jpg"
+  },
+  {
+    "title": "Thần Hào: Từ Số 0 Bước Lên Thế Giới Đỉnh Phong!",
+    "url": "https://metruyenchu.com.vn/than-hao-tu-so-0-buoc-len-the-gioi-dinh-phong",
+    "author": "Bạch Ma Hải",
+    "genre": "Đô Thị",
+    "chapters": "",
+    "views": "Lượt xem :",
+    "image_url": "https://metruyenchu.com.vn/media/book/tu-so-0-buoc-len-the-gioi-dinh-phong.jpeg"
+  },
+  {
+    "title": "Ta Dựa Bãi Lạn Cứu Vớt Toàn Tông Môn / Xuyên Thành Công Cụ Người, Điên Phê Nhị Sư Tỷ Nàng Cự Tuyệt Đi Kịch Bản",
+    "url": "https://metruyenchu.com.vn/ta-dua-vao-nga-ngua-cuu-vot-toan-tong-mon",
+    "author": "Công Chủ Bất Hồi Gia",
+    "genre": "Ngôn Tình",
+    "chapters": "",
+    "views": "Lượt xem :",
+    "image_url": "https://metruyenchu.com.vn/media/book/ta-dua-vao-nga-ngua-cuu-vot-toan-tong-mon.jpg"
+  },
+  {
+    "title": "Đồ Nhi Chớ Hoảng Sợ, Vi Sư Ở Đây!",
+    "url": "https://metruyenchu.com.vn/do-nhi-cho-hoang-so-vi-su-o-day",
+    "author": "Thán Khí Vô Thanh",
+    "genre": "Huyền Huyễn",
+    "chapters": "",
+    "views": "Lượt xem :",
+    "image_url": "https://metruyenchu.com.vn/media/book/do-nhi-cho-hoang-so-vi-su-o-day.jpg"
+  },
+  {
+    "title": "Tôn Thị Tiên Đồ",
+    "url": "https://metruyenchu.com.vn/ton-thi-tien-do",
+    "author": "Thương Hữu",
+    "genre": "Tiên Hiệp",
+    "chapters": "",
+    "views": "Lượt xem :",
+    "image_url": "https://metruyenchu.com.vn/media/book/ton-thi-tien-do.jpg"
+  },
+  {
+    "title": "Trở Lại 90 Nàng Bên Ngoài Khoa Đại Lão Vòng Hỏa Bạo",
+    "url": "https://metruyenchu.com.vn/tro-lai-90-nang-ben-ngoai-khoa-dai-lao-vong-hoa-bao",
+    "author": "Phì Mụ Hướng Thiện",
+    "genre": "Ngôn Tình",
+    "chapters": "",
+    "views": "Lượt xem :",
+    "image_url": "https://metruyenchu.com.vn/media/book/tro-lai-90-nang-ben-ngoai-khoa-dai-lao-vong-hoa-bao-convert.jpg"
+  },
+  {
+    "title": "Hung Linh Bí Văn Lục",
+    "url": "https://metruyenchu.com.vn/hung-linh-bi-van-luc",
+    "author": "Bắc Cực Liệp Thủ",
+    "genre": "Huyền Nghi",
+    "chapters": "",
+    "views": "Lượt xem :",
+    "image_url": "https://metruyenchu.com.vn/media/book/hung-linh-bi-van-luc-convert.jpg"
+  },
+  {
+    "title": "Kim Đan Là Hằng Tinh, Ngươi Quản Cái Này Gọi Tu Tiên?",
+    "url": "https://metruyenchu.com.vn/kim-dan-la-hang-tinh-nguoi-quan-cai-nay-goi-tu-tien",
+    "author": "Tẩu Địa Hạc",
+    "genre": "Huyền Huyễn",
+    "chapters": "",
+    "views": "Lượt xem :",
+    "image_url": "https://metruyenchu.com.vn/media/book/kim-dan-la-hang-tinh-nguoi-quan-cai-nay-goi-tu-tien.jpg"
+  },
+  {
+    "title": "Trận Hỏi Trường Sinh",
+    "url": "https://metruyenchu.com.vn/tran-hoi-truong-sinh",
+    "author": "Quan Hư",
+    "genre": "Tiên Hiệp",
+    "chapters": "",
+    "views": "Lượt xem :",
+    "image_url": "https://metruyenchu.com.vn/media/book/tran-hoi-truong-sinh.jpg"
+  },
+  {
+    "title": "Bắt Đầu Triệu Hoán Đại Đế Hộ Vệ, Chế Tạo Vô Địch Gia Tộc",
+    "url": "https://metruyenchu.com.vn/bat-dau-trieu-hoan-dai-de-ho-ve-che-tao-vo-dich-gia-toc",
+    "author": "1 Oa Đôn Bất Hạ",
+    "genre": "Huyền Huyễn",
+    "chapters": "",
+    "views": "Lượt xem :",
+    "image_url": "https://metruyenchu.com.vn/media/book/bat-dau-trieu-hoan-dai-de-ho-ve-che-tao-vo-dich-gia-toc.jpg"
+  },
+  {
+    "title": "Bắt Đầu Kim Phong Tế Vũ Lâu Chủ, Một Đao Kinh Thiên Hạ",
+    "url": "https://metruyenchu.com.vn/bat-dau-kim-phong-te-vu-lau-chu-mot-dao-kinh-thien-ha",
+    "author": "Thăng Đấu Yên Dân",
+    "genre": "Huyền Huyễn",
+    "chapters": "",
+    "views": "Lượt xem :",
+    "image_url": "https://metruyenchu.com.vn/media/book/bat-dau-kim-phong-te-vu-lau-chu-mot-dao-kinh-thien-ha.jpg"
   }
 ]

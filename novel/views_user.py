@@ -43,6 +43,7 @@ def viet_timesince(time):
         return f"{delta.days // 30} tháng trước"
     else:
         return f"{delta.days // 365} năm trước"
+    
 class UserHomeView(APIView):
     def get(self, request):
         # Lấy 12 novel mới nhất
@@ -71,7 +72,6 @@ class UserHomeView(APIView):
         # Chuyển đổi các đối tượng Novel thành dữ liệu JSON qua serializer
         novels_data = NovelSerializer(all_novels, many=True).data
         novelupdates_data = NovelSerializer(novelupdates_with_chapters, many=True).data
-        categories_data = CategorySerializer(all_categories, many=True).data
 
         # Trả về dữ liệu JSON
         return Response({

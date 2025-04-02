@@ -26,7 +26,7 @@ schema_view = get_schema_view(
 )
 
 urlpatterns = [
-    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='swagger-docs'),
+    path('api/', schema_view.with_ui('swagger', cache_timeout=0), name='swagger-docs'),
     # 🌟 Trang chính
     path("", views_user.user_home, name="user_home"),
     path('api/user_home/', UserHomeView.as_view(), name='user_home_api'),

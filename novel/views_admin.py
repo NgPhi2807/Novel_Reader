@@ -6,6 +6,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 from django.contrib import messages
 import json
+from django.db import IntegrityError
 
 from .models import Novel, Category, CategoryNovel, Chapter, CustomUser
 from django.contrib.auth import get_user_model
@@ -97,31 +98,40 @@ def delete_chapter(request, novel_id, chap_id):
 @admin_required
 def novel_list(request):
     search_query = request.GET.get('search', '').strip()
-    
+
     # Lọc dữ liệu theo từ khóa tìm kiếm
     if search_query:
         try:
-            # Chuyển search_query thành int nếu có thể
             search_query_int = int(search_query)
-
-            # Lọc theo Name (dùng icontains cho tìm kiếm phần chuỗi) và NovelId (dùng exact cho tìm kiếm số)
             novels_list = Novel.objects.filter(Name__icontains=search_query) | \
                           Novel.objects.filter(NovelId=search_query_int)
         except ValueError:
-            # Nếu không thể chuyển search_query thành int, chỉ lọc theo Name
             novels_list = Novel.objects.filter(Name__icontains=search_query)
     else:
         novels_list = Novel.objects.all()
 
-    # Sắp xếp theo NovelId giảm dần
-    novels_list = novels_list.order_by("-NovelId")
+    novels_list = novels_list.order_by("NovelId")
 
-    # Phân trang
+    # Phân trang với 5 mục mỗi trang
     paginator = Paginator(novels_list, 5)
-    page_number = request.GET.get("page")
+    page_number = request.GET.get("page", 1)
     page_obj = paginator.get_page(page_number)
 
-    return render(request, "novel/Admin/novel_list.html", {"page_obj": page_obj, "search_query": search_query})
+    # Tính toán giới hạn cho phân trang từ 1 đến 10, 11 đến 20, v.v.
+    start_page = (page_obj.number // 10) * 10 + 1  # Trang bắt đầu của nhóm
+    end_page = start_page + 9  # Trang kết thúc của nhóm
+    if end_page > paginator.num_pages:
+        end_page = paginator.num_pages
+
+    # Cập nhật page_obj để chỉ hiển thị nhóm trang từ start_page đến end_page
+    page_range = range(start_page, end_page + 1)
+
+    return render(request, "novel/Admin/novel_list.html", {
+        "page_obj": page_obj,
+        "search_query": search_query,
+        "page_range": page_range,
+    })
+
 
 
 @admin_required
@@ -196,29 +206,44 @@ def add_novel(request):
         if not name or not description or not author or not state:
             return HttpResponse("Vui lòng điền đầy đủ thông tin.")
 
-        # Tạo tiểu thuyết mới mà không cần tự tạo NovelId
+        # Lấy NovelId lớn nhất hiện tại
+        last_novel = Novel.objects.order_by("-NovelId").first()
+        next_novel_id = last_novel.NovelId + 1 if last_novel else 1
+
+        # Tạo tiểu thuyết mới với NovelId tự tăng
         novel = Novel(
+            NovelId=next_novel_id,  # Gán NovelId tự động tăng
             Name=name,
             Description=description,
             Author=author,
             State=state,
-            ChapCount=0,  
+            ChapCount=0,
         )
 
         if img:
             novel.ImgUrl = img
 
         try:
-            novel.save()  # Django sẽ tự động gán NovelId
+            novel.save()  # Django sẽ tự động lưu tiểu thuyết với NovelId đã gán
         except IntegrityError:
             return HttpResponse("Lỗi: Không thể lưu tiểu thuyết, vui lòng thử lại.")
+        
+        # Kiểm tra sự tồn tại của NovelId sau khi lưu
+        if not hasattr(novel, 'NovelId'):
+            return HttpResponse("Lỗi: Không thể gán NovelId cho tiểu thuyết.")
 
-        # Lấy chính xác NovelId vừa tạo
         novel_id = novel.NovelId  
 
         # Xử lý thể loại
+        if not category_ids:
+            return HttpResponse("Vui lòng chọn ít nhất một thể loại.")
+
         category_ids = [int(cat_id) for cat_id in category_ids.split(",") if cat_id.isdigit()]
         
+        # Kiểm tra nếu không có thể loại hợp lệ
+        if not category_ids:
+            return HttpResponse("Không có thể loại hợp lệ được chọn.")
+
         # Lấy CNId lớn nhất hiện tại
         last_cn_id = CategoryNovel.objects.order_by("-CNId").first()
         next_cn_id = last_cn_id.CNId + 1 if last_cn_id else 1
