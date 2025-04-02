@@ -12,6 +12,12 @@ from django.views.decorators.csrf import csrf_exempt
 from django.utils.timezone import localtime, now
 from datetime import timedelta
 import random
+from rest_framework.views import APIView
+from .serializers import NovelSerializer
+from .serializers import CategorySerializer
+from rest_framework.response import Response
+
+
 
 from .models import Novel, Category, Chapter, Comment, CustomUser
 from .forms import PasswordResetRequestForm
@@ -37,6 +43,42 @@ def viet_timesince(time):
         return f"{delta.days // 30} tháng trước"
     else:
         return f"{delta.days // 365} năm trước"
+class UserHomeView(APIView):
+    def get(self, request):
+        # Lấy 12 novel mới nhất
+        all_novels = Novel.objects.all().order_by("-NovelId")[:12]
+
+        # Lấy 20 novel được cập nhật mới nhất
+        novelupdates = Novel.objects.annotate(
+            latest_update=Max("chapter__dateUpdate")).order_by("-latest_update")[:20]
+        novelupdates_with_chapters = [novel for novel in novelupdates if novel.chapter_set.exists()]
+
+        all_categories = Category.objects.all()
+
+        # Cập nhật thông tin mới nhất cho mỗi novel
+        for novel in novelupdates_with_chapters:
+            latest_chapter = novel.chapter_set.order_by("-dateUpdate").first()
+            novel.latest_chapter = latest_chapter
+
+            if latest_chapter:
+                novel.latest_update = localtime(latest_chapter.dateUpdate)
+                novel.latest_update_display = viet_timesince(novel.latest_update)
+
+        # Tính số lượng chapters của mỗi novel
+        for novel in all_novels:
+            novel.chapter_count = novel.chapter_set.count()
+
+        # Chuyển đổi các đối tượng Novel thành dữ liệu JSON qua serializer
+        novels_data = NovelSerializer(all_novels, many=True).data
+        novelupdates_data = NovelSerializer(novelupdates_with_chapters, many=True).data
+        categories_data = CategorySerializer(all_categories, many=True).data
+
+        # Trả về dữ liệu JSON
+        return Response({
+            "all_novels": novels_data,
+            "novelupdates": novelupdates_data,
+            "all_categories": categories_data,  # Trả về danh sách thể loại
+        })
 
 def user_home(request):
     all_novels = Novel.objects.all().order_by("-NovelId")[:12]

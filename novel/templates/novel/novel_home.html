@@ -9,19 +9,19 @@
   <div class="container">
     <div class="swiper mySwiper">
       <div class="swiper-wrapper">
-          {% for novel in all_novels %}
-          <div class="swiper-slide">
-              <div class="truyen__items set-bg" data-setbg="{% get_media_prefix %}{{ novel.ImgUrl }}"></div>
-          </div>
-          {% endfor %}
+        {% for novel in all_novels %}
+        <div class="swiper-slide">
+          <div class="truyen__items set-bg" data-setbg="{% get_media_prefix %}{{ novel.ImgUrl }}"></div>
+        </div>
+        {% endfor %}
       </div>
-  </div>
-  
+    </div>
+
     <div class="swiper sw1">
       <div class="swiper-pagination"></div>
     </div>
   </div>
-  
+
   <!-- Nút điều hướng riêng -->
   <div class="custom-prev">
     <svg width="30" height="30" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -67,10 +67,17 @@
               <div class="product__item__pic set-bg" data-setbg="{% get_media_prefix %}{{novel.ImgUrl}}">
                 <div class="ep">{{ novel.chapter_count}} chương</div>
                 <p class="Name">{{novel.Name}}</p>
+                <style>
+                  .Name {
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                  }
+                </style>
               </div>
-              <div class="product__item__text">
+              <div class="product__item__text text-center">
                 <ul>
-                  {% for category in novel.categorynovel_set.all|slice:":4" %}
+                  {% for category in novel.categorynovel_set.all|slice:":2" %}
                   <li>{{category.Category.Name}}</li>
                   {% endfor %}
                 </ul>

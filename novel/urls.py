@@ -7,12 +7,30 @@ from .views_admin import (
 from .views_user import (
     register_user, login_view, logout_view,
     password_reset_request, password_reset_verify, password_reset_confirm,
-    search_novel, 
+    search_novel, UserHomeView
+)
+from rest_framework import permissions
+from drf_yasg.views import get_schema_view
+from drf_yasg import openapi
+
+schema_view = get_schema_view(
+    openapi.Info(
+        title="API Documentation",
+        default_version='v1',
+        description="Description of the API",
+        terms_of_service="https://www.google.com/policies/terms/",
+        contact=openapi.Contact(email="contact@myapi.local"),
+        license=openapi.License(name="BSD License"),
+    ),
+    public=True,
 )
 
 urlpatterns = [
+    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='swagger-docs'),
     # 🌟 Trang chính
     path("", views_user.user_home, name="user_home"),
+    path('api/user_home/', UserHomeView.as_view(), name='user_home_api'),
+
 
     # 🌟 Quản lý người dùng
     path('register/', register_user, name='register_user'),
