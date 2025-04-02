@@ -1,24 +1,22 @@
-import os
 import requests
 from bs4 import BeautifulSoup
 import json
 import time
+import os
 from urllib.parse import urljoin, urlparse
-import urllib3
 from datetime import datetime
 
-BASE_URL = 'https://truyenfull.vision'
-HEADERS = {'User-Agent': 'Mozilla/5.0'}
+BASE_URL = 'https://metruyenchu.com.vn'
+HEADERS = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36'
+}
 
 # Tạo thư mục lưu ảnh nếu chưa tồn tại
 IMAGE_FOLDER = 'media/novel_images'
 os.makedirs(IMAGE_FOLDER, exist_ok=True)
 
-# Thêm xử lý cảnh báo SSL
-urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
-
 def download_image(img_url, story_name):
-    """Tải ảnh về thư mục media/novel_images/ và trả về đường dẫn tương đối"""
+    """Tải ảnh về thư mục novel_images/ và trả về đường dẫn tương đối"""
     if not img_url:
         return "No image"
         
@@ -70,13 +68,16 @@ def download_image(img_url, story_name):
         print(f"Lỗi khi tải ảnh {img_url}: {str(e)}")
         return "Download failed"
 
-    
 def get_stories(page_limit=3):
     """ Lấy danh sách truyện từ nhiều trang """
     all_stories = []
     
     for page in range(1, page_limit + 1):
-        url = f'{BASE_URL}/danh-sach/truyen-moi/trang-{page}/'
+        if page == 1:
+            url = f'{BASE_URL}/danh-sach/truyen-hot'
+        else:
+            url = f'{BASE_URL}/danh-sach/truyen-hot?page={page}'
+
         print(f'Đang lấy dữ liệu từ: {url}')
         
         try:
@@ -84,33 +85,57 @@ def get_stories(page_limit=3):
             response.raise_for_status()
             soup = BeautifulSoup(response.text, 'html.parser')
 
-            for index, elem in enumerate(soup.select('.list-truyen .row')):
-                title_elem = elem.select_one('.truyen-title a')
-                author_elem = elem.select_one('.author')
-                chapupdate_elem = elem.select_one('.text-info')
-                image_elem = elem.select_one('.col-xs-3 img.cover')
+            for index, elem in enumerate(soup.select('.item')):
+                title_elem = elem.select_one('h3 a')
+                author_elem = elem.select_one('.line a[href^="/tac-gia/"]')
+                genre_elem = elem.select_one('.line a[href^="/the-loai/"]')  # Lấy thể loại trực tiếp từ danh sách truyện
+
+                # Lấy số chương từ thẻ .line chứa "Số chương :"
+                chapters_elem = elem.select_one('.line span:contains("Số chương :")')
+                if chapters_elem:
+                    chapters = chapters_elem.get_text(strip=True).split(':')[-1].strip()
+                else:
+                    chapters = 'Unknown'
+
+                views_elem = elem.select_one('.line span:contains("Lượt xem :")')
+                image_elem = elem.select_one('a.cover img')
 
                 if not title_elem:
                     continue
 
+                # Lấy URL truyện
                 story_url = title_elem['href']
                 if not story_url.startswith('http'):
                     story_url = BASE_URL + story_url
+                
+                # Lấy tên truyện
+                story_name = title_elem.text.strip()
 
-                # Xử lý URL ảnh
+                # Lấy tác giả
+                author = author_elem.text.strip() if author_elem else 'Unknown'
+
+                # Lấy thể loại từ trang danh sách
+                genre = genre_elem.text.strip() if genre_elem else 'Unknown'
+
+                # Lấy lượt xem
+                views = views_elem.text.strip() if views_elem else 'Unknown'
+
+                # Xử lý ảnh
                 img_url = image_elem['src'] if image_elem else None
-                if img_url and not img_url.startswith(('http://', 'https://')):
+                if img_url and not img_url.startswith(('http://', 'https://')): 
                     img_url = urljoin(BASE_URL, img_url)
                 
-                story_name = f"{title_elem.text.strip()}_{page}_{index}"  # Thêm page và index để tránh trùng tên
+                # Tải ảnh nếu cần
                 img_path = download_image(img_url, story_name)
 
                 story = {
-                    'title': title_elem.text.strip(),
+                    'title': story_name,
                     'url': story_url,
-                    'author': author_elem.text.strip() if author_elem else 'Unknown',
-                    'Chapupdate': chapupdate_elem.text.strip() if chapupdate_elem else 'N/A',
-                    'authorImage': img_path  # Lưu đường dẫn ảnh đã tải về
+                    'author': author,
+                    'genre': genre,  # Lưu thể loại trực tiếp từ trang danh sách
+                    'chapters': chapters,
+                    'views': views,
+                    'image_url': img_url,  # Thêm đường dẫn ảnh
                 }
                 all_stories.append(story)
 
@@ -124,12 +149,43 @@ def get_stories(page_limit=3):
         json.dump(all_stories, f, ensure_ascii=False, indent=2)
     
     print(f'Đã lưu danh sách {len(all_stories)} truyện vào stories.json')
-    get_story_details(all_stories)
+    get_story_details(all_stories)  # Gọi hàm lấy chi tiết truyện sau khi đã lưu danh sách
 
+
+
+    return all_stories  # Trả về danh sách truyện lấy được
+
+# Danh sách thể loại và ID tương ứng
+category_mapping = {
+    "Huyền Huyễn": 1,
+    "Trọng Sinh": 2,
+    "Xuyên Không": 4,
+    "Khoa Huyễn": 5,
+    "Ma Huyễn": 7,
+    "Văn Học": 10,
+    "Quân Sự": 13,
+    "Cổ Đại": 15,
+    "Kỳ Ảo": 9,
+    "Hài Hước": 14,
+    "Tình Cảm": 19,
+    "Tâm Lý": 20,
+    "Đô Thị": 3,
+    "Võng Du": 6,
+    "Lịch Sử": 8,
+    "Ngôn Tình": 11,
+    "Hành Động": 16,
+    "Huyền Bí": 17,
+    "Kỳ Bí": 18,
+    "Tu Tiên": 21,
+    "Tiên Hiệp": 24,
+    "Đồng Nhân": 27,
+    "Cổ Đại": 28,
+    "Đam Mỹ": 29,
+    "Cơ Trí": 30
+}
 def get_story_details(stories):
     """Lấy chi tiết mô tả, thể loại và hình ảnh từ lớp 'book' của từng truyện"""
     total_stories = []  # Danh sách chứa thông tin tổng hợp của tất cả truyện
-    id_counter = 1  # Khởi tạo biến đếm ID tự tăng
     
     for story in stories:
         url = story['url']
@@ -138,61 +194,81 @@ def get_story_details(stories):
             response.raise_for_status()
             soup = BeautifulSoup(response.text, 'html.parser')
 
-            # Lấy thể loại từ class cha "info"
-            genre_parent = soup.select_one('.info')
-            genres = [a.text.strip() for a in genre_parent.select('a[itemprop="genre"]')] if genre_parent else []
-
-            # Lấy mô tả
-            desc_elem = soup.select_one('.desc-text')
-            description = desc_elem.text.strip() if desc_elem else "Không có mô tả"
+            # Lấy mô tả và giữ nguyên định dạng HTML gốc
+            desc_elem = soup.select_one('.intro')  # Lấy thẻ chứa mô tả
+            if desc_elem:
+                description = desc_elem.get_text(separator=" ").strip()  # Lấy nội dung văn bản và loại bỏ các ký tự thừa như \r\n
+            else:
+                description = "Không có mô tả"
 
             # Lấy hình ảnh từ lớp 'book' (tìm thẻ img bên trong div.book)
-            img_elem = soup.select_one('.book img')  # Tìm ảnh trong thẻ <img> của div.book
+            img_elem = soup.select_one('.book-info-pic img')  # Tìm ảnh trong thẻ <img> của div.book
             img_url = img_elem['src'] if img_elem else None
             if img_url and not img_url.startswith(('http://', 'https://')):  # Đảm bảo URL hợp lệ
                 img_url = urljoin(BASE_URL, img_url)
-            
+
             story_name = f"detail_{story['title']}"
             img_path = download_image(img_url, story_name)
 
             # Tạo giá trị 'date_update' với định dạng chuẩn MongoDB
             date_update = datetime.now().isoformat() + 'Z'  # Định dạng ngày giờ MongoDB
 
-            # Thêm thông tin vào story
-            story['genres'] = genres
-            story['description'] = description
-            story['detailImage'] = img_path  # Lưu đường dẫn ảnh chi tiết
+            # Lấy trạng thái truyện (Full hoặc Đang cập nhật)
+            status_elem = soup.select_one('span.label-status')
+            if status_elem:
+                status = status_elem.text.strip()
+                if "Full" in status:
+                    state = "Hoàn thành"
+                elif "Đang cập nhật" in status:
+                    state = "Đang tiến hành"
+                else:
+                    state = "Chưa xác định"
+            else:
+                state = "Chưa xác định"
 
-            # Thêm vào danh sách tổng hợp với id tự tăng
+            # Lấy thể loại từ thẻ <li class="li--genres">
+            genre_elem = soup.select_one('li.li--genres')  # Lấy thẻ <li class="li--genres">
+            if genre_elem:
+                genres = [genre.text.strip() for genre in genre_elem.find_all('a')]  # Lấy tất cả các <a> trong thẻ <li> và trích xuất tên thể loại
+            else:
+                genres = ["Chưa xác định"]
+
+            # Chuyển đổi thể loại sang ID
+            category_ids = []
+            for genre in genres:
+                category_id = category_mapping.get(genre, "")
+                if category_id:
+                    category_ids.append(category_id)
+
+            # Thêm thông tin vào story
+            story['description'] = description  # Mô tả dưới dạng văn bản sạch
+            story['detailImage'] = img_path  # Lưu đường dẫn ảnh chi tiết
+            story['state'] = state  # Trạng thái truyện
+            story['genres'] = genres  # Thêm thể loại
+            story['category_ids'] = category_ids  # Thêm ID thể loại
+
+            # Thêm vào danh sách tổng hợp
             total_stories.append({
                 'Name': story['title'],
                 'ViewCount': 0,
-                'Description': description,
+                'Description': description,  # Mô tả dưới dạng văn bản
                 'Author': story['author'],
-                'State': 'Đang ra',
+                'State': state,  # Trạng thái của truyện (Hoàn thành/Đang tiến hành)
                 'ChapCount': 0,
                 'ImgUrl': img_path,  # Lưu ảnh chi tiết
+                'Categories': category_ids,  # Lưu danh sách ID thể loại (category_ids)
                 'dateUpdate': {"$date": date_update},  # Định dạng ngày tháng theo MongoDB
                 'TotalComments': 0
             })
 
-            # Tăng ID cho truyện tiếp theo
-            id_counter += 1
-
-            # Lưu mỗi truyện vào file riêng
-            story_name = url.split('/')[-1]
-            with open(f'story-{story_name}.json', 'w', encoding='utf-8') as f:
-                json.dump(story, f, ensure_ascii=False, indent=2)
-            print(f'Đã lưu chi tiết: story-{story_name}.json')
+            # Lưu tổng hợp vào file JSON
+            with open('total_stories.json', 'w', encoding='utf-8') as f:
+                json.dump(total_stories, f, ensure_ascii=False, indent=2)
+            print(f'Đã lưu tổng hợp thông tin vào total_stories.json')
 
             time.sleep(1)
 
         except requests.RequestException as e:
             print(f'Lỗi khi lấy thông tin từ {url}: {e}')
 
-    # Lưu tất cả thông tin vào một tệp tổng hợp
-    with open('total_stories.json', 'w', encoding='utf-8') as f:
-        json.dump(total_stories, f, ensure_ascii=False, indent=2)
-    
-    print(f'Đã lưu tổng hợp thông tin của {len(total_stories)} truyện vào total_stories.json')
 get_stories(page_limit=1)

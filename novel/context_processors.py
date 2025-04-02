@@ -1,4 +1,5 @@
 from .models import Category
+
 def base_data(request):
-    categories = Category.objects.all()  
-    return {'novels_base': categories}  
+    """Trả về danh sách thể loại để dùng trong template"""
+    return {"all_categories": Category.objects.all()}

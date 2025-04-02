@@ -43,6 +43,7 @@ def user_home(request):
     novelupdates = Novel.objects.annotate(
         latest_update=Max("chapter__dateUpdate")).order_by("-latest_update")[:20]
     novelupdates_with_chapters = [novel for novel in novelupdates if novel.chapter_set.exists()]
+    all_categories = Category.objects.all()
 
     for novel in novelupdates_with_chapters:
         latest_chapter = novel.chapter_set.order_by("-dateUpdate").first()
@@ -58,10 +59,12 @@ def user_home(request):
     return render(
         request,
         "novel/novel_home.html",
-        {"all_novels": all_novels,
-        "novelupdates": novelupdates_with_chapters},
+        {
+            "all_novels": all_novels,
+            "novelupdates": novelupdates_with_chapters,
+            "all_categories": all_categories,  # Truyền danh sách thể loại
+        },
     )
-
 def all_novel(request):
     novels_list = Novel.objects.all().order_by("-ChapCount", "-NovelId")
     paginator = Paginator(novels_list, 12)

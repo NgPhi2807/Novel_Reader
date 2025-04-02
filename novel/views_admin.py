@@ -100,8 +100,16 @@ def novel_list(request):
     
     # Lọc dữ liệu theo từ khóa tìm kiếm
     if search_query:
-        novels_list = Novel.objects.filter(Name__icontains=search_query) | \
-                      Novel.objects.filter(NovelId__icontains=search_query)
+        try:
+            # Chuyển search_query thành int nếu có thể
+            search_query_int = int(search_query)
+
+            # Lọc theo Name (dùng icontains cho tìm kiếm phần chuỗi) và NovelId (dùng exact cho tìm kiếm số)
+            novels_list = Novel.objects.filter(Name__icontains=search_query) | \
+                          Novel.objects.filter(NovelId=search_query_int)
+        except ValueError:
+            # Nếu không thể chuyển search_query thành int, chỉ lọc theo Name
+            novels_list = Novel.objects.filter(Name__icontains=search_query)
     else:
         novels_list = Novel.objects.all()
 
@@ -115,16 +123,17 @@ def novel_list(request):
 
     return render(request, "novel/Admin/novel_list.html", {"page_obj": page_obj, "search_query": search_query})
 
+
 @admin_required
 def edit_novel(request, novel_id):
     novel = get_object_or_404(Novel, pk=novel_id)
-    categories = Category.objects.all()  # Fetch all categories
+    categories = Category.objects.all()  # Lấy tất cả các thể loại
     selected_categories = CategoryNovel.objects.filter(Novel=novel).values_list(
         "Category_id", flat=True
     )
 
     if request.method == "POST":
-        # Update novel fields
+        # Cập nhật các trường của truyện
         novel.Name = request.POST.get("name")
         novel.Author = request.POST.get("author")
         novel.Description = request.POST.get("description")
@@ -134,21 +143,31 @@ def edit_novel(request, novel_id):
 
         novel.save()
 
-        # Get the comma-separated category IDs and split them
-        category_ids_str = request.POST.get("categories", "")  # e.g., "1,2"
+        # Lấy danh sách ID thể loại từ request (ví dụ: "1,2")
+        category_ids_str = request.POST.get("categories", "")
         selected_category_ids = category_ids_str.split(",") if category_ids_str else []
 
-        # Remove existing category associations
+        # Xóa các liên kết thể loại cũ
         CategoryNovel.objects.filter(Novel=novel).delete()
 
-        # Add new category associations
+        # Lấy CNId lớn nhất hiện tại và cộng thêm 1
+        last_cn_id = CategoryNovel.objects.order_by("-CNId").first()
+        next_cn_id = last_cn_id.CNId + 1 if last_cn_id else 1
+
+        # Thêm các liên kết thể loại mới với CNId tự tăng
         for category_id in selected_category_ids:
-            if category_id:  # Ensure the ID is not empty
+            if category_id:  # Kiểm tra ID không trống
                 try:
                     category = Category.objects.get(pk=category_id)
-                    CategoryNovel.objects.create(Novel=novel, Category=category)
+                    # Tạo liên kết với CNId tự tăng
+                    CategoryNovel.objects.create(
+                        CNId=next_cn_id,  # Gán CNId tự tăng
+                        Novel=novel,
+                        Category=category
+                    )
+                    next_cn_id += 1  # Tăng CNId cho lần kế tiếp
                 except (Category.DoesNotExist, ValueError):
-                    # Skip invalid or non-existent category IDs
+                    # Bỏ qua các ID thể loại không hợp lệ hoặc không tồn tại
                     continue
 
         return redirect("novel_list")
@@ -163,6 +182,7 @@ def edit_novel(request, novel_id):
         },
     )
 
+
 @admin_required
 def add_novel(request):
     if request.method == "POST":
@@ -173,17 +193,11 @@ def add_novel(request):
         img = request.FILES.get("img")
         category_ids = request.POST.get("categories", "")
 
-        # Kiểm tra dữ liệu bắt buộc
         if not name or not description or not author or not state:
             return HttpResponse("Vui lòng điền đầy đủ thông tin.")
 
-        # Tạo NovelId duy nhất
-        last_novel = Novel.objects.order_by("-NovelId").first()
-        novel_id = last_novel.NovelId + 1 if last_novel else 1
-
-        # Tạo tiểu thuyết mới
+        # Tạo tiểu thuyết mới mà không cần tự tạo NovelId
         novel = Novel(
-            NovelId=novel_id,
             Name=name,
             Description=description,
             Author=author,
@@ -191,25 +205,37 @@ def add_novel(request):
             ChapCount=0,  
         )
 
-        
         if img:
             novel.ImgUrl = img
 
         try:
-            novel.save()
+            novel.save()  # Django sẽ tự động gán NovelId
         except IntegrityError:
-            return HttpResponse("Lỗi: NovelId bị trùng, vui lòng thử lại.")
+            return HttpResponse("Lỗi: Không thể lưu tiểu thuyết, vui lòng thử lại.")
 
+        # Lấy chính xác NovelId vừa tạo
+        novel_id = novel.NovelId  
+
+        # Xử lý thể loại
         category_ids = [int(cat_id) for cat_id in category_ids.split(",") if cat_id.isdigit()]
+        
+        # Lấy CNId lớn nhất hiện tại
+        last_cn_id = CategoryNovel.objects.order_by("-CNId").first()
+        next_cn_id = last_cn_id.CNId + 1 if last_cn_id else 1
+
+        # Tạo mối quan hệ CategoryNovel
         for category_id in category_ids:
             category = Category.objects.filter(pk=category_id).first()
             if category:
-                CategoryNovel.objects.create(Novel=novel, Category=category)
+                CategoryNovel.objects.create(CNId=next_cn_id, Novel_id=novel_id, Category=category)
+                next_cn_id += 1
 
-        return redirect("novel_list")
+        return redirect("novel_list")   
 
     categories = Category.objects.all()
     return render(request, "novel/Admin/novel_create.html", {"categories": categories})
+
+
 
 @admin_required
 def list_chapter(request, novel_id):
