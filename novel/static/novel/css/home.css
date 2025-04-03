@@ -658,6 +658,9 @@ ul.dropdown li a:hover {
   padding: clamp(3px, 1vw, 5px) 0;
   text-align: center;
   margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .product__sidebar .section-title h5 {

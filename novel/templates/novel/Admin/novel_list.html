@@ -93,16 +93,20 @@
                   {% endfor %}
               </td>
               <td>
-                  <div class="button-group">
-                      <a href="{% url 'novel_edit' novel.NovelId %}" class="btn btn-sm btn-primary">Sửa</a>
-                      <a href="{% url 'list_chapter' novel.NovelId %}" class="btn btn-sm btn-primary">Thêm Chương</a>
-                      <button class="btn btn-sm btn-danger">Xóa</button>
-                  </div>
+                <div class="button-group">
+                    <a href="{% url 'novel_edit' novel.NovelId %}" class="btn btn-sm btn-primary">Sửa</a>
+                    <a href="{% url 'list_chapter' novel.NovelId %}" class="btn btn-sm btn-primary">Thêm Chương</a>
+                    <a href="{% url 'delete_novel' novel.NovelId %}" class="btn btn-sm btn-danger" onclick="return confirmDelete();">Xóa</a>
+                </div>
               </td>
           </tr>
           {% endfor %}
       </tbody>
-      
+      <script>
+        function confirmDelete() {
+          return confirm("Bạn có chắc chắn muốn xóa cuốn tiểu thuyết này không?");
+        }
+      </script>
         
       </table>
       

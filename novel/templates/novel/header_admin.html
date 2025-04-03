@@ -1,0 +1,59 @@
+{% load static %}
+
+<header class="header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-2 col-md-2">
+                <div class="header__logo">
+                    <a href="{% url 'user_home' %}">
+                        <img class="logo" src="{% static 'novel/img/logo.png' %}" alt="Logo" />
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-8 pt-2">
+                <div class="header__nav text-center">
+                    <nav class="header__menu mobile-menu">
+                        <ul>
+                            <li class="active"><a href="{% url 'user_home' %}">Trang chủ</a></li>
+                            <li>
+                                <a href="#">Thể loại <span class="arrow_carrot-down"></span></a>
+                                <ul class="dropdown">
+                                    {% for category in all_categories %}
+                                    <li><a href="#">{{ category.Name }}</a></li>
+                                    {% endfor %}
+                                </ul>
+                                <style>
+                                    
+                                </style>
+                            </li>
+                            <li><a href="{% url 'all_novel' %}">Danh sách</a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+            <div class="col-lg-2 pt-3">
+                <div class="header__right">
+                    <a class="search-button1" href="{% url 'search_novel' %}">
+                        <i class="fa fa-search"></i>
+                    </a>
+                    {% if user.is_authenticated %}
+                    <div class="sign-in-container">
+                        <a href="#" class="user-button">
+                            <i class="far fa-user-circle"></i>
+                        </a>
+                        <ul class="user-dropdown">
+                            <li><a href="{% url 'admin_dashboard' %}"><i class="fas fa-user"></i> Tài khoản</a></li>
+                            <li><a href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i>Thoát</a></li>
+                        </ul>
+                    </div>
+                    {% else %}
+                    <div class="sign-in-container">
+                        <button class="sign-in-btn" onclick="openPopup('loginModal')">ĐĂNG NHẬP</button>
+                        {% include 'novel/login_popup.html' %}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</header>

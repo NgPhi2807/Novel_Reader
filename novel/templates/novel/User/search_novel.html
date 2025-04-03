@@ -178,24 +178,7 @@
                   </div>
               </a>
               
-                <div class="product__item__text">
-                  <div class="latest-chapters">
-                    {% if novel %}
-                    {% for chapter in novel.latest_chapters %}
-                    <div class="chapter-item text-decoration-none d-flex justify-content-between align-items-center">
-                      <a class="chapter" href="{% url 'user_chapter_detail' novel.NovelId chapter.ChapId %}">
-                        Chương {{ chapter.Number }}
-                      </a>
-                      <span class="chapter-time">{{ novel.latest_update_display }}</span>
-                    </div>
-                    {% endfor %}
-                    {% else %}
-                    <div class="chapter-item">
-                      <span>Chưa có chương mới</span>
-                    </div>
-                    {% endif %}
-                  </div>
-                </div>
+                
                 <a href="{% url 'user_novel_detail' novel.NovelId %}"></a>
               </div>
               {% endfor %}

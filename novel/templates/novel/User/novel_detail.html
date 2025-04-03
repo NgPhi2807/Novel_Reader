@@ -251,77 +251,406 @@
                 }
               });
 
-            </script>
-          </div>
-          <!-- Reviews -->
-          <div class="truyen__details__review mt-3">
-            <div class="section-title">
-              <h4 class="text-black font-24">Bình luận</h4>
-            </div>
-            {% if user.is_authenticated %}
-            <form method="POST" class="mt-3">
-              {% csrf_token %}
-              <textarea name="Content" id="editor" rows="10"></textarea>
-              <button type="submit" class="btn btn-success mt-2">Đăng bình luận</button>
-            </form>
+              function toggleReplyForm(commentId, parentId, replyToUsername = '') {
+                const formId = `reply-form-${commentId}`;
+                const popup = document.getElementById(formId);
 
-            {% else %}
-            <p>Vui lòng <a href="{% url 'login' %}" class="text-primary fw-bold text-decoration-underline">đăng nhập</a>
-              để bình luận.</p>
-            {% endif %}
+                // Hide all other popups first
+                document.querySelectorAll('.reply-popup').forEach(p => {
+                  if (p.id !== formId) {
+                    p.style.display = 'none';
+                  }
+                });
 
-            <style>
-              .ck-editor__editable_inline {
-                min-height: 160px !important;
-              }
-            </style>
-            {% for comment in comments %}
-            <div class="truyen__review__item d-flex align-items-start py-1 mt-3">
-              <div class="truyen__review__item__pic me-3">
-                <img src="{% static 'novel/img/user/user1.png' %}" alt="User" class="rounded-circle" width="45"
-                  height="45" />
-              </div>
-              <div class="truyen__review__item__text flex-grow-1">
-                <h6 class="mb-1 fw-bold">{{ comment.User.username }}</h6>
-                <p class="mb-1">{{ comment.Content |safe }}</p>
-                <div class="d-flex justify-content-between align-items-center mt-3">
-                  <small class="text-muted">{{ comment.time_since }}</small>
-                  <div class="d-flex gap-3">
-                    <a href="#" class="text-muted small"><i class="far fa-thumbs-up me-1"></i>Thích</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            {% empty %}
-            <p>Chưa có bình luận nào.</p>
-            {% endfor %}
+                // Toggle current popup
+                if (popup) {
+                  if (popup.style.display === 'none' || popup.style.display === '') {
+                    popup.style.display = 'block';
+                    if (!popup.querySelector('form')) {
+                      const formHtml = `
+                        <form method="POST">
+                          {% csrf_token %}
+                          <textarea name="Content" class="form-control1" rows="1" 
+                            placeholder="Viết phản hồi...">${replyToUsername ? '@' + replyToUsername + ' ' : ''}</textarea>
+                          <input type="hidden" name="parent_comment_id" value="${parentId}">
+                          <input type="hidden" name="replied_to_user" value="${replyToUsername}">
+                          <div class="reply-buttons">
+                            <button type="submit" class="btn btn-light btn-sm">Gửi</button>
+                            <button type="button" class="btn btn-light btn-sm" 
+                              onclick="document.getElementById('${formId}').style.display='none'">Hủy</button>
+                          </div>
+                        </form>
+                      `;
+                      popup.innerHTML = formHtml;
 
-            <script>
-              ClassicEditor.create(document.querySelector('#editor'), {
-                toolbar: [
-                  'heading', '|', 'bold', 'italic', 'underline', 'strikethrough', 'link', 'bulletedList', 'numberedList',
-                  '|', 'fontSize', 'fontColor', 'fontBackgroundColor', 'emoji', '|',
-                  'imageUpload', 'insertTable', 'blockQuote', 'codeBlock', 'mediaEmbed', 'undo', 'redo', 'fullscreen'
-                ],
-                mediaEmbed: {
-                  previewsInData: true
-                },
-                simpleUpload: {
-                  uploadUrl: '/upload/', // Route upload ảnh bạn xử lý bằng Django
-                  headers: {
-                    'X-CSRFToken': '{{ csrf_token }}'
+                      const textarea = popup.querySelector('textarea');
+                      textarea.addEventListener('input', function () {
+                        this.style.height = 'auto';
+                        this.style.height = Math.min(this.scrollHeight, 150) + 'px';
+                      });
+                    }
+                  } else {
+                    popup.style.display = 'none';
                   }
                 }
-              })
-                .then(editor => {
-                  console.log(editor);
-                })
-                .catch(error => {
-                  console.error(error);
-                });
-            </script>
+              }
 
+              function toggleReplies(replyContainerId) {
+                const container = document.getElementById(replyContainerId);
+                if (container) {
+                  container.style.display = container.style.display === 'none' ? 'block' : 'none';
+                }
+              }
+            </script>
           </div>
+          <div class="truyen__details__review mt-3">
+            <div class="section-title d-flex justify-content-between align-items-center">
+              <h4 class="text-black font-24 mb-0">Bình luận</h4>
+              <button id="toggleComments" class="btn btn-light btn-sm">
+                <i class="fas fa-chevron-up"></i>
+              </button>
+            </div>
+
+            <div id="commentSection">
+              {% if user.is_authenticated %}
+              <form method="POST" class="mt-3 comment-form">
+                {% csrf_token %}
+                <div class="d-flex gap-2">
+                  <img src="{% static 'novel/img/user/user1.png' %}" alt="User"  width="40"
+                    height="40" />
+                  <div class="flex-grow-1">
+                    <textarea name="Content" id="editor" class="form-control" placeholder="Viết bình luận..."
+                      rows="1"></textarea>
+                    <button type="submit" class="btn btn-primary mt-2 float-end">Đăng bình luận</button>
+                  </div>
+                </div>
+              </form>
+              <style>
+                .gap-2 {
+                  gap: 20px;
+                }
+              </style>
+              {% else %}
+              <p>Vui lòng <a href="{% url 'login' %}" class="text-primary fw-bold text-decoration-underline">đăng
+                  nhập</a> để bình luận.</p>
+              {% endif %}
+
+              <div class="comments-container mt-4">
+                {% for comment in comments %}
+                {% if not comment.parent_comment %}
+                <div class="comment-thread">
+                  <div class="comment-main rounded">
+                    <div class="d-flex gap-2">
+                      <img src="{% static 'novel/img/user/user1.png' %}" alt="User"  width="40" height="40" />
+                      <div class="flex-grow-1">
+                        <div class="comment-content bg-light p-3 rounded">
+                          <h6 class="mb-1 fw-bold text-primary">{{ comment.User.username }}</h6>
+                          <p class="mb-1">{{ comment.Content|safe }}</p>
+                        </div>
+                        <div class="comment-actions mt-1">
+                          <small class="text-muted">{{ comment.time_since }}</small>
+                          {% if user.is_authenticated %}
+                          <div class="reply-wrapper">
+                            <button class="btn btn-link btn-sm p-0 ms-2 reply-trigger" 
+                              onclick="toggleReplyForm('{{ comment.CommentId }}', '{{ comment.CommentId }}', '{{ comment.User.username }}')">
+                              Trả lời
+                            </button>
+                            <div id="reply-form-{{ comment.CommentId }}" class="reply-popup"></div>
+                          </div>
+                          {% endif %}
+                          {% if comment.replies.count > 0 %}
+                          <span class="reply-count ms-2" onclick="toggleReplies('replies-{{ comment.CommentId }}')">
+                            <i class="fas fa-comment-dots"></i>
+                            <span>{{ comment.replies.count }} phản hồi</span>
+                          </span>
+                          {% endif %}
+                        </div>
+
+                        <!-- Container chứa các replies -->
+                        <div id="replies-{{ comment.CommentId }}" class="replies-container mt-2" style="display: none;">
+                          {% for reply in comment.replies.all %}
+                          <div class="reply-thread">
+                            <div class="d-flex gap-2 mt-2">
+                              <img src="{% static 'novel/img/user/user1.png' %}" alt="User"  width="32" height="32" />
+                              <div class="flex-grow-1">
+                                <div class="comment-content bg-light p-2 rounded">
+                                  <h6 class="mb-1 fw-bold">{{ reply.User.username }}</h6>
+                                  <p class="mb-1">
+                                    {% if reply.replied_to_user %}
+                                    <span class="replied-to">@{{ reply.replied_to_user }}</span>
+                                    {% endif %}
+                                    {{ reply.Content|safe }}</span>
+                                  </p>
+                                </div>
+                                <div class="comment-actions mt-1">
+                                  <small class="text-muted">{{ reply.time_since }}</small>
+                                  {% if user.is_authenticated %}
+                                  <div class="reply-wrapper">
+                                    <button class="btn btn-link btn-sm p-0 ms-2 reply-trigger" 
+                                      onclick="toggleReplyForm('{{ reply.CommentId }}', '{{ comment.CommentId }}', '{{ reply.User.username }}')">
+                                      Trả lời
+                                    </button>
+                                    <div id="reply-form-{{ reply.CommentId }}" class="reply-popup"></div>
+                                  </div>
+                                  {% endif %}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          {% endfor %}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {% endif %}
+                {% empty %}
+                <p>Chưa có bình luận nào.</p>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+
+<style>
+  /* Facebook-style comment section */
+  .comment-main {
+    background-color: transparent;
+    border: none;
+    margin-bottom: 12px;
+  }
+
+  .comment-content {
+    background-color: #f0f2f5 !important;
+    border-radius: 5px !important;
+    box-shadow: none !important;
+    display:flex;
+    flex-direction: column;
+    gap:5px;
+  }
+
+  .comment-actions {
+    font-size: 0.8rem;
+    padding-left: 12px;
+    display: flex;
+    gap: 15px;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .comment-actions button,
+  .reply-count {
+    color: #65676B;
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .comment-actions button:hover,
+  .reply-count:hover {
+    text-decoration: underline;
+  }
+
+  .replies-container {
+    
+    padding-left: 0;
+    border-left: none;
+  }
+
+  .comment-form {
+    margin-bottom: 20px;
+  }
+
+  .comment-form textarea,
+  .reply-form textarea {
+    border-radius: 20px;
+    padding: 10px 15px;
+    resize: none;
+    background-color: #f0f2f5;
+    border: none;
+    box-shadow: none;
+  }
+
+  .comment-form textarea:focus,
+  .reply-form textarea:focus {
+    box-shadow: none;
+    border: none;
+    background-color: #f0f2f5;
+  }
+
+  .comment-thread {
+    margin-bottom: 16px;
+  }
+
+  .reply-item {
+    margin-bottom: 8px;
+  }
+
+  .reply-form {
+    margin-left: 52px;
+    margin-top: 8px !important;
+  }
+
+  /* User profile images */
+  .rounded-circle {
+    border: 1px solid #ddd;
+  }
+
+  /* Comment button styling */
+  .comment-form button,
+  .reply-form button {
+    background-color: #1877F2;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    padding: 5px 12px;
+  }
+
+  .comment-form button:hover,
+  .reply-form button:hover {
+    background-color: #166fe5;
+  }
+
+  /* Toggle comments button */
+  #toggleComments {
+    border: none;
+    background-color: transparent;
+    color: #65676B;
+  }
+
+  #toggleComments:hover {
+    background-color: #f0f2f5;
+  }
+
+  /* Username styling */
+  .comment-content h6 {
+    font-size: 1.2rem;
+    margin-bottom: 2px !important;
+  }
+
+  /* Comment text styling */
+  .comment-content p {
+    font-size: 0.9rem;
+    margin-bottom: 0 !important;
+  }
+
+  /* Gap between user image and comment */
+  .gap-2 {
+    gap: 12px !important;
+  }
+
+  /* Section title styling */
+  .section-title h4 {
+    font-weight: 600;
+    color: #050505;
+  }
+
+  /* Timestamp styling */
+  .text-muted {
+    color: #65676B !important;
+  }
+
+  .replied-to {
+    color: #1877F2 !important;
+    font-weight: 800 !important;
+    margin-right: 4px;
+  }
+  .form-control1 {
+    display: block;
+    width: 100%;
+    height: calc(1.5em + .75rem + 20px);
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    color: #187ff2;
+  }
+
+  /* Add these new styles */
+  .reply-wrapper {
+    position: relative;
+    display: inline-block;
+  }
+
+  .reply-popup {
+    position: absolute;
+    bottom: 100%;
+    left: 0;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    padding: 8px;
+    margin-bottom: 4px;
+    display: none;
+    width: 500px;
+    z-index: 1000;
+  }
+
+  .reply-form {
+    margin: 0 !important;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .reply-form form {
+    flex: 1;
+  }
+
+  .reply-form textarea {
+    min-height: 36px;
+    padding: 8px 12px;
+    width: 100%;
+    margin-bottom: 8px;
+  }
+
+  .reply-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top:10px;
+  }
+
+  .reply-trigger {
+    cursor: pointer;
+  }
+
+  .reply-trigger:hover + .reply-popup,
+  .reply-popup:hover {
+    display: block;
+  }
+</style>
+          <script>
+            ClassicEditor.create(document.querySelector('#editor'), {
+              toolbar: [
+                'heading', '|', 'bold', 'italic', 'underline', 'strikethrough', 'link', 'bulletedList', 'numberedList',
+                '|', 'fontSize', 'fontColor', 'fontBackgroundColor', 'emoji', '|',
+                'imageUpload', 'insertTable', 'blockQuote', 'codeBlock', 'mediaEmbed', 'undo', 'redo', 'fullscreen'
+              ],
+              mediaEmbed: {
+                previewsInData: true
+              },
+              simpleUpload: {
+                uploadUrl: '/upload/', // Route upload ảnh bạn xử lý bằng Django
+                headers: {
+                  'X-CSRFToken': '{{ csrf_token }}'
+                }
+              }
+            })
+              .then(editor => {
+                console.log(editor);
+              })
+              .catch(error => {
+                console.error(error);
+              });
+          </script>
+
+
         </div>
       </div>
       <div class="col-lg-3 col-md-3 pt-1">
@@ -341,17 +670,17 @@
               <i class="fas fa-medal medal-bronze"></i>
               {% endif %}
             </div>
-            
+
             <div class="novel-info">
               {% if forloop.counter == 1 %}
               <img src="{% get_media_prefix %}{{ novel.ImgUrl }}" alt="{{ novel.Name }}" class="hot-novel-img">
               {% endif %}
-            
+
               <div class="hot-novel-details">
                 <a href="{% url 'user_novel_detail' novel.NovelId %}" class="hot-novel-title">
                   {{ novel.Name }}
                 </a>
-      
+
                 {% if forloop.counter == 1 %}
                 <span class="hot-novel-author">
                   <i class="fas fa-user"></i> {{ novel.Author }}
@@ -375,107 +704,115 @@
           {% endfor %}
         </div>
       </div>
-      
-      
+
+
     </div>
   </div>
 </section>
 <!-- Truyen Section End -->
 
 <style>
-.hot-novels {
-  background: #fff;
-  padding: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-}
+  .hot-novels {
+    background: #fff;
+    padding: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  }
 
-.hot-novel-author {
-  font-size: 12px;
-  color: #777;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  margin-top: 2px;
-}
+  .hot-novel-author {
+    font-size: 12px;
+    color: #777;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 2px;
+  }
 
-.hot-novel-author i {
-  font-size: 12px;
-  color: #999;
-}
-/* Item truyện */
-.hot-novel-item {
-  display: flex;
-  align-items: center;
-  padding: 8px 0;
-  border-bottom: 1px solid #ddd;
-  transition: all 0.2s;
-}
+  .hot-novel-author i {
+    font-size: 12px;
+    color: #999;
+  }
 
-.hot-novel-item:last-child {
-  border-bottom: none;
-}
+  /* Item truyện */
+  .hot-novel-item {
+    display: flex;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #ddd;
+    transition: all 0.2s;
+  }
 
-.hot-novel-item:hover {
-  background: #f8f9fa;
-}
+  .hot-novel-item:last-child {
+    border-bottom: none;
+  }
 
-.rank-medal {
-  width: 24px;
-  text-align: center;
-}
+  .hot-novel-item:hover {
+    background: #f8f9fa;
+  }
 
-.rank-medal i {
-  font-size: 18px;
-}
+  .rank-medal {
+    width: 24px;
+    text-align: center;
+  }
 
-.medal-gold { color: #FFD700; }
-.medal-silver { color: #C0C0C0; }
-.medal-bronze { color: #CD7F32; }
+  .rank-medal i {
+    font-size: 18px;
+  }
 
-/* Số thứ tự */
-.rank-number {
-  font-size: 16px;
-  font-weight: bold;
-  width: 24px;
-  text-align: center;
-  color: #555;
-}
+  .medal-gold {
+    color: #FFD700;
+  }
 
-/* Ảnh của truyện top 1 */
-.hot-novel-img {
-  width: 50px;
-  height: 70px;
-  object-fit: cover;
-  border-radius: 5px;
-  margin-right: 10px;
-}
+  .medal-silver {
+    color: #C0C0C0;
+  }
 
-/* Canh chỉnh thông tin truyện */
-.novel-info {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
+  .medal-bronze {
+    color: #CD7F32;
+  }
 
-.hot-novel-details {
-  flex: 1;
-}
+  /* Số thứ tự */
+  .rank-number {
+    font-size: 16px;
+    font-weight: bold;
+    width: 24px;
+    text-align: center;
+    color: #555;
+  }
 
-/* Tiêu đề truyện */
-.hot-novel-title {
-  font-size: 14px;
-  color: #333;
-  font-weight: bold;
-  text-decoration: none;
-  display: block;
-}
+  /* Ảnh của truyện top 1 */
+  .hot-novel-img {
+    width: 50px;
+    height: 70px;
+    object-fit: cover;
+    border-radius: 5px;
+    margin-right: 10px;
+  }
 
-.hot-novel-title:hover {
-  text-decoration: underline;
-  color: inherit;
-}
+  /* Canh chỉnh thông tin truyện */
+  .novel-info {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
 
+  .hot-novel-details {
+    flex: 1;
+  }
+
+  /* Tiêu đề truyện */
+  .hot-novel-title {
+    font-size: 14px;
+    color: #333;
+    font-weight: bold;
+    text-decoration: none;
+    display: block;
+  }
+
+  .hot-novel-title:hover {
+    text-decoration: underline;
+    color: inherit;
+  }
 </style>
 
 {% endblock %}

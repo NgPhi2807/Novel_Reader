@@ -38,15 +38,6 @@
                 <i class="fas fa-angle-left"></i> TRƯỚC
               </button>
 
-              <select id="chapterSelect" class="chapter-select" data-novel-id="{{ novel.NovelId }}">
-                {% for chapter_item in chapters %}
-                <option value="{{ chapter_item.ChapId }}" {% if chapter_item.ChapId==chapter.ChapId %}selected{% endif
-                  %}>
-                  Chương {{ chapter_item.Number }}: {{ chapter_item.Name }}
-                </option>
-                {% endfor %}
-              </select>
-
               <button class="btn-custom active"
                 onclick="fetchNextChapter({{ chapter.Novel.NovelId }}, {{ chapter.ChapId }})">
                 SAU <i class="fas fa-angle-right"></i>
@@ -103,7 +94,7 @@
       </div>
 
       <!-- Truyen hot  -->
-      <div class="col-lg-12 pt-5">
+      <!-- <div class="col-lg-12 pt-5">
         <div id="trending-section" class="trending__product">
           <div class="row">
             <div class="col-lg-8 col-md-8 col-sm-8">
@@ -132,7 +123,7 @@
             {% endfor %}
           </div>
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
 </section>

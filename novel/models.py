@@ -2,6 +2,9 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from djongo import models
 from django.contrib.auth import get_user_model
+from bson import ObjectId
+from django.db.models import CASCADE
+from mongoengine import Document, fields
 
 class CustomUser(AbstractUser):
     sdt = models.CharField(max_length=15, blank=True, null=True, verbose_name="Số điện thoại")  
@@ -52,11 +55,13 @@ class UserNovel(models.Model):
 
 
 class Comment(models.Model):
+    _id = models.ObjectIdField(primary_key=True, default=ObjectId)  # Dùng _id thay vì id
     CommentId = models.IntegerField()
     Content = models.TextField()
     User = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     Novel = models.ForeignKey(Novel, on_delete=models.CASCADE)
     CreatedAt = models.DateTimeField()
+    parent_comment = models.ForeignKey('self', null=True, blank=True, related_name='replies', on_delete=models.CASCADE)  # Liên kết với bình luận cha
 
     class Meta:
         ordering = ['CreatedAt']

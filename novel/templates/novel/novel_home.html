@@ -67,13 +67,6 @@
               <div class="product__item__pic set-bg" data-setbg="{% get_media_prefix %}{{novel.ImgUrl}}">
                 <div class="ep">{{ novel.chapter_count}} chương</div>
                 <p class="Name">{{novel.Name}}</p>
-                <style>
-                  .Name {
-                    white-space: nowrap;
-                    overflow: hidden;
-                    text-overflow: ellipsis;
-                  }
-                </style>
               </div>
               <div class="product__item__text text-center">
                 <ul>
@@ -190,27 +183,63 @@
                         <img src="{% get_media_prefix %}{{ novel.ImgUrl }}" alt="{{ novel.Name }}">
                       </a>
                     </div>
-                    <div class="card-body">
-                      <h6 class="card-title top-05rem">
+                    <div class="card-body novel-update-info">
+                      <h6 class="novel-title">
                         <a href="{% url 'user_novel_detail' novel.NovelId %}">
                           {{ novel.Name }}
                         </a>
                       </h6>
-
+              
                       {% if novel.latest_chapter and novel.latest_chapter.ChapId %}
-                      <p class="card-text">
+                      <p class="latest-chapter">
                         <strong><i class="fas fa-fire"></i> Chương mới nhất:</strong>
-                        <a href="{% url 'user_chapter_detail' novel.NovelId novel.latest_chapter.ChapId %}">
-                          Chương {{ novel.latest_chapter.Number }} - {{ novel.latest_chapter.Name }}
+                        <a href="{% url 'user_chapter_detail' novel.NovelId novel.latest_chapter.ChapId %}" class="chapter-link">
+                            Chương {{ novel.latest_chapter.Number }} - {{ novel.latest_chapter.Name }}
                         </a>
                       </p>
+                      
                       <p class="time-info">
                         <i class="fas fa-clock"></i> Cập nhật: {{ novel.latest_update_display }}
                       </p>
                       {% else %}
-                      <p class="card-text"><i class="fas fa-exclamation-circle"></i> Chưa có chương nào</p>
+                      <p class="latest-chapter"><i class="fas fa-exclamation-circle"></i> Chưa có chương nào</p>
                       {% endif %}
                     </div>
+                    <style>
+                      .novel-update-info {
+                        max-width: 70%;
+                        padding: 0.75rem;
+                      }
+                    
+                      
+                      .novel-title a {
+                        display: block;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        font-size:20px;
+                        font-weight:700;
+                      }
+                      
+                      .latest-chapter {
+                        font-size: 0.9rem;
+                        margin-bottom: 0.5rem;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                      }
+                      
+                      .time-info {
+                        font-size: 0.8rem;
+                        margin-bottom: 0;
+                        color: #666;
+                      }
+                      .img-box img {
+                        width: 100%;
+                        height: 100%;
+                        object-fit: cover;
+                      }
+                    </style>
                   </div>
                 </div>
                 {% endfor %}

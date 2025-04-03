@@ -224,11 +224,10 @@ def add_novel(request):
             novel.ImgUrl = img
 
         try:
-            novel.save()  # Django sẽ tự động lưu tiểu thuyết với NovelId đã gán
+            novel.save() 
         except IntegrityError:
             return HttpResponse("Lỗi: Không thể lưu tiểu thuyết, vui lòng thử lại.")
         
-        # Kiểm tra sự tồn tại của NovelId sau khi lưu
         if not hasattr(novel, 'NovelId'):
             return HttpResponse("Lỗi: Không thể gán NovelId cho tiểu thuyết.")
 
@@ -315,7 +314,21 @@ def delete_user(request, user_id):
         return redirect("user_list")  
 
     return JsonResponse({"error": "Yêu cầu không hợp lệ"}, status=400)
+@admin_required
+def delete_novel_and_related(request, novel_id):
+    # Lấy cuốn tiểu thuyết theo ID
+    novel = get_object_or_404(Novel, NovelId=novel_id)
 
+    # Tiến hành xóa cuốn tiểu thuyết và các đối tượng liên quan (Chapters, Comments, etc.)
+    # Xóa các chapter liên quan
+    novel.chapter_set.all().delete()
+    # Xóa các bình luận liên quan
+    novel.comment_set.all().delete()
+    # Sau đó xóa cuốn tiểu thuyết
+    novel.delete()
+
+    # Redirect đến trang danh sách tiểu thuyết hoặc trang quản lý
+    return redirect('novel_list')
 @admin_required
 def admin_dashboard(request):
     users_count = CustomUser.objects.count()

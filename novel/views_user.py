@@ -16,6 +16,7 @@ from rest_framework.views import APIView
 from .serializers import NovelSerializer
 from .serializers import CategorySerializer
 from rest_framework.response import Response
+from django.db.models import Count
 
 
 
@@ -58,7 +59,7 @@ class UserHomeView(APIView):
 
         # Cập nhật thông tin mới nhất cho mỗi novel
         for novel in novelupdates_with_chapters:
-            latest_chapter = novel.chapter_set.order_by("-dateUpdate").first()
+            latest_chapter = novel.chapter_set.order_by("-Number").first()
             novel.latest_chapter = latest_chapter
 
             if latest_chapter:
@@ -77,7 +78,6 @@ class UserHomeView(APIView):
         return Response({
             "all_novels": novels_data,
             "novelupdates": novelupdates_data,
-            "all_categories": categories_data,  # Trả về danh sách thể loại
         })
 
 def user_home(request):
@@ -104,7 +104,7 @@ def user_home(request):
         {
             "all_novels": all_novels,
             "novelupdates": novelupdates_with_chapters,
-            "all_categories": all_categories,  # Truyền danh sách thể loại
+            "all_categories": all_categories,  
         },
     )
 def all_novel(request):
@@ -116,7 +116,7 @@ def all_novel(request):
     novels_with_chapters = []
     for novel in page_obj.object_list:
         novel.chapter_count = novel.chapter_set.count()
-        latest_chapters = novel.chapter_set.order_by("-ChapId")[:2]
+        latest_chapters = novel.chapter_set.order_by("-Number")[:2]
         novel.latest_chapters = latest_chapters
 
         if latest_chapters:
@@ -136,45 +136,69 @@ def all_novel(request):
 def user_novel_detail(request, novel_id):
     novel = get_object_or_404(Novel, pk=novel_id)
 
+    # Tăng lượt xem nếu chưa xem
     if not request.session.get(f"viewed_{novel_id}", False):
         novel.ViewCount += 1
         novel.save()
         request.session[f"viewed_{novel_id}"] = True
 
+    # Lấy danh sách chương
     chapters = Chapter.objects.filter(Novel=novel).order_by("Number")
     chapters_new = Chapter.objects.filter(Novel=novel).order_by("-Number")[:6]
     novel.ChapCount = chapters.count()
     first_chapter = Chapter.objects.filter(Novel=novel).order_by("Number").first()
     first_chapter_id = first_chapter.ChapId if first_chapter else None
 
+    # Phân trang
     paginator = Paginator(chapters, 4)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
 
+    # Lấy danh sách tiểu thuyết hot
     hot_novels = Novel.objects.all().order_by('-ViewCount')
     novels_123 = hot_novels[:3]
     novels_4_10 = hot_novels[3:10]
 
-    comments = Comment.objects.filter(Novel=novel).order_by('-CreatedAt')
+    # Lấy bình luận
+    comments = Comment.objects.filter(Novel=novel)
 
     for cmt in comments:
-        cmt.time_since = viet_timesince(cmt.CreatedAt)
+        cmt.time_since = viet_timesince(cmt.CreatedAt)  # ✅ Cách truyền thống
 
+    # Xử lý bình luận mới
     if request.method == 'POST':
         content = request.POST.get('Content', '').strip()
+        parent_comment_id = request.POST.get('parent_comment_id')  # Lấy parent_comment_id nếu có
 
         if not request.user.is_authenticated:
             messages.error(request, "Bạn cần đăng nhập để bình luận.")
             return redirect('login')
 
         if content:
-            Comment.objects.create(
-                Content=content,
-                User=request.user,
-                Novel=novel,
-                CreatedAt=now()
-            )
+            # Tạo CommentId tự động
+            last_comment = Comment.objects.filter(Novel=novel).order_by('-CommentId').first()
+            new_comment_id = (last_comment.CommentId + 1) if last_comment else 1
 
+            if parent_comment_id:  # Nếu có parent_comment_id, tức là đây là bình luận trả lời
+                parent_comment = Comment.objects.get(CommentId=parent_comment_id)  # Dùng CommentId để tìm
+                Comment.objects.create(
+                    CommentId=new_comment_id,  # Gán CommentId
+                    Content=content,
+                    User=request.user,
+                    Novel=novel,
+                    CreatedAt=now(),
+                    parent_comment=parent_comment
+                )
+            else:  # Bình luận gốc
+                Comment.objects.create(
+                    CommentId=new_comment_id,  # Gán CommentId
+                    Content=content,
+                    User=request.user,
+                    Novel=novel,
+                    CreatedAt=now(),
+                )
+
+            # Cập nhật tổng số bình luận
             novel.TotalComments = Comment.objects.filter(Novel=novel).count()
             novel.save()
 
@@ -197,12 +221,18 @@ def user_novel_detail(request, novel_id):
         },
     )
 
+
+
 def user_chapter_detail(request, novel_id, chapter_id):
     chapter = get_object_or_404(Chapter, ChapId=chapter_id, Novel_id=novel_id)
+    
+    # Lấy danh sách các chapter của novel và tính số lượng chapter của mỗi novel chỉ trong một truy vấn
     chapters = Chapter.objects.filter(Novel_id=novel_id).order_by("Number")
-    novels = Novel.objects.all()
-    for novel in novels:
-        novel.ChapCount = Chapter.objects.filter(Novel=novel).count()
+    
+    # Dùng annotate để tính số lượng chương cho mỗi novel
+    novels = Novel.objects.filter(NovelId=novel_id).annotate(chapter_count=Count('chapter'))
+
+
     return render(
         request,
         "novel/User/chapter_detail.html",
@@ -210,17 +240,15 @@ def user_chapter_detail(request, novel_id, chapter_id):
     )
 
 def get_next_chapter(request, novel_id, chapter_id):
+    # Tìm chương hiện tại
     currentChapter = Chapter.objects.filter(ChapId=chapter_id).first()
     if not currentChapter:
-        return JsonResponse(
-            {"status": "error", "message": "Không tìm thấy chương này!"}
-        )
+        return JsonResponse({"status": "error", "message": "Không tìm thấy chương này!"})
 
-    next_chapter = (
-        Chapter.objects.filter(Novel_id=novel_id, Number__gt=currentChapter.Number)
-        .order_by("Number")
-        .first()
-    )
+    # Tìm chương kế tiếp trong cùng một novel
+    next_chapter = Chapter.objects.filter(
+        Novel_id=novel_id, Number__gt=currentChapter.Number
+    ).order_by("Number").first()
 
     if next_chapter:
         return JsonResponse(
@@ -230,12 +258,13 @@ def get_next_chapter(request, novel_id, chapter_id):
         return JsonResponse({"status": "error", "message": "Đây là chương cuối cùng!"})
 
 def get_prev_chapter(request, novel_id, chapter_id):
+    # Tìm chương hiện tại
     currentChapter = Chapter.objects.filter(ChapId=chapter_id).first()
-    prev_chapter = (
-        Chapter.objects.filter(Novel_id=novel_id, Number__lt=currentChapter.Number)
-        .order_by("-Number")
-        .first()
-    )
+
+    # Tìm chương trước trong cùng một novel
+    prev_chapter = Chapter.objects.filter(
+        Novel_id=novel_id, Number__lt=currentChapter.Number
+    ).order_by("-Number").first()
 
     if prev_chapter:
         return JsonResponse(
@@ -384,7 +413,6 @@ def password_reset_confirm(request):
 def search_novel(request):
     search_query = request.GET.get('search', '').strip()
 
-    # Get all novels
     novels_list = Novel.objects.all().order_by("-ChapCount", "-NovelId")
 
     # If there's a search query, filter the novels
@@ -402,7 +430,7 @@ def search_novel(request):
     novels_with_chapters = []
     for novel in page_obj.object_list:
         novel.chapter_count = novel.chapter_set.count()
-        latest_chapters = novel.chapter_set.order_by("-ChapId")[:2]
+        latest_chapters = novel.chapter_set.order_by("-Number")[:2]
         novel.latest_chapters = latest_chapters
 
         if latest_chapters:
@@ -419,3 +447,44 @@ def search_novel(request):
         "novels_with_chapters": novels_with_chapters,
         "search_query": search_query
     })
+
+def add_comment_reply(request, novel_id):
+    if not request.user.is_authenticated:
+        messages.error(request, "Bạn cần đăng nhập để bình luận.")
+        return redirect('login')
+
+    if request.method == 'POST':
+        content = request.POST.get('Content', '').strip()
+        parent_comment_id = request.POST.get('parent_comment_id')
+
+        if not content:
+            messages.error(request, "Nội dung bình luận không được để trống.")
+            return redirect('user_novel_detail', novel_id=novel_id)
+
+        # ✅ Kiểm tra xem `parent_comment_id` có hợp lệ không
+        parent_comment = None
+        if parent_comment_id:
+            try:
+                parent_comment = Comment.objects.get(CommentId=parent_comment_id)  # 🔹 Dùng CommentId
+            except Comment.DoesNotExist:
+                messages.error(request, "Bình luận cha không tồn tại.")
+                return redirect('user_novel_detail', novel_id=novel_id)
+
+        # ✅ Tạo bình luận mới
+        new_comment = Comment(
+            Content=content,
+            User_id=request.user.id,
+            Novel_id=novel_id,
+            CreatedAt=now(),
+            parent_comment_id=parent_comment.CommentId if parent_comment else None
+        )
+        new_comment.save()
+
+        # ✅ Cập nhật số bình luận cho tiểu thuyết
+        Novel.objects.filter(id=novel_id).update(TotalComments=Comment.objects.filter(Novel_id=novel_id).count())
+
+        # ✅ Thông báo thành công
+        messages.success(request, "Đã thêm bình luận thành công!")
+        return redirect('user_novel_detail', novel_id=novel_id)
+
+    return render(request, 'novel/User/novel_detail.html')
