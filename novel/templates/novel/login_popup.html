@@ -1,229 +1,3 @@
-<style>
-    /* Font import */
-    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
-    @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css');
-
-    /* Modal styling */
-    .modal {
-        display: none;
-        position: fixed;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.6);
-        z-index: 1000;
-        overflow: auto;
-        animation: fadeIn 0.3s;
-        
-    }
-
-    @keyframes fadeIn {
-        from { opacity: 0; }
-        to { opacity: 1; }
-    }
-    .input-code-container {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-}
-
-
-.verify-header {
-    text-align: center; /* Căn giữa nội dung */
-    width: 100%; /* Đảm bảo nó chiếm toàn bộ chiều rộng */
-}
-
-    .modal-content {
-        background: white;
-        margin: 5% auto;
-        width:500px;
-        max-width: 90%;
-        border-radius: 12px;
-        position: relative;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-        animation: slideIn 0.3s;
-        overflow: hidden;
-        padding: 0;
-    }
-
-    @keyframes slideIn {
-        from { transform: translateY(-50px); opacity: 0; }
-        to { transform: translateY(0); opacity: 1; }
-    }
-
-    .btn-close-modal {
-        position: absolute;
-        top: 15px;
-        right: 15px;
-        background: none;
-        border: none;
-        font-size: 24px;
-        color: #757575;
-        cursor: pointer;
-        padding: 0;
-        line-height: 1;
-        z-index: 10;
-        transition: color 0.2s;
-    }
-
-    .btn-close-modal:hover {
-        color: #333;
-    }
-
-    /* Login container */
-    .login-container {
-        padding: 2.5rem;
-    }
-
-    .logo-container {
-        display: flex;
-        justify-content: center;
-        margin-bottom: 1.5rem;
-    }
-
-    .login-title {
-        font-family: 'Roboto', sans-serif;
-        font-weight: 600;
-        font-size: 1.5rem;
-        color: #333;
-        text-align: center;
-        margin-bottom: 1.5rem;
-    }
-
-    /* Form styling */
-    .login-form {
-        display: flex;
-        flex-direction: column;
-        gap: 1.2rem;
-    }
-
-    .form-group {
-        margin-bottom: 0.5rem;
-    }
-
-    .password-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 0.5rem;
-    }
-    .username-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 0.5rem;
-    }
-
-
-    .form-label {
-        font-size: 0.9rem;
-        color: #555;
-        font-weight: 500;
-    }
-
-    .forgot-password {
-        font-size: 0.9rem;
-        color: #4285f4;
-        text-decoration: none;
-        transition: color 0.2s;
-    }
-
-    .forgot-password:hover {
-        color: #2b68d8;
-        text-decoration: underline;
-    }
-
-    .input-with-icon {
-        position: relative;
-    }
-
-    .input-with-icon i {
-        position: absolute;
-        left: 15px;
-        top: 50%;
-        transform: translateY(-50%);
-        color: #757575;
-    }
-
-    .form-control {
-        width: 100%;
-        padding: 12px 12px 12px 40px;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        font-size: 1rem;
-        color: #333;
-        background-color: #f9f9f9;
-        transition: all 0.3s;
-    }
-
-    .form-control:focus {
-        border-color: #4285f4;
-        box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.1);
-        background-color: #fff;
-        outline: none;
-    }
-
-    .form-control::placeholder {
-        color: #aaa;
-    }
-
-    /* Button styling */
-    .btn-login {
-        background-color: #4285f4;
-        color: white;
-        border: none;
-        padding: 12px;
-        border-radius: 8px;
-        font-size: 1rem;
-        font-weight: 500;
-        cursor: pointer;
-        margin-top: 0.5rem;
-        transition: background-color 0.3s;
-    }
-
-    .btn-login:hover {
-        background-color: #2b68d8;
-    }
-
-    /* Register link */
-    .register-link {
-        text-align: center;
-        margin-top: 1.5rem;
-        font-size: 0.9rem;
-    }
-
-    .register-link span {
-        color: #757575;
-    }
-
-    .register-link a {
-        color: #4285f4;
-        text-decoration: none;
-        margin-left: 5px;
-        font-weight: 500;
-        transition: color 0.2s;
-    }
-
-    .register-link a:hover {
-        color: #2b68d8;
-        text-decoration: underline;
-    }
-
-    /* Error messages */
-    .error-messages {
-        list-style-type: none;
-        padding: 0;
-        margin: 0 0 1rem 0;
-        color: #d32f2f;
-        font-size: 0.9rem;
-    }
-
-    .error-messages li {
-        padding: 5px 0;
-    }
-</style>
-
 <div id="registerModal" class="modal">
     <div class="modal-content">
         <button class="btn-close-modal" onclick="closePopup('registerModal')">&times;</button>
@@ -231,11 +5,8 @@
             <div class="logo-container">
                 <img src="https://assets.metruyencv.com/build/assets/logo-776b73c9.png" alt="Logo" height="40">
             </div>
-            
             <h3 class="login-title">Đăng ký tài khoản</h3>
-            
             <ul id="register-messages" class="error-messages"></ul>
-
             <form id="registerForm" class="login-form">
                 {% csrf_token %}
                 <div class="form-group">
@@ -244,30 +15,25 @@
                         <input type="text" id="username" name="username" class="form-control" placeholder="Tên đăng nhập" required>
                     </div>
                 </div>
-
                 <div class="form-group">
                     <div class="input-with-icon">
                         <i class="fas fa-lock"></i>
                         <input type="password" id="password" name="password" class="form-control" placeholder="Mật khẩu" required>
                     </div>
                 </div>
-
                 <div class="form-group">
                     <div class="input-with-icon">
                         <i class="fas fa-envelope"></i>
                         <input type="email" id="email" name="email" class="form-control" placeholder="Email" required>
                     </div>
                 </div>
-
                 <div class="form-group">
                     <div class="input-with-icon">
                         <i class="fas fa-phone"></i>
                         <input type="text" id="sdt" name="sdt" class="form-control" placeholder="Số điện thoại" required>
                     </div>
                 </div>
-
                 <button type="submit" class="btn-login">Đăng ký</button>
-
                 <div class="register-link">
                     <span>Đã có tài khoản? </span>
                     <a href="#" onclick="openPopup('loginModal'); closePopup('registerModal')">Đăng nhập</a>
@@ -276,32 +42,27 @@
         </div>
     </div>
 </div>
+
 <div id="loginModal" class="modal">
     <div class="modal-content">
-        <button class="btn-close-modal" id="close-login-modal">&times;</button>
+        <button class="btn-close-modal" onclick="closePopup('loginModal')" id="close-login-modal">&times;</button>
         <div class="login-container">
             <div class="logo-container">
                 <img src="https://assets.metruyencv.com/build/assets/logo-776b73c9.png" alt="Logo" height="40">
             </div>
-            
-            <h3 class="login-title">Đăng nhập</h3>  
-            
+            <h3 class="login-title">Đăng nhập</h3>
             <form id="loginForm" class="login-form">
                 {% csrf_token %}
-            
                 <ul id="login-messages" class="error-messages"></ul>
-            
                 <div class="form-group">
                     <div class="username-header">
                         <label class="form-label">Tài khoản</label>
                     </div>
-                   
                     <div class="input-with-icon">
                         <i class="fas fa-user"></i>
                         <input type="text" name="username" class="form-control" placeholder="Tên đăng nhập" required>
                     </div>
                 </div>
-            
                 <div class="form-group">
                     <div class="password-header">
                         <label class="form-label">Mật khẩu</label>
@@ -312,9 +73,7 @@
                         <input type="password" name="password" class="form-control" placeholder="Mật khẩu" required>
                     </div>
                 </div>
-            
                 <button type="submit" class="btn-login">Đăng nhập</button>
-            
                 <div class="register-link">
                     <span>Chưa có tài khoản? </span>
                     <a href="#" onclick="openPopup('registerModal'); closePopup('loginModal')">Đăng ký</a>
@@ -323,6 +82,7 @@
         </div>
     </div>
 </div>
+
 <div id="forgotPasswordModal" class="modal">
     <div class="modal-content">
         <button class="btn-close-modal" onclick="closePopup('forgotPasswordModal')">&times;</button>
@@ -330,11 +90,8 @@
             <div class="logo-container">
                 <img src="https://assets.metruyencv.com/build/assets/logo-776b73c9.png" alt="Logo" height="40">
             </div>
-            
             <h3 class="login-title">Quên mật khẩu</h3>
-            
             <ul id="forgot-messages" class="error-messages"></ul>
-
             <form id="forgotForm" class="login-form" method="POST">
                 {% csrf_token %}
                 <div class="form-group">
@@ -343,7 +100,6 @@
                         <input type="email" id="forgot-email" name="email" class="form-control" placeholder="Nhập email của bạn" required>
                     </div>
                 </div>
-
                 <button type="submit" class="btn-login">Gửi yêu cầu</button>
                 <div class="register-link">
                     <a href="#" onclick="openPopup('loginModal'); closePopup('forgotPasswordModal')">Quay lại đăng nhập</a>
@@ -352,6 +108,7 @@
         </div>
     </div>
 </div>
+
 <div id="verifyCodeModal" class="modal">
     <div class="modal-content">
         <button class="btn-close-modal" onclick="closePopup('verifyCodeModal')">&times;</button>
@@ -359,10 +116,8 @@
             <div class="logo-container">
                 <img src="https://assets.metruyencv.com/build/assets/logo-776b73c9.png" alt="Logo" height="40">
             </div>
-
             <h3 class="login-title">Nhập mã xác nhận</h3>
             <ul id="verify-messages" class="error-messages"></ul>
-
             <form id="verifyForm" class="login-form" method="POST">
                 {% csrf_token %}
                 <div class="form-group">
@@ -374,7 +129,6 @@
                         <input type="text" id="verify-code" name="code" class="form-control" maxlength="6" placeholder="Nhập mã xác nhận" required>
                     </div>
                 </div>
-
                 <button type="submit" class="btn-login">Xác nhận</button>
                 <div class="register-link">
                     <a href="#" onclick="openPopup('forgotPasswordModal'); closePopup('verifyCodeModal')">Quay lại</a>
@@ -391,10 +145,8 @@
             <div class="logo-container">
                 <img src="https://assets.metruyencv.com/build/assets/logo-776b73c9.png" alt="Logo" height="40">
             </div>
-
             <h3 class="login-title">Cập nhật mật khẩu mới</h3>
             <ul id="update-messages" class="error-messages"></ul>
-
             <form id="updatePasswordForm" class="login-form" method="POST">
                 {% csrf_token %}
                 <div class="form-group">
@@ -404,7 +156,6 @@
                         <input type="password" id="new-password" name="new_password" class="form-control" placeholder="Nhập mật khẩu mới" required>
                     </div>
                 </div>
-
                 <div class="form-group">
                     <label class="form-label">Xác nhận mật khẩu</label>
                     <div class="input-with-icon">
@@ -412,7 +163,6 @@
                         <input type="password" id="confirm-password" name="confirm_password" class="form-control" placeholder="Nhập lại mật khẩu" required>
                     </div>
                 </div>
-
                 <button type="submit" class="btn-login">Cập nhật mật khẩu</button>
                 <div class="register-link">
                     <a href="#" onclick="openPopup('loginModal'); closePopup('updatePasswordModal')">Quay lại đăng nhập</a>
@@ -421,53 +171,364 @@
         </div>
     </div>
 </div>
+<style>
+    /* Font import */
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+    @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css');
 
+    /* General body context for modals (assuming Roboto is preferred) */
+    body { /* If modals are appended to body, this helps. Otherwise, ensure parent has this font. */
+        font-family: 'Roboto', sans-serif;
+    }
+
+    /* Modal styling */
+    .modal {
+        display: none;
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.65); /* Slightly darker backdrop */
+        z-index: 1000;
+        overflow: auto;
+        animation: fadeIn 0.3s ease-out;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    .modal-content {
+        background: #ffffff; /* Explicit white background */
+        display: absolute;
+        top:10%;
+        margin: 5% auto;
+        width: 500px;
+        max-width: 90%; /* Responsive for smaller screens */
+        border-radius: 10px; /* Slightly softer radius */
+        position: relative;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15); /* Refined shadow */
+        animation: slideIn 0.35s ease-out;
+        overflow: hidden; /* Keep this to ensure border-radius clips content */
+        padding: 0; /* Padding is handled by .login-container */
+    }
+
+    @keyframes slideIn {
+        from { transform: translateY(-30px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+    }
+
+    .btn-close-modal {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        background: transparent;
+        border: none;
+        font-size: 20px; /* Icon size */
+        color: #6c757d; /* Softer gray */
+        cursor: pointer;
+        width: 38px; /* Clickable area */
+        height: 38px; /* Clickable area */
+        line-height: 38px; /* Vertically center &times; */
+        text-align: center; /* Horizontally center &times; */
+        border-radius: 50%;
+        transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+        z-index: 10;
+    }
+
+    .btn-close-modal:hover {
+        background-color: #f0f0f0; /* Light background on hover */
+        color: #343a40; /* Darker gray on hover */
+    }
+
+    /* Login container */
+    .login-container {
+        padding: 2.5rem; /* Ample padding */
+    }
+
+    .logo-container {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 1.8rem; /* Increased margin */
+    }
+
+    .login-title {
+        font-family: 'Roboto', sans-serif;
+        font-weight: 700; /* Bolder for title */
+        font-size: 1.85rem; /* Slightly larger title */
+        color: #343a40; /* Darker, more standard text color */
+        text-align: center;
+        margin-bottom: 1.8rem; /* Increased margin */
+    }
+
+    /* Form styling */
+    .login-form {
+        display: flex;
+        flex-direction: column;
+        gap: 1.3rem; /* Slightly more gap for fields in registration, less if labels are used */
+    }
+     /* For forms where labels are above inputs, this gap might be too much with .form-group margin */
+    #loginForm, #updatePasswordForm {
+        gap: 1rem; /* Reduced gap for forms with explicit labels */
+    }
+
+
+    .form-group {
+        margin-bottom: 0.3rem; /* Reduced default, gap in .login-form handles inter-element spacing */
+    }
+    /* Add more specific margin for form groups in forms with labels */
+    #loginForm .form-group, #updatePasswordForm .form-group {
+        margin-bottom: 0.8rem;
+    }
+     /* No extra margin-bottom for last group before button if login-form gap is enough */
+    #registerForm .form-group {
+        margin-bottom: 0;
+    }
+
+
+    .password-header,
+    .username-header { /* Shared styling for headers above inputs */
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.6rem; /* Space between header and input */
+    }
+     .verify-header { /* Specific for verification code label */
+        text-align: center;
+        width: 100%;
+        margin-bottom: 0.6rem;
+    }
+
+
+    .form-label {
+        font-size: 0.9rem;
+        color: #495057; /* Standard label color */
+        font-weight: 500;
+        display: block; /* Ensure label takes full width if needed or for margin-bottom */
+        margin-bottom: 0.5rem; /* Space between label and input, if label is directly above */
+    }
+    /* Remove margin-bottom for labels inside flex containers like password-header */
+    .password-header .form-label, .username-header .form-label, .verify-header .form-label {
+        margin-bottom: 0;
+    }
+    /* For updatePasswordForm where labels are directly above inputs */
+     #updatePasswordForm .form-label {
+        margin-bottom: 0.4rem;
+    }
+
+
+    .forgot-password {
+        font-size: 0.85rem; /* Slightly smaller */
+        color: #007bff; /* Standard link blue */
+        text-decoration: none;
+        transition: color 0.2s ease-in-out;
+    }
+
+    .forgot-password:hover {
+        color: #0056b3; /* Darker blue on hover */
+        text-decoration: underline;
+    }
+
+    .input-with-icon {
+        position: relative;
+    }
+
+    .input-with-icon i {
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #adb5bd; /* Lighter icon color */
+        font-size: 0.95rem; /* Slightly adjust icon size if needed */
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 12px 15px 12px 45px; /* Adjusted padding for icon */
+        border: 1px solid #ced4da; /* Softer border color */
+        border-radius: 8px;
+        font-size: 1rem;
+        color: #495057; /* Input text color */
+        background-color: #f8f9fa; /* Light background for input */
+        transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out, background-color 0.2s ease-in-out;
+        box-sizing: border-box; /* Ensures padding doesn't add to width */
+    }
+
+    .form-control:focus {
+        border-color: #4285f4; /* Retain primary color for focus */
+        box-shadow: 0 0 0 0.2rem rgba(66, 133, 244, 0.25); /* Standard focus shadow */
+        background-color: #fff; /* White background on focus */
+        outline: none;
+    }
+
+    .form-control::placeholder {
+        color: #adb5bd; /* Softer placeholder color */
+    }
+
+    /* Button styling */
+    .btn-login {
+        background-color: #4285f4; /* Primary action color */
+        color: white;
+        border: none;
+        padding: 12px 15px;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 500;
+        letter-spacing: 0.5px; /* Improved text spacing */
+        cursor: pointer;
+        margin-top: 0.8rem; /* Adjusted margin */
+        transition: background-color 0.2s ease-in-out, transform 0.15s ease-in-out, box-shadow 0.2s ease-in-out;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+        width: 100%; /* Make button full width */
+        box-sizing: border-box;
+    }
+
+    .btn-login:hover {
+        background-color: #2b68d8; /* Darker shade on hover */
+        transform: translateY(-1px); /* Slight lift effect */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* Enhanced shadow on hover */
+    }
+    .btn-login:active {
+        transform: translateY(0px); /* Button press effect */
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+
+    /* Register link */
+    .register-link {
+        text-align: center;
+        margin-top: 1.8rem; /* Increased margin */
+        font-size: 0.9rem;
+    }
+
+    .register-link span {
+        color: #6c757d; /* Softer text color */
+    }
+
+    .register-link a {
+        color: #007bff; /* Standard link blue */
+        text-decoration: none;
+        margin-left: 5px;
+        font-weight: 500;
+        transition: color 0.2s ease-in-out;
+    }
+
+    .register-link a:hover {
+        color: #0056b3; /* Darker blue on hover */
+        text-decoration: underline;
+    }
+
+    /* Error messages */
+    .error-messages {
+        list-style-type: none;
+        padding: 0; /* Reset padding if li has its own */
+        margin: 0 0 1rem 0; /* Consistent margin, appears before form elements */
+        font-size: 0.9rem;
+        /* Initially hide if empty */
+        /* display: none;  JavaScript will handle showing messages */
+    }
+    .error-messages:not(:empty) { /* Style only when it has content */
+        padding: 0.75rem 1rem;
+        margin-bottom: 1.2rem;
+        background-color: rgba(220, 53, 69, 0.07);
+        border-left: 4px solid #dc3545;
+        border-radius: 6px;
+    }
+
+
+    .error-messages li {
+        padding: 4px 0; /* Spacing between list items */
+        color: #721c24; /* Darker red for better contrast */
+    }
+    .error-messages li:not(:last-child) {
+        margin-bottom: 3px;
+    }
+    
+    /* Style for input errors if highlighted by JS */
+    .input-error {
+        border-color: #dc3545 !important; /* Use Bootstrap's danger color for consistency */
+        box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25) !important;
+    }
+
+    /* Unused class from original CSS, kept for completeness if intended for future use */
+    .input-code-container {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+    }
+
+</style>
 
 <script>
     function openPopup(modalId) {
         document.getElementById(modalId).style.display = "block";
-        document.body.style.overflow = "hidden";
+        document.body.style.overflow = "hidden"; // Prevent background scrolling
     }
 
     function closePopup(modalId) {
-        document.getElementById(modalId).style.display = "none";
-        document.body.style.overflow = "auto";
+        const modal = document.getElementById(modalId);
+        if (modal) {
+            modal.style.display = "none";
+        }
+        // Check if any other modal is open before restoring body overflow
+        const anyModalOpen = Array.from(document.querySelectorAll(".modal")).some(m => m.style.display === "block");
+        if (!anyModalOpen) {
+            document.body.style.overflow = "auto";
+        }
     }
 
     document.addEventListener("DOMContentLoaded", function () {
         const loginForm = document.getElementById("loginForm");
         const registerForm = document.getElementById("registerForm");
+        const forgotForm = document.getElementById("forgotForm");
+        const verifyForm = document.getElementById("verifyForm");
+        const updatePasswordForm = document.getElementById("updatePasswordForm");
+
+        function displayMessages(messageBoxId, messages, isSuccess = false) {
+            let messageBox = document.getElementById(messageBoxId);
+            if (!messageBox) return;
+
+            messageBox.innerHTML = ""; // Clear previous messages
+            if (messages && messages.length > 0) {
+                messages.forEach(msgText => {
+                    let li = document.createElement("li");
+                    li.innerText = msgText;
+                    messageBox.appendChild(li);
+                });
+                // messageBox.style.display = 'block'; // Show if it was hidden via :empty
+            } else {
+                // messageBox.style.display = 'none'; // Hide if empty
+            }
+        }
 
         if (loginForm) {
             loginForm.addEventListener("submit", function (e) {
                 e.preventDefault();
                 let formData = new FormData(loginForm);
+                const messageBoxId = "login-messages";
 
-                fetch("{% url 'login' %}", {
+                fetch("{% url 'login' %}", { // Ensure 'login' is a valid Django URL name
                     method: "POST",
                     body: formData,
-                    headers: { "X-CSRFToken": "{{ csrf_token }}" }
+                    headers: { "X-CSRFToken": formData.get('csrfmiddlewaretoken') || "{{ csrf_token }}" }
                 })
                 .then(response => response.json())
                 .then(data => {
-                    let messageBox = document.getElementById("login-messages");
-                    messageBox.innerHTML = "";
-
                     if (data.success) {
                         if (data.is_admin) {
-                            window.location.href = "{% url 'novel_list' %}";
-
+                            window.location.href = "{% url 'novel_list' %}"; // Ensure 'novel_list' is valid
                         } else {
-                            window.location.href = "{% url 'user_home' %}";
-
+                            window.location.href = "{% url 'user_home' %}"; // Ensure 'user_home' is valid
                         }
                     } else {
-                        data.messages.forEach(msg => {
-                            let li = document.createElement("li");
-                            li.innerText = msg;
-                            messageBox.appendChild(li);
-                        });
+                        displayMessages(messageBoxId, data.messages || [data.message || "Đăng nhập không thành công."]);
                     }
+                })
+                .catch(error => {
+                    console.error("Login error:", error);
+                    displayMessages(messageBoxId, ["Lỗi kết nối. Vui lòng thử lại."]);
                 });
             });
         }
@@ -476,244 +537,201 @@
             registerForm.addEventListener("submit", function (e) {
                 e.preventDefault();
                 let formData = new FormData(registerForm);
+                const messageBoxId = "register-messages";
 
-                fetch("{% url 'register_user' %}", {
+                fetch("{% url 'register_user' %}", { // Ensure 'register_user' is valid
                     method: "POST",
                     body: formData,
-                    headers: { "X-CSRFToken": "{{ csrf_token }}" }
+                    headers: { "X-CSRFToken": formData.get('csrfmiddlewaretoken') || "{{ csrf_token }}" }
                 })
                 .then(response => response.json())
                 .then(data => {
-                    let messageBox = document.getElementById("register-messages");
-                    messageBox.innerHTML = "";
-
                     if (data.success) {
                         alert("Đăng ký thành công! Vui lòng đăng nhập.");
                         closePopup('registerModal');
                         openPopup('loginModal');
+                        registerForm.reset(); // Clear form fields
+                        displayMessages(messageBoxId, []); // Clear messages
                     } else {
-                        data.messages.forEach(msg => {
-                            let li = document.createElement("li");
-                            li.innerText = msg;
-                            messageBox.appendChild(li);
-                        });
+                        displayMessages(messageBoxId, data.messages || [data.message || "Đăng ký không thành công."]);
                     }
+                })
+                .catch(error => {
+                    console.error("Registration error:", error);
+                    displayMessages(messageBoxId, ["Lỗi kết nối. Vui lòng thử lại."]);
                 });
             });
         }
         
-    document.getElementById("forgotForm").addEventListener("submit", function(event) {
-    event.preventDefault(); // Ngăn chặn form gửi mặc định
+        if (forgotForm) {
+            forgotForm.addEventListener("submit", function(event) {
+                event.preventDefault();
+                let email = document.getElementById("forgot-email").value;
+                let csrfToken = forgotForm.querySelector('[name=csrfmiddlewaretoken]').value;
+                const messageBoxId = "forgot-messages";
+                displayMessages(messageBoxId, []); // Clear old messages
 
-    let email = document.getElementById("forgot-email").value;
-    let csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-    let messageBox = document.getElementById("forgot-messages");
-    messageBox.innerHTML = ""; // Xóa thông báo cũ
+                let formData = new FormData();
+                formData.append("email", email);
 
-    let formData = new FormData();
-    formData.append("email", email);
-
-    fetch("{% url 'password_reset' %}", {
-        method: "POST",
-        headers: {
-            "X-CSRFToken": csrfToken
-        },
-        body: formData
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            alert("Mã xác nhận đã được gửi qua email!");
-            closePopup('forgotPasswordModal');
-            openPopup('verifyCodeModal'); // Mở modal nhập mã xác nhận
-        } else {
-            let li = document.createElement("li");
-            li.innerText = data.messages[0] || "Lỗi không xác định.";
-            messageBox.appendChild(li);
+                fetch("{% url 'password_reset' %}", { // Ensure 'password_reset' is valid
+                    method: "POST",
+                    headers: { "X-CSRFToken": csrfToken },
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert("Mã xác nhận đã được gửi qua email!");
+                        closePopup('forgotPasswordModal');
+                        openPopup('verifyCodeModal');
+                        forgotForm.reset();
+                    } else {
+                        displayMessages(messageBoxId, data.messages || [data.message || "Yêu cầu thất bại."]);
+                    }
+                })
+                .catch(error => {
+                    console.error("Forgot password error:", error);
+                    displayMessages(messageBoxId, ["Lỗi kết nối, vui lòng thử lại sau."]);
+                });
+            });
         }
-    })
-    .catch(error => {
-        console.error("Error:", error);
-        let li = document.createElement("li");
-        li.innerText = "Lỗi kết nối, vui lòng thử lại sau.";
-        messageBox.appendChild(li);
-    });
-});
 
-document.getElementById("verifyForm").addEventListener("submit", handleVerifyCode);
-document.getElementById("updatePasswordForm").addEventListener("submit", handlePasswordUpdate);
+        if (verifyForm) {
+            verifyForm.addEventListener("submit", function handleVerifyCode(event) {
+                event.preventDefault();
+                let code = document.getElementById("verify-code").value.trim();
+                let csrfToken = verifyForm.querySelector('[name=csrfmiddlewaretoken]').value;
+                const messageBoxId = "verify-messages";
+                displayMessages(messageBoxId, []);
 
-// Hàm xử lý xác minh mã OTP
-function handleVerifyCode(event) {
-    event.preventDefault(); // Ngăn chặn form gửi mặc định
+                let formData = new FormData();
+                formData.append("code", code);
 
-    let code = document.getElementById("verify-code").value.trim();
-    let csrfToken = document.querySelector('#verifyForm [name=csrfmiddlewaretoken]').value;
-    let messageBox = document.getElementById("verify-messages");
-    messageBox.innerHTML = ""; // Xóa thông báo cũ
+                fetch("{% url 'password_reset_verify' %}", { // Ensure 'password_reset_verify' is valid
+                    method: "POST",
+                    headers: { "X-CSRFToken": csrfToken },
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        closePopup('verifyCodeModal');
+                        openPopup('updatePasswordModal');
+                        verifyForm.reset();
+                    } else {
+                        displayMessages(messageBoxId, [data.message || "Mã xác nhận không hợp lệ."]);
+                        if (data.message && data.message.toLowerCase().includes("hết hạn")) {
+                            setTimeout(() => {
+                                if (document.getElementById('verifyCodeModal').style.display === 'block') { // Check if still open
+                                   closePopup('verifyCodeModal');
+                                   openPopup('forgotPasswordModal');
+                                }
+                            }, 3000); 
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.error("Verify code error:", error);
+                    displayMessages(messageBoxId, ["Lỗi kết nối, vui lòng thử lại sau."]);
+                });
+            });
+        }
 
-    let formData = new FormData();
-    formData.append("code", code);
+        if (updatePasswordForm) {
+            updatePasswordForm.addEventListener("submit", function handlePasswordUpdate(event) {
+                event.preventDefault();
+                let newPassword = document.getElementById("new-password").value.trim();
+                let confirmPassword = document.getElementById("confirm-password").value.trim();
+                const messageBoxId = "update-messages";
+                displayMessages(messageBoxId, []);
 
-    fetch("{% url 'password_reset_verify' %}", {
-        method: "POST",
-        headers: {
-            "X-CSRFToken": csrfToken
-        },
-        body: formData
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            // Nếu mã chính xác, mở popup đổi mật khẩu
-            closePopup('verifyCodeModal');
-            openPopup('updatePasswordModal');
-        } else {
-            let li = document.createElement("li");
-            li.innerText = data.message || "Mã xác nhận không hợp lệ.";
-            messageBox.appendChild(li);
-            
-            // Nếu mã OTP hết hạn, quay lại form quên mật khẩu
-            if (data.message.includes("hết hạn")) {
-                setTimeout(() => {
-                    closePopup('verifyCodeModal');
-                    openPopup('forgotPasswordModal');
-                }, 2000); // Hiển thị lỗi 2 giây rồi quay lại form yêu cầu mã mới
+                document.getElementById("new-password").classList.remove("input-error");
+                document.getElementById("confirm-password").classList.remove("input-error");
+
+                if (newPassword !== confirmPassword) {
+                    displayMessages(messageBoxId, ["Mật khẩu không khớp!"]);
+                    document.getElementById("new-password").classList.add("input-error");
+                    document.getElementById("confirm-password").classList.add("input-error");
+                    return;
+                }
+                if (!newPassword) { // Basic validation
+                    displayMessages(messageBoxId, ["Mật khẩu mới không được để trống."]);
+                    document.getElementById("new-password").classList.add("input-error");
+                    return;
+                }
+
+
+                let csrfToken = updatePasswordForm.querySelector('[name=csrfmiddlewaretoken]').value;
+                let updateFormData = new FormData();
+                updateFormData.append("new_password", newPassword);
+                // Potentially send confirm_password too if backend validates it
+                // updateFormData.append("confirm_password", confirmPassword);
+
+
+                fetch("{% url 'password_reset_confirm' %}", { // Ensure 'password_reset_confirm' is valid
+                    method: "POST",
+                    headers: { "X-CSRFToken": csrfToken },
+                    body: updateFormData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert("Mật khẩu đã được cập nhật thành công! Vui lòng đăng nhập lại.");
+                        closePopup('updatePasswordModal');
+                        openPopup('loginModal');
+                        updatePasswordForm.reset();
+                    } else {
+                         displayMessages(messageBoxId, data.messages || [data.message || "Có lỗi xảy ra, vui lòng thử lại."]);
+                    }
+                })
+                .catch(error => {
+                    console.error("Update password error:", error);
+                    displayMessages(messageBoxId, ["Lỗi kết nối, vui lòng thử lại sau."]);
+                });
+            });
+        }
+        
+        function closeAllPopups() {
+            let modals = document.querySelectorAll(".modal");
+            modals.forEach(modal => {
+                if (modal.style.display !== "none") { // Only if it's actually displayed
+                    modal.style.display = "none";
+                }
+            });
+            document.body.style.overflow = "auto";
+        }
+
+        // Close modal when click ra ngoài
+        window.onclick = function (event) {
+            if (event.target.classList.contains('modal')) {
+                // Check which modal it is and call closePopup specifically
+                // This ensures individual close logic (if any) from closePopup is respected
+                // And also ensures body scroll is handled correctly if multiple modals were hypothetically managed differently
+                if (event.target.style.display === 'block') {
+                    closePopup(event.target.id);
+                }
             }
+        };
+
+        // Close modal bằng nút close
+        document.querySelectorAll(".btn-close-modal").forEach(button => {
+            button.addEventListener("click", function () {
+                // The onclick attribute in HTML already calls closePopup('modalId')
+                // This is a fallback or alternative. If onclick exists, this might be redundant
+                // However, if the onclick is removed, this will handle it.
+                // For robustness, let's ensure it closes the parent modal.
+                const modal = this.closest('.modal');
+                if (modal) {
+                    closePopup(modal.id);
+                }
+            });
+        });
+        // Attach close functionality to the close button on loginModal specifically if it doesn't use onclick
+        const closeLoginModalButton = document.getElementById('close-login-modal');
+        if (closeLoginModalButton && !closeLoginModalButton.hasAttribute('onclick')) {
+            closeLoginModalButton.addEventListener('click', () => closePopup('loginModal'));
         }
-    })
-    .catch(error => {
-        console.error("Error:", error);
-        let li = document.createElement("li");
-        li.innerText = "Lỗi kết nối, vui lòng thử lại sau.";
-        messageBox.appendChild(li);
-    });
-}
 
-/// Hàm xử lý cập nhật mật khẩu mới
-function handlePasswordUpdate(event) {
-    event.preventDefault(); // Ngăn chặn form gửi mặc định
-
-    let newPassword = document.getElementById("new-password").value.trim();
-    let confirmPassword = document.getElementById("confirm-password").value.trim();
-    let updateMessageBox = document.getElementById("update-messages");
-    updateMessageBox.innerHTML = ""; // Xóa thông báo cũ
-
-    // Xóa lỗi cũ nếu có
-    document.getElementById("new-password").classList.remove("input-error");
-    document.getElementById("confirm-password").classList.remove("input-error");
-
-    if (newPassword !== confirmPassword) {
-        let li = document.createElement("li");
-        li.innerText = "❌ Mật khẩu không khớp!";
-        updateMessageBox.appendChild(li);
-
-        // Đánh dấu ô nhập lỗi
-        document.getElementById("new-password").classList.add("input-error");
-        document.getElementById("confirm-password").classList.add("input-error");
-        return;
-    }
-
-    let csrfToken = document.querySelector('#updatePasswordForm [name=csrfmiddlewaretoken]').value;
-    let updateFormData = new FormData();
-    updateFormData.append("new_password", newPassword);
-
-    fetch("{% url 'password_reset_confirm' %}", {
-        method: "POST",
-        headers: {
-            "X-CSRFToken": csrfToken
-        },
-        body: updateFormData
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            alert("Mật khẩu đã được cập nhật thành công! Vui lòng đăng nhập lại.");
-
-            // Đóng popup đổi mật khẩu
-            closePopup('updatePasswordModal');
-
-            // Mở popup đăng nhập
-            openPopup('loginModal');
-        } else {
-            let li = document.createElement("li");
-            li.innerText = data.message || "Có lỗi xảy ra, vui lòng thử lại.";
-            updateMessageBox.appendChild(li);
-        }
-    })
-    .catch(error => {
-        console.error("Error:", error);
-        let li = document.createElement("li");
-        li.innerText = "⚠️ Lỗi kết nối, vui lòng thử lại sau.";
-        updateMessageBox.appendChild(li);
-    });
-}
-
-// Lắng nghe sự kiện submit form
-document.getElementById("updatePasswordForm").addEventListener("submit", handlePasswordUpdate);
-    
-function closeAllPopups() {
-    let modals = document.querySelectorAll(".modal");
-    modals.forEach(modal => {
-        modal.style.display = "none";
-    });
-    document.body.style.overflow = "auto"; // Cho phép cuộn lại trang
-}
-
-// Đóng modal khi click ra ngoài
-window.onclick = function (event) {
-    if (event.target.classList.contains('modal')) {
-        closeAllPopups();
-    }
-};
-
-// Đóng modal bằng nút close
-document.querySelectorAll(".btn-close-modal").forEach(button => {
-    button.addEventListener("click", function () {
-        closeAllPopups();
-    });
-})
     });
 </script>
-
-
-
-<!-- <div id="alertBox" class="custom-alert">
-    <i class="fa fa-check-circle"></i> 
-    <span id="alertMessage"></span>
-</div>
-
-<style>
-    custom-alert {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background-color: #c0fcd6;
-    border-left: 5px solid #329F5D;
-    color: #329F5D;
-    padding: 1rem 1.5rem;
-    border-radius: 6px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    display: flex;
-    align-items: center;
-    gap: 12px;  /* Tạo khoảng cách giữa icon và nội dung */
-    max-width: 300px;  /* Giới hạn chiều rộng để trông đẹp hơn */
-    font-size: 1rem;
-    z-index: 1000;
-    transition: transform 0.3s ease, opacity 0.3s ease;
-    display:none;
-}
-
-.custom-alert i {
-    font-size: 1.5rem;
-    color: #329F5D;
-    flex-shrink: 0; /* Ngăn icon co lại */
-}
-
-.custom-alert.show {
-    display: flex;
-    transform: translateY(0);
-    opacity: 1;
-}
-
-</style> -->

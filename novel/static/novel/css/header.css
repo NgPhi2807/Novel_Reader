@@ -1,17 +1,18 @@
 /*---------------------
   Header
 -----------------------*/
-
 .header {
-  background-color: #ffffff !important;
+  background-color: #ffffff;
 }
 
 .header__logo {
-  padding: clamp(10px, 2vw, 15px) 0 clamp(12px, 2vw, 17px); /* Padding linh hoạt */
+  padding: clamp(10px, 2vw, 15px) 0 clamp(12px, 2vw, 17px);
+  /* Padding linh hoạt */
 }
 
 .header__logo img {
-  height: clamp(35px, 10vw, 45px); /* Chiều cao logo linh hoạt */
+  height: clamp(35px, 10vw, 45px);
+  /* Chiều cao logo linh hoạt */
 }
 
 .header__logo a {
@@ -26,7 +27,8 @@
   list-style: none;
   display: inline-block;
   position: relative;
-  margin-right: clamp(10px, 2vw, 16px); /* Khoảng cách linh hoạt */
+  margin-right: clamp(10px, 2vw, 16px);
+  /* Khoảng cách linh hoạt */
 }
 
 .header__menu ul li.active a {
@@ -38,25 +40,32 @@
 }
 
 .header__menu ul li:hover .dropdown {
-  top: clamp(50px, 10vw, 62px); /* Điều chỉnh vị trí dropdown */
+  top: clamp(50px, 10vw, 62px);
+  /* Điều chỉnh vị trí dropdown */
   opacity: 1;
   visibility: visible;
 }
 
+/* This rule might be overridden by a more generic .dropdown li a if not specific enough or if a different background is desired for items on hover in this specific dropdown */
 .header__menu ul li:hover .dropdown li a {
   background: transparent;
+  /* Or specify a color if needed */
 }
 
 .header__menu ul li:last-child {
   margin-right: 0;
 }
 
+/* Styles for the CATEGORY dropdown */
 .header__menu ul li .dropdown {
   position: absolute;
   left: 0;
-  top: clamp(70px, 15vw, 82px); /* Vị trí linh hoạt */
-  width: clamp(200px, 50vw, 300px); /* Chiều rộng linh hoạt */
+  top: clamp(70px, 15vw, 82px);
+  /* Vị trí linh hoạt */
+  width: clamp(200px, 50vw, 300px);
+  /* Chiều rộng linh hoạt */
   background: rgba(18, 18, 18, 0.87);
+  /* Dark background for category dropdown */
   text-align: left;
   padding: clamp(3px, 1vw, 5px) 0;
   z-index: 9;
@@ -75,8 +84,10 @@
 }
 
 .header__menu ul li .dropdown li a {
-  font-size: clamp(12px, 2vw, 14px); /* Font-size linh hoạt */
+  font-size: clamp(12px, 2vw, 14px);
+  /* Font-size linh hoạt */
   color: rgb(255, 255, 255);
+  /* Text color for dark background */
   font-weight: 500;
   padding: clamp(3px, 1vw, 5px) clamp(10px, 3vw, 20px);
 }
@@ -85,10 +96,10 @@
   font-size: clamp(14px, 2.5vw, 16px);
   color: #232323;
   display: block;
-  font-weight: 700;
+  font-weight: 500;
   transition: all 0.5s;
-  padding: clamp(10px, 3vw, 20px); /* Padding linh hoạt */
-  text-transform: uppercase;
+  padding: clamp(10px, 3vw, 20px);
+  /* Padding linh hoạt */
 }
 
 .header__menu ul li a span {
@@ -98,11 +109,12 @@
 }
 
 .header__right {
-  display: flex;
-  align-items: center;
+  /* display: flex; align-items: center; */
+  /* These are set inline in the HTML */
   justify-content: flex-end;
   text-align: right;
-  gap: clamp(10px, 2vw, 20px); /* Khoảng cách linh hoạt */
+  /* gap: clamp(10px, 2vw, 20px); */
+  /* `gap: 12px` is set inline */
   margin-top: clamp(6px, 1.2vw, 12px);
 }
 
@@ -110,61 +122,44 @@
   text-decoration: none;
 }
 
-.search-button {
-  display: flex;
-  width: clamp(30px, 8vw, 38px); /* Kích thước linh hoạt */
-  height: clamp(30px, 8vw, 38px);
-  align-items: center;
-  justify-content: center;
-  border: 1.5px solid #1f2129;
-  color: #1f2129;
-  border-radius: 50%;
-  text-decoration: none;
-}
-
-.search-button svg {
-  width: clamp(16px, 4vw, 20px);
-  height: clamp(16px, 4vw, 20px);
-  display: block;
-  color: #1f2129;
-}
+/* .search-button and .search-button svg are NOT USED in the provided HTML */
 
 .sign-in-btn {
   font-size: clamp(14px, 2.5vw, 16px);
-  font-weight: bold;
+  font-weight: 500;
   border-radius: 5px;
   color: #1f2129;
   background-color: transparent;
   transition: all 0.3s ease;
-  z-index: 100; /* Đảm bảo nút luôn nằm trên các phần tử khác */
-  border:none
+  z-index: 100;
+  border: none;
 }
 
-.sign-in-btn:focus {
-  color:#111111;
-}
-.sign-in-btn:hover{
-  color:#111111;
+.sign-in-btn:focus,
+.sign-in-btn:hover {
+  color: #111111;
 }
 
+/* Keep SlickNav styles if you use this library for mobile menu */
 .slicknav_menu {
-  display: none; /* Ẩn mặc định trên desktop */
+  display: none;
 }
 
-/* Media Queries */
 @media only screen and (max-width: 991px) {
   .header__menu {
-    display: none; /* Ẩn menu desktop */
+    display: none;
   }
+
   .slicknav_menu {
-    display: block; /* Hiển thị menu mobile */
+    display: block;
     background: transparent;
     padding: 0;
   }
+
   .slicknav_nav {
     position: absolute;
     left: 0;
-    top: 100%; /* Đặt ngay dưới header */
+    top: 100%;
     width: 100%;
     background: #ffffff;
     padding: clamp(10px, 2vw, 15px) clamp(20px, 3vw, 30px);
@@ -172,9 +167,11 @@
     border: 2px solid #e0e0e0;
     border-top: none;
   }
+
   .slicknav_nav ul {
     margin: 0;
   }
+
   .slicknav_nav .slicknav_row,
   .slicknav_nav a {
     padding: clamp(5px, 1.5vw, 7px) 0;
@@ -183,6 +180,7 @@
     font-weight: 600;
     font-size: clamp(14px, 2.5vw, 16px);
   }
+
   .slicknav_btn {
     border-radius: 0;
     background-color: #222;
@@ -190,18 +188,29 @@
     right: 0;
     top: clamp(5px, 1vw, 9px);
   }
+
   .slicknav_nav .dropdown {
-    position: static; /* Dropdown không absolute trên mobile */
+    /* Styles for dropdown within SlickNav */
+    position: static;
     width: 100%;
-    background: rgba(18, 18, 18, 0.9);
+    /* background: rgba(18, 18, 18, 0.9); */
+    /* Decide if SlickNav dropdowns should be dark or light */
+    background: #efefef;
+    /* Example of a light background for mobile dropdown */
     opacity: 1;
     visibility: visible;
     padding: 0;
     transition: none;
   }
+
+  .slicknav_nav .dropdown li a {
+    /* Ensure text color is visible on mobile dropdown background */
+    color: #333;
+  }
+
   .header__right {
     justify-content: space-between;
-    margin-top: 0; /* Giảm margin trên tablet */
+    margin-top: 0;
   }
 }
 
@@ -209,13 +218,13 @@
   .header__logo {
     padding: clamp(8px, 2vw, 10px) 0;
   }
+
   .header__right {
-    gap: 5px; /* Giảm gap trên mobile */
+    gap: 5px;
+    /* This might be overridden by inline style `gap: 12px` on .header__right if not careful */
   }
-  .search-button {
-    width: 30px;
-    height: 30px;
-  }
+
+  /* .search-button rules were here, removed as unused */
   .sign-in-btn {
     padding: 3px 8px;
     font-size: 14px;
@@ -224,28 +233,27 @@
 
 @media only screen and (max-width: 479px) {
   .header__logo img {
-    height: 35px; /* Thu nhỏ logo trên mobile nhỏ */
+    height: 35px;
   }
+
   .slicknav_nav {
     padding: 10px 15px;
   }
-  .search-button {
-    width: 28px;
-    height: 28px;
-  }
-  .search-button svg {
-    width: 14px;
-    height: 14px;
-  }
+
+  /* .search-button rules were here, removed as unused */
+  /* .search-button svg rules were here, removed as unused */
   .sign-in-btn {
     padding: 2px 6px;
     font-size: 12px;
   }
 }
 
-* Menu dropdown   */
+/* Generic dropdown styles - REVIEW IF THIS IS NEEDED OR IF IT CONFLICTS */
+/* If this is for the category dropdown, it's largely overridden by .header__menu ul li .dropdown */
+/* If for another dropdown type not in HTML, it might be okay. */
+/*
 ul.dropdown {
-  display: none; /* Hide the dropdown by default */
+  display: none;
   position: absolute;
   left: 0;
   right: 0;
@@ -253,17 +261,15 @@ ul.dropdown {
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
   padding: 10px;
   z-index: 1;
-  width: 100%; /* Full width */
+  width: 100%;
   display: flex;
   flex-wrap: wrap;
 }
 
-/* Show the dropdown menu on hover */
 li:hover > ul.dropdown {
   display: flex;
 }
 
-/* Style for the dropdown items */
 ul.dropdown li {
   list-style: none;
   margin: 0;
@@ -281,77 +287,178 @@ ul.dropdown li a {
 ul.dropdown li a:hover {
   background-color: #f1f1f1;
 }
-/* button search and user */
-.user-button {
-  font-weight: bold;
-  padding: 5px 12px;
-  border-radius: 5px;
-  color: #1f2129;
+*/
+
+.user-button img {
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
 }
 
-
-.search-button1 {
-  font-weight: bold;
-  border-radius: 5px;
+.user-button:focus,
+.user-button:hover {
+  background: transparent;
+  /* Ensure these are intended if the element itself has no background */
   color: #1f2129;
+  /* Ensure the 'a' tag color changes if that's the intent */
 }
-.search-button1 i {
-  font-size: 20px;
-}
-.user-button i {
-  font-size:20px;
-}
-.user-button a i:focus
- {
-  color: #1f2129; 
-}
+
+/* .search-button1 and .search-button1 i are NOT USED */
+/* .user-button i is NOT USED as user button contains img */
+
 .sign-in-container {
-  position: relative;
+  /* position: relative; */
+  /* `position: relative` is inline for authenticated user */
+  /* For non-authenticated, this CSS `position: relative` would apply. */
   display: inline-block;
-  
 }
 
+/* User dropdown styles from CSS */
+/* Many of these are overridden by INLINE styles in your HTML. */
+/* Consider moving all styling for .user-dropdown to these CSS rules */
+/* and removing the inline style attribute from the ul.user-dropdown element. */
 .user-dropdown {
+  /* Inline styles in HTML:
+    position: absolute; top: 80%; right: 0; background: white;
+    border: 1px solid #ddd; border-radius: 6px; display: none;
+    list-style: none; padding: 5px 0;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  */
+
+  /* CSS declarations that might be overridden or could be the primary source: */
   position: absolute;
-  left: 0;
-  top: 100%;
+  /* Matches inline */
+  /* left: 0; */
+  /* Inline has `right: 0;` - choose one */
+  /* top: 100%; */
+  /* Inline has `top: 80%;` - choose one */
   width: 150px;
-  background: rgba(18, 18, 18, 0.87);
+  /* Applied if not overridden */
+  /* background: rgba(18, 18, 18, 0.87); */
+  /* Inline has `background: white;` - choose one */
   text-align: left;
-  padding: 3px 0;
+  /* Applied */
+  /* padding: 3px 0; */
+  /* Inline has `padding: 5px 0;` - choose one */
   z-index: 9;
-  opacity: 0;
-  visibility: hidden;
-  transition: all 0.3s ease-in-out;
+  /* Applied */
+  /* opacity: 0; visibility: hidden; */
+  /* JS uses display: none/block, these won't apply if display is none */
+  /* transition: all 0.3s ease-in-out; */
+  /* Might not work as expected with display property changes */
   list-style: none;
-  border-radius: 5px;
+  /* Matches inline */
+  /* border-radius: 5px; */
+  /* Inline has `border-radius: 6px;` - choose one */
   font-size: 14px;
+  /* Applied */
   margin-top: 15px;
+  /* This will add margin FROM the `top` position */
+
+  /* Properties from inline not in this CSS block: */
+  /* border: 1px solid #ddd; */
+  /* box-shadow: 0 2px 6px rgba(0,0,0,0.15); */
+  /* display: none;  <-- Handled by JS and inline */
 }
+
 
 .user-dropdown li {
   padding: 8px 15px;
 }
 
-.user-dropdown li a {
-  color: white;
-  text-decoration: none;
-  display: flex;
-  align-items: center;
-  gap: 8px; /* Khoảng cách giữa icon và chữ */
-}
-
 .user-dropdown li a i {
   font-size: 16px;
-  color: #ccc; /* Màu icon */
-}
-.user-dropdown li a:hover {
-  color: #c72526;
-}
-
-/* Khi có class .show, dropdown sẽ hiển thị */
-.user-dropdown.show {
-  opacity: 1;
-  visibility: visible;
+  color: #191b28;
+  /* Màu icon */
+  /* margin-right: 8px;  <-- This is set inline on the <i> tags */
 }
 
+
+#autocomplete-list {
+  position: absolute;
+  margin-top: 10px;
+  top: 100%;
+  left: 0;
+  right: 0;
+  border: 1px solid #ddd;
+  border-top: none;
+  background: white;
+  max-height: 550px;
+  overflow-y: auto;
+  z-index: 9999;
+  display: none;
+  border-radius: 10px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+#autocomplete-list::-webkit-scrollbar {
+  display: none;
+}
+
+.autocomplete-item {
+  padding: 8px 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #eee;
+}
+
+.autocomplete-item img {
+  width: 60px;
+  height: 80px;
+  object-fit: cover;
+  margin-right: 10px;
+  border-radius: 3px;
+}
+
+.autocomplete-item__content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
+}
+
+.autocomplete-item__title {
+  font-weight: bold;
+  font-size: 1em;
+  margin-bottom: 4px;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  max-width: 240px;
+  /* hoặc width cố định, ví dụ 100%, 150px, tùy layout */
+}
+
+.autocomplete-item__info {
+  display: flex;
+  gap: 15px;
+  font-size: 0.85em;
+  color: #555;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 230px;
+}
+
+.autocomplete-item:hover {
+  background-color: #f0f8ff;
+}
+
+/* Results section styling */
+.search-results {
+  padding: 0 15px;
+  margin-top: 30px;
+}
+
+.search-results h4 {
+  color: #333;
+  font-size: 1.4em;
+  font-weight: bold;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 3px solid #288ad6;
+}

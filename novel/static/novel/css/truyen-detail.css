@@ -1,29 +1,22 @@
-.section-title {
-  display: flex;
-  gap: 8px;
-}
-
+/* === UTILITY / GENERAL STYLES === */
 .font-20 {
   font-size: 20px !important;
 }
+
 .font-24 {
   font-size: 24px !important;
 }
 
 .text-black {
   color: black !important;
-  font-weight: 600;
+  font-weight: 500;
   line-height: 21px;
-  text-transform: uppercase;
-  font-size: 21px;
+  font-size: 16px;
   position: relative;
-  font-family: "Oswald", sans-serif;
+  font-family: "Avenir Next", Arial, sans-serif;
 }
 
-/*---------------------
-  Breadcrumb
------------------------*/
-
+/* === BREADCRUMB === */
 .breadcrumb-option {
   padding-top: 35px;
 }
@@ -31,7 +24,6 @@
 .breadcrumb__links a {
   font-size: 16px;
   color: #1f2129;
-  margin-right: 18px;
   display: inline-block;
   position: relative;
 }
@@ -41,131 +33,13 @@
   color: #e53637;
 }
 
-.breadcrumb__links a:after {
-  position: absolute;
-  right: -14px;
-  top: 0;
-  content: "";
-  font-family: "FontAwesome";
-}
-
 .breadcrumb__links span {
   font-size: 16px;
   color: #565656;
   display: inline-block;
 }
 
-/* Menu dropdown   */
-ul.dropdown {
-  display: none; /* Hide the dropdown by default */
-  position: absolute;
-  left: 0;
-  right: 0;
-  background-color: #fff;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-  padding: 10px;
-  z-index: 1;
-  width: 100%; /* Full width */
-  display: flex;
-  flex-wrap: wrap;
-}
-
-/* Show the dropdown menu on hover */
-li:hover > ul.dropdown {
-  display: flex;
-}
-
-/* Style for the dropdown items */
-ul.dropdown li {
-  list-style: none;
-  margin: 0;
-  padding: 5px 0;
-  flex: 1 1 50%;
-}
-
-ul.dropdown li a {
-  color: #333;
-  text-decoration: none;
-  display: block;
-  padding: 5px 10px;
-}
-
-ul.dropdown li a:hover {
-  background-color: #f1f1f1;
-}
-/* button search and user */
-.user-button {
-  font-weight: bold;
-  padding: 5px 12px;
-  border-radius: 5px;
-  color: #1f2129;
-}
-
-.search-button1 {
-  font-weight: bold;
-  border-radius: 5px;
-  color: #1f2129;
-}
-.search-button1 i {
-  font-size: 18px;
-}
-.user-button i {
-  font-size: 18px;
-}
-.user-button:hover,
-.search-button1:hover {
-  color: #1f2129; /* Giữ nguyên màu khi hover */
-}
-.sign-in-container {
-  position: relative;
-  display: inline-block;
-}
-
-.user-dropdown {
-  position: absolute;
-  left: 0;
-  top: 100%;
-  width: 150px;
-  background: rgba(18, 18, 18, 0.87);
-  text-align: left;
-  padding: 3px 0;
-  z-index: 9;
-  opacity: 0;
-  visibility: hidden;
-  transition: all 0.3s ease-in-out;
-  list-style: none;
-  border-radius: 5px;
-  font-size: 14px;
-  margin-top: 15px;
-}
-
-.user-dropdown li {
-  padding: 8px 15px;
-}
-
-.user-dropdown li a {
-  color: white;
-  text-decoration: none;
-  display: flex;
-  align-items: center;
-  gap: 8px; /* Khoảng cách giữa icon và chữ */
-}
-
-.user-dropdown li a i {
-  font-size: 16px;
-  color: #ccc; /* Màu icon */
-}
-.user-dropdown li a:hover {
-  color: #c72526;
-}
-
-/* Khi có class .show, dropdown sẽ hiển thị */
-.user-dropdown.show {
-  opacity: 1;
-  visibility: visible;
-}
-
-/* Truyen Details */
+/* === 3D BOOK DISPLAY === */
 .book-container {
   display: flex;
   align-items: center;
@@ -177,6 +51,7 @@ ul.dropdown li a:hover {
   0% {
     transform: rotateY(0deg);
   }
+
   100% {
     transform: rotateY(-20deg);
   }
@@ -192,60 +67,42 @@ ul.dropdown li a:hover {
   animation: 1s ease 0s 1 initAnimation;
 }
 
-.book-container:hover .book,
-.book-container:focus .book {
-  transform: rotateY(0deg);
-}
-
-.book > :first-child {
+.book> :first-child {
+  /* Front cover of the 3D book */
   position: absolute;
   top: 0;
   left: 0;
-  background-color: red;
+  /* background-color: red; */
+  /* Likely overridden */
   width: 275px;
   height: 375px;
   transform: translateZ(30px);
   background-color: #01060f;
+  /* Default background, likely overridden by image */
   border-radius: 0 2px 2px 0;
   box-shadow: 5px 5px 20px #666;
 }
 
 .book::before {
+  /* Spine/pages of the 3D book */
   position: absolute;
   content: " ";
-  background-color: blue;
+  /* background-color: blue; */
+  /* Likely overridden by gradient */
   left: 0;
   top: 3px;
   width: 58px;
   height: 369px;
   transform: translateX(242px) rotateY(90deg);
-  background: linear-gradient(
-    90deg,
-    #fff 0%,
-    #f9f9f9 5%,
-    #fff 10%,
-    #f9f9f9 15%,
-    #fff 20%,
-    #f9f9f9 25%,
-    #fff 30%,
-    #f9f9f9 35%,
-    #fff 40%,
-    #f9f9f9 45%,
-    #fff 50%,
-    #f9f9f9 55%,
-    #fff 60%,
-    #f9f9f9 65%,
-    #fff 70%,
-    #f9f9f9 75%,
-    #fff 80%,
-    #f9f9f9 85%,
-    #fff 90%,
-    #f9f9f9 95%,
-    #fff 100%
-  );
+  background: linear-gradient(90deg,
+      #fff 0%, #f9f9f9 5%, #fff 10%, #f9f9f9 15%, #fff 20%, #f9f9f9 25%,
+      #fff 30%, #f9f9f9 35%, #fff 40%, #f9f9f9 45%, #fff 50%, #f9f9f9 55%,
+      #fff 60%, #f9f9f9 65%, #fff 70%, #f9f9f9 75%, #fff 80%, #f9f9f9 85%,
+      #fff 90%, #f9f9f9 95%, #fff 100%);
 }
 
 .book::after {
+  /* Back cover of the 3D book */
   position: absolute;
   top: 0;
   left: 0;
@@ -257,60 +114,25 @@ ul.dropdown li a:hover {
   border-radius: 0 2px 2px 0;
   box-shadow: -10px 0 50px 10px #666;
 }
-.primary-btn {
-  display: inline-block;
-  font-size: 14px;
-  font-weight: 700;
-  padding: 12px 30px;
-  color: #ffffff;
-  background-color: rgb(54, 109, 229);
-  border: none;
-  border-radius: 15px;
-  cursor: pointer;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  transition: all 0.3s ease;
-}
-.truyen_button {
-  display: flex;
-  gap: 15px;
-  margin-top: 20px;
-  margin-bottom: 20px;
-}
 
-.primary-btn:hover {
-  background-color: rgb(62, 123, 255);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.primary-btn:active {
-  transform: translateY(0);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-/* Fix for button element with href attribute */
-button[href] {
-  text-decoration: none;
-}
+/* === NOVEL DETAILS SECTION (OLD STRUCTURE) === */
 .truyen-details {
+  /* Wrapper for the entire details section */
   padding-top: 60px;
 }
 
 .truyen__details__content {
+  /* Main content block within details */
   margin-bottom: 65px;
 }
 
 .truyen__details__text {
+  /* Textual content wrapper */
   position: relative;
 }
 
-.truyen__details__text p {
-  color: #565656;
-  font-size: 18px;
-  line-height: 30px;
-}
-
 .truyen__details__pic {
+  /* Picture container, often part of the 3D book display */
   height: 440px;
   border-radius: 5px;
   position: relative;
@@ -341,87 +163,197 @@ button[href] {
 }
 
 .truyen__details__title {
+  /* Novel title and author container */
   margin-bottom: 20px;
 }
 
 .truyen__details__title h3 {
+  /* Novel name */
   color: #1f2129;
   font-weight: 700;
   margin-bottom: 13px;
 }
 
 .truyen__details__title span {
+  /* Author name (potentially overridden by .font-20) */
   font-size: 16px;
   color: #565656;
   display: block;
 }
 
-.truyen__details__rating {
-  display: flex;
-  align-items: center;
-  gap: 10px; /* Khoảng cách giữa sao và chữ */
-}
-
-.truyen__details__rating .rating i {
-  font-size: 17px;
-  color: #e89f12;
-  display: inline-block;
-}
-
-.truyen__details__rating span {
-  display: block;
-  font-size: 18px;
-  color: rgb(250, 124, 20);
-}
-
+/* Widget for metadata (Thể loại, Trạng thái, Độ dài) - Old Structure */
 .truyen__details__widget {
-  margin-bottom: 15px;
+  margin-top: 20px;
 }
 
 .truyen__details__widget ul {
   list-style: none;
   padding: 0;
-  margin-bottom: 20px;
+  margin: 0;
 }
 
 .truyen__details__widget li {
-  display: grid;
-  grid-template-columns: 30px 150px 10px auto; /* Cột 1: icon, Cột 2: tiêu đề, Cột 3: dấu :, Cột 4: nội dung */
+  display: flex;
   align-items: center;
-  gap: 10px;
+  margin-bottom: 12px;
+  padding: 10px;
+  /* Reduced from 12px 15px to be less prominent than new description box */
+  /* background-color: #f8f9fa; */
+  /* Optional: Can be enabled if preferred over no background */
+  border-radius: 8px;
+  transition: all 0.2s ease-in-out;
+  /* box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05); */
+  /* Optional shadow */
 }
 
-.truyen__details__widget ul li {
-  list-style: none;
-  font-size: 15px;
-  color: #565656;
-  line-height: 30px;
+/* Styles for elements within the old widget list items */
+.truyen__details__widget li i {
+  font-size: 1.1em;
+  margin-right: 12px;
+  color: #007bff;
+  min-width: 22px;
+  text-align: center;
+}
+
+.truyen__details__widget li span:not(.fw-bold) {
+  /* Labels like "Thể loại: " */
+  color: #5a6268;
+  margin-right: 6px;
+}
+
+.truyen__details__widget li span.fw-bold {
+  /* Values for metadata */
+  color: #2c3e50;
+}
+
+/* Rating section - Old Structure */
+.truyen__details__rating {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+  padding: 10px 0;
+}
+
+/* === NOVEL DESCRIPTION SECTION (NEWER STYLE) === */
+.novel-description-section {
+  /* This was previously styled, ensure it's distinct from the old widget */
+  /* margin-top: 30px; */
+  /* Already defined in its own CSS block usually */
+  /* margin-bottom: 30px; */
+  /* padding: 20px 25px; */
+  /* background-color: #fff; */
+  border-radius: 8px;
+  /* border: 1px solid #eef0f2; */
+  /* box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05); */
+}
+
+.description-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #333a45;
+  margin-top: 0;
+  margin-bottom: 18px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e9ecef;
   position: relative;
 }
 
-.truyen__details__widget ul li span {
-  color: #565656;
-  width: 500px;
-  display: inline-block;
-  font-weight:600;
+.description-title::before {
+  content: "";
+  position: absolute;
+  left: -25px;
+  /* Adjust if novel-description-section has different padding */
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 20px;
+  background-color: #e6a263;
+  /* Accent color */
+  border-radius: 2px;
+}
+
+.description-content {
+  font-size: 15px;
+  line-height: 1.8;
+  color: #525f7f;
+}
+
+.description-content p {
+  margin-top: 0;
+  margin-bottom: 1.3em;
+}
+
+.description-content p:last-child {
+  margin-bottom: 0;
+}
+
+.description-content a {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease-in-out;
+}
+
+.description-content a:hover {
+  color: #0056b3;
+  text-decoration: underline;
 }
 
 
-/* Gioi thieu & danh sach chương  */
+/* === GENERAL BUTTONS (PRIMARY & WRAPPER FOR OLD LAYOUT) === */
+.primary-btn {
+  display: inline-block;
+  font-size: 14px;
+  font-weight: 700;
+  padding: 12px 30px;
+  color: #ffffff;
+  background-color: rgb(54, 109, 229);
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+}
+
+.primary-btn:hover {
+  background-color: rgb(62, 123, 255);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.primary-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.truyen_button {
+  /* Wrapper for buttons in the old layout */
+  display: flex;
+  gap: 15px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+
+/* === TABBED SECTION (GIỚI THIỆU & DANH SÁCH CHƯƠNG) === */
 .section-title {
+  /* Used for the container of tab links */
   display: flex;
   align-items: center;
   position: relative;
 }
 
 .separator {
+  /* Separator between tab links */
   width: 2px;
   height: 25px;
-  background-color: black; /* Màu của gạch */
-  margin: 0 10px; /* Khoảng cách giữa các chữ */
+  background-color: black;
+  margin: 0 10px;
 }
 
 .tab {
+  /* Individual tab link */
   text-decoration: none;
   padding: 5px 10px;
   position: relative;
@@ -429,7 +361,14 @@ button[href] {
   transition: color 0.3s ease;
 }
 
+.tab.active {
+  /* Active tab link */
+  color: black;
+  font-weight: bold;
+}
+
 .underline {
+  /* Underline for active tab */
   width: 100px;
   height: 2px;
   background-color: blue;
@@ -439,258 +378,1017 @@ button[href] {
   transition: all 0.3s ease;
 }
 
-.tab.active {
-  color: black;
-  font-weight: bold;
-}
-
-.tab.inactive {
-  color: gray;
-}
-
 .content-section {
+  /* Container for tab content */
   display: none;
+  /* Hidden by default */
 }
 
 .content-section.active {
+  /* Active tab content */
   display: block;
-  
 }
-.row1{
+
+.row1 {
+  /* Row container for chapter list table */
   display: flex;
   -ms-flex-wrap: wrap;
   flex-wrap: wrap;
   margin-right: -15px;
   margin-left: -15px;
 }
+
 .table {
+  /* Chapter list table */
   width: 100%;
 }
 
 .table td {
-  padding: 10px 10px 10px 0; 
+  /* Table cells in chapter list */
+  padding: 10px 10px 10px 0;
   border-top: 1px solid #ddd;
-  width: 400px; 
-  white-space: nowrap; 
-  overflow: hidden; 
-  text-overflow: ellipsis; 
-}
-.table1 td{
-  width: 450px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-  /* Container phân trang */
-  .pagination {
-    text-align: center;
-    margin-top: 20px;
-  }
-
-  /* Các nút phân trang */
-  .pagination a,
-  .pagination .current-page {
-    display: inline-block;
-    padding: 8px 16px;
-    margin: 0 5px;
-    text-decoration: none;
-    border: 1px solid #ddd;
-    color: #007bff;
-    background-color: #f8f9fa;
-    border-radius: 5px;
-    font-size: 14px;
-    transition: all 0.3s ease;
-  }
-
-  /* Nút khi di chuột vào */
-  .pagination a:hover {
-    background-color: #007bff;
-    color: white;
-    border-color: #007bff;
-  }
-
-  /* Nút trang hiện tại */
-  .pagination .current-page {
-    background-color: #007bff;
-    color: white;
-    border-color: #007bff;
-    font-weight: bold;
-  }
-
-  /* Nút đầu và cuối */
-  .pagination a:first-child,
-  .pagination a:last-child {
-    font-weight: bold;
-  }
-
-  /* Nút không thể click (disabled) */
-  .pagination a[disabled] {
-    background-color: #e9ecef;
-    color: #6c757d;
-    pointer-events: none;
-    cursor: not-allowed;
-  }
-
-  .pagination a:hover:first-child,
-  .pagination a:hover:last-child {
-    background-color: #6c757d;
-    color: white;
-    border-color: #6c757d;
-  }
-
-  .chapter-list-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    column-gap: 10px;
-    row-gap: 0;
-  }
-  .chapter-list-grid table td{
-    padding-left: 20px; 
-    padding-right: 20px; 
-  }
-  .chapter-update-list-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    column-gap: 20px;
-    row-gap: 0;
-  }
-  .chapter-update-list-grid tr{
-    display: flex;
-    justify-content: space-between;
-  }
- 
-  .chapter-update-list-grid a i {
-    margin-right: 8px; /* Khoảng cách giữa icon và text */
-  }
-  .chapter-list-grid tr {
-    display: flex;
-    justify-content: space-between;
-  }
-
-/* CSS cho pagination */
-.pagination {
-  display: flex;
-  justify-content: flex-end; /* Căn sang phải */
-  margin-left: 0; /* Đảm bảo không bị đẩy từ trái */
-  margin-right: 0; /* Đảm bảo không bị đẩy từ phải */
-  width: 100%; /* Đảm bảo chiếm toàn bộ chiều rộng container */
-}
-
-/* Định dạng các phần tử con */
-.pagination a,
-.pagination span {
-  margin: 0 5px;
-  font-size: 14px;
-  text-decoration: none;
-}
-
-.table td a:hover {
-  color: rgba(70, 4, 100, 0.77);
-  text-decoration: none;
+  width: 400px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .table a {
+  /* Links within the chapter list table */
   text-decoration: none;
   color: black;
+  font-size: 16px;
 }
 
 .table a:hover {
   text-decoration: underline;
 }
-.table1 {
-  width: 100%;
-}
 
-.table1 td {
-  padding-bottom: 10px;
-}
-
-.table1 a {
+.table td a:hover {
+  /* More specific hover for links in td - color change */
+  color: rgba(70, 4, 100, 0.77);
   text-decoration: none;
-  color: black;
+  /* This might conflict with .table a:hover if both apply */
 }
 
-.table1 a:hover {
-  color: black;
-  text-decoration: underline;
+.chapter-list-grid {
+  /* Applied to tbody of chapter list for grid layout */
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  column-gap: 10px;
+  row-gap: 0;
 }
+
+.chapter-list-grid tr {
+  /* Rows within the chapter list grid */
+  display: flex;
+  justify-content: space-between;
+}
+
 .tab-content p {
+  /* Paragraphs within any tab content (e.g., description if in a tab) */
   font-size: 16px;
-  color: #1f2129; /* Màu chữ */
+  color: #1f2129;
   line-height: 25px;
 }
-/* End Gioi thieu & danh sach chương  */
 
- /* Bình luận  */
-.truyen__review__item {
-  overflow: hidden;
-  margin-bottom: 15px;
-}
-
-.truyen__review__item__pic {
-  float: left;
-  margin-right: 20px;
-  position: relative;
-}
-
-.truyen__review__item__pic img {
-  height: 50px;
-  width: 50px;
-  border-radius: 50%;
-}
-
-.truyen__review__item__text {
-  overflow: hidden;
-  background-color: rgba(0, 0, 0, 0.2); /* Thay (0, 0, 0) bằng màu thực tế */
-  padding: 18px 30px 16px 20px;
-  border-radius: 5px;
+/* === PAGINATION === */
+.pagination {
+  /* Main pagination container */
+  text-align: center;
+  /* Original alignment, might be overridden by flex */
+  margin-top: 20px;
+  /* Later definition makes it flex */
+  display: flex;
+  justify-content: flex-end;
+  margin-left: 0;
+  margin-right: 0;
   width: 100%;
-  height:auto;
 }
 
-.truyen__review__item__text h6 {
-  color: #2b2b2b;
-  font-weight: 700;
-  margin-bottom: 10px;
-  font-size:18px;
-}
-
-.truyen__review__item__text h6 span {
-  color: #2b2b2b;
-  font-weight: 400;
-}
-
-.truyen__review__item__text p {
-  color: #2b2b2b;
-  line-height: 23px;
-  margin-bottom: 0;
-}
-
-/* Truyên hot  */
-.category-list {
-  padding: 15px 15px 15px 20px;
-    background-color: #fdfdfd;
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  width: 300px;
-}
-
-.category-list ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  column-gap: 30px; /* Space between columns */
-  position: relative;
-}
-
-.category-list ul li {
-  margin-bottom: 10px;
-}
-
-.category-list ul li a {
+.pagination a,
+.pagination .current-page,
+.pagination span {
+  /* General styling for pagination items */
+  display: inline-block;
+  padding: 8px 16px;
+  margin: 0 5px;
   text-decoration: none;
-  color: #1f2129;
+  border-radius: 5px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+/* Overlap from later .pagination a, .pagination span only has margin, font-size, text-decoration */
+/* The above rule is more comprehensive and should likely be the primary one for item styling */
+
+.pagination a:hover {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+
+.pagination .current-page {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
+  font-weight: bold;
+}
+
+.pagination a:first-child,
+.pagination a:last-child {
+  /* For Prev/Next or First/Last text buttons */
+  font-weight: bold;
+}
+
+.pagination a[disabled] {
+  /* Disabled pagination links */
+  background-color: #e9ecef;
+  color: #6c757d;
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+.pagination a:hover:first-child,
+.pagination a:hover:last-child {
+  background-color: #6c757d;
+  color: white;
+  border-color: #6c757d;
+}
+
+/* === RELATED CONTENT / PRODUCT ITEMS === */
+.product__item {
+  /* Wrapper for each related novel item */
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.15s ease-in-out;
+  margin-bottom: clamp(20px, 3vw, 30px);
+}
+
+.product__item:hover {
+  transform: scale(1.03) !important;
+}
+
+.full-link {
+  /* Overlay link for the entire product item */
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+}
+
+.product__item__pic {
+  /* Picture container for related item */
+  height: clamp(150px, 40vw, 300px);
+  position: relative;
+  border-radius: 5px;
+}
+
+.product__item__pic .ep {
+  /* Episode/chapter count badge on picture */
+  font-size: clamp(11px, 2vw, 13px);
+  color: #ffffff;
+  background: #e53637;
+  display: inline-block;
+  padding: clamp(2px, 0.5vw, 4px) clamp(8px, 2vw, 12px);
+  border-radius: 4px;
+  position: absolute;
+  left: clamp(5px, 1vw, 10px);
+  top: clamp(5px, 1vw, 10px);
+}
+
+.product__item__pic .Name {
+  /* Novel name overlay on picture */
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: rgba(27, 18, 18, 0.7);
+  color: white;
+  font-weight: bold;
+  font-size: clamp(12px, 2.5vw, 14px);
+  padding: clamp(3px, 1vw, 5px) 0;
+  text-align: center;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.product__item__text {
+  /* Text content below the picture for related item */
+  padding-top: clamp(5px, 1.5vw, 10px);
+}
+
+.product__item__text ul {
+  margin-bottom: clamp(5px, 1.5vw, 10px);
+}
+
+.product__item__text ul li {
+  display: inline-block;
+  font-size: 12px;
+  color: #047857;
+  /* Màu chữ thể loại */
+  margin-right: 5px;
+  margin-bottom: 5px;
+  padding: 3px 8px;
+  background-color: transparent;
+  border-radius: 5px;
+  text-align: center;
+  border: 1.5px solid #047857;
+  font-weight: 500;
+}
+
+.title {
+  /* Heading for the related content section, e.g., "Truyện cùng thể loại" */
+  background-color: rgb(228 222 206 / 1);
+  padding-left: 10px;
+}
+
+/* static/novel/css/novel-info.css */
+
+/* === NEW CSS FOR NOVEL DETAILS LIKE THE IMAGE === */
+
+.novel-detail-container-new {
+  font-family: "Avenir Next", Arial, sans-serif;
+  /* Common font */
+  color: #333;
+  padding-bottom: 20px;
+  /* Space at the bottom */
+}
+
+/* --- Header Section (Title and Author) --- */
+.novel-header-section {
+  margin-bottom: 20px;
+  padding-top: 10px;
+  /* Add padding top if needed */
+}
+
+.novel-title-main {
+  font-size: 28px;
+  /* Large title size */
+  font-weight: 700;
+  /* Or 600 for a slightly lighter look */
+  color: #2d3748;
+  /* Dark gray color */
+  margin: 0 0 5px 0;
+  line-height: 1.3;
+}
+
+.novel-author-sub {
   font-size: 16px;
-  transition: color 0.3s;
-  
+  color: #718096;
+  /* Light gray for author name */
+  margin: 0;
+}
+
+/* --- Action Buttons Bar --- */
+.novel-actions-bar {
+  display: flex;
+  flex-wrap: wrap;
+  /* Allow wrapping on small screens */
+  gap: 10px;
+  /* Space between buttons */
+  margin-bottom: 25px;
+}
+
+.action-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 15px;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 6px;
+  /* Slightly rounded corners */
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  border: 1px solid transparent;
+  position: relative;
+  /* For badge positioning */
+}
+
+.action-button i {
+  margin-right: 8px;
+  font-size: 1.1em;
+  /* Slightly larger icon size */
+}
+
+.action-button.btn-solid {
+  background-color: #e6a263;
+  /* Light orange/brown for "Read Novel" button */
+  color: #fff5e9;
+  /* Off-white text color */
+  border-color: #e6a263;
+}
+
+.action-button.btn-solid:hover {
+  background-color: #d99352;
+  /* Darker on hover */
+  border-color: #d99352;
+}
+
+.action-button.btn-outline {
+  background-color: #fff;
+  color: #4a5568;
+  /* Dark gray text for outline button */
+  border: 1px solid #e2e8f0;
+  /* Light gray border */
+}
+
+.action-button.btn-outline:hover {
+  border-color: #cbd5e0;
+  /* Darker border on hover */
+  background-color: #f7fafc;
+  /* Slightly gray background on hover */
+  color: #2d3748;
+}
+
+.badge-count {
+  background-color: #e6a263;
+  /* Badge color similar to solid button */
+  color: white;
+  font-size: 10px;
+  font-weight: bold;
+  padding: 2px 5px;
+  border-radius: 8px;
+  /* Rounded badge */
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  line-height: 1;
+}
+
+/* --- Novel Stats Bar --- */
+.novel-stats-bar {
+  display: flex;
+  flex-wrap: wrap;
+  /* Allows items to wrap on smaller screens */
+  margin-bottom: 25px;
+  border: 1px solid #e2e8f0;
+  /* Single border around the whole bar */
+  border-radius: 8px;
+  overflow: hidden;
+  /* To make border-radius work with children */
+  background-color: #fff;
+  /* Background for the bar itself */
+}
+
+/* Stat block takes equal space */
+.stat-block {
+  flex: 1;
+  /* Each block tries to take equal space */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  /* Center content vertically */
+  min-width: 80px;
+  /* Minimum width before wrapping or shrinking too much */
+  text-align: center;
+  border-right: 1px solid #e2e8f0;
+  /* Use a lighter border consistent with the outer border */
+  padding: 10px 8px;
+  /* Increased padding for better spacing */
+}
+
+/* Remove right border from the last element */
+.stat-block:last-child {
+  border-right: none;
+}
+
+.stat-value {
+  font-size: 18px;
+  font-weight: 600;
+  color: #2d3748;
+  line-height: 1.2;
+  margin-bottom: 2px;
+  /* Space between value and label */
+}
+
+.stat-label {
+  font-size: 13px;
+  color: #718096;
+  line-height: 1.2;
+}
+
+/* --- Tags/Categories Bar --- */
+.novel-tags-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  /* Space between tags */
+  margin-bottom: 20px;
+  /* Added margin for spacing below tags bar */
+}
+
+.tag-chip {
+  display: inline-block;
+  padding: 5px 12px;
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: 16px;
+  /* More rounded (pill-shaped) */
+  line-height: 1.3;
+  /* Adjusted line-height */
+  text-decoration: none;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+  /* Base border */
+}
+
+/* Status Tag (e.g., "Ongoing", "Completed") */
+.tag-chip.tag-status {
+  background-color: #11e3ff;
+  /* Bright blue for status */
+  color: #0d3c40;
+  /* Dark black/blue text for contrast */
+  font-weight: 600;
+}
+
+.tag-chip.tag-status:hover {
+  background-color: #0fc2d3;
+  /* Darker on hover */
+}
+
+/* Example for "Completed" status */
+.tag-chip.tag-status.tag-completed {
+  background-color: #68d391;
+  /* Green for completed */
+  color: #1a472a;
+}
+
+.tag-chip.tag-status.tag-completed:hover {
+  background-color: #48bb78;
+}
+
+/* Default Category Tag (if no specific color class) */
+.tag-chip.tag-category {
+  background-color: #f7fafc;
+  /* Very light gray */
+  color: #4a5568;
+  /* Dark gray text */
+  border-color: #e2e8f0;
+  /* Light gray border */
+}
+
+.tag-chip.tag-category:hover {
+  background-color: #edf2f7;
+  /* Slightly darker background on hover */
+  border-color: #cbd5e0;
+  /* Darker border on hover */
+  color: #2d3748;
+  /* Darker text on hover */
+}
+
+
+
+/* 1. Huyền Huyễn (Reddish) */
+.tag-chip.tag-huyen-huyen,
+.tag-chip.tag-fantasy {
+  /* English alias */
+  background-color: #fff0f0;
+  color: #c53030;
+  border-color: #fcc6c6;
+}
+
+.tag-chip.tag-huyen-huyen:hover,
+.tag-chip.tag-fantasy:hover {
+  background-color: #fed7d7;
+  border-color: #fca0a0;
+}
+
+/* 2. Tiên Hiệp (Greenish) */
+.tag-chip.tag-tien-hiep,
+.tag-chip.tag-xianxia {
+  /* English alias */
+  background-color: #f0fff4;
+  color: #2f855a;
+  border-color: #c6f6d5;
+}
+
+.tag-chip.tag-tien-hiep:hover,
+.tag-chip.tag-xianxia:hover {
+  background-color: #e6ffed;
+  border-color: #a8e9c0;
+}
+
+/* 3. Đông Phương Huyền Huyễn (Bluish) */
+.tag-chip.tag-dong-phuong-huyen-huyen,
+.tag-chip.tag-eastern-fantasy {
+  /* English alias */
+  background-color: #ebf8ff;
+  color: #3182ce;
+  border-color: #bee3f8;
+}
+
+.tag-chip.tag-dong-phuong-huyen-huyen:hover,
+.tag-chip.tag-eastern-fantasy:hover {
+  background-color: #d9eefe;
+  border-color: #99cdf0;
+}
+
+/* 4. Trọng Sinh (Purplish) */
+.tag-chip.tag-trong-sinh,
+.tag-chip.tag-reincarnation {
+  /* English alias */
+  background-color: #faf5ff;
+  color: #805ad5;
+  border-color: #e9d8fd;
+}
+
+.tag-chip.tag-trong-sinh:hover,
+.tag-chip.tag-reincarnation:hover {
+  background-color: #f2e9fe;
+  border-color: #d9c1fc;
+}
+
+/* 5. Đô Thị (Orange) */
+.tag-chip.tag-do-thi,
+.tag-chip.tag-urban {
+  /* English alias */
+  background-color: #fffaf0;
+  color: #dd6b20;
+  border-color: #fbd38d;
+}
+
+.tag-chip.tag-do-thi:hover,
+.tag-chip.tag-urban:hover {
+  background-color: #feebc8;
+  border-color: #f6ad55;
+}
+
+/* 6. Khoa Huyễn (Teal) */
+.tag-chip.tag-khoa-huyen,
+.tag-chip.tag-sci-fi {
+  /* English alias */
+  background-color: #e6fffa;
+  color: #2c7a7b;
+  border-color: #b2f5ea;
+}
+
+.tag-chip.tag-khoa-huyen:hover,
+.tag-chip.tag-sci-fi:hover {
+  background-color: #c2f0e9;
+  border-color: #81e6d9;
+}
+
+/* 7. Ngôn Tình (Pink) */
+.tag-chip.tag-ngon-tinh,
+.tag-chip.tag-romance {
+  /* English alias */
+  background-color: #fff5f7;
+  color: #d53f8c;
+  border-color: #fbb6ce;
+}
+
+.tag-chip.tag-ngon-tinh:hover,
+.tag-chip.tag-romance:hover {
+  background-color: #fed7e2;
+  border-color: #f687b3;
+}
+
+/* 8. Lịch Sử (Indigo) */
+.tag-chip.tag-lich-su,
+.tag-chip.tag-historical {
+  /* English alias */
+  background-color: #f0f5ff;
+  color: #5a67d8;
+  border-color: #c3dafe;
+}
+
+.tag-chip.tag-lich-su:hover,
+.tag-chip.tag-historical:hover {
+  background-color: #e3e8ff;
+  border-color: #a3bffa;
+}
+
+/* 9. Võng Du (Yellow/Gold) */
+.tag-chip.tag-vong-du,
+.tag-chip.tag-gaming {
+  /* English alias */
+  background-color: #fffff0;
+  color: #b7791f;
+  border-color: #fefcbf;
+  /* Gold: text #b7791f, bg #fffff0, border #fefcbf */
+}
+
+.tag-chip.tag-vong-du:hover,
+.tag-chip.tag-gaming:hover {
+  background-color: #fef9c3;
+  border-color: #f6e05e;
+}
+
+/* 10. Kiếm Hiệp (Brown) */
+.tag-chip.tag-kiem-hiep,
+.tag-chip.tag-wuxia {
+  /* English alias */
+  background-color: #fdf8f2;
+  color: #744210;
+  border-color: #f3e0c8;
+  /* Brown: text #744210, bg #fdf8f2, border #f3e0c8 */
+}
+
+.tag-chip.tag-kiem-hiep:hover,
+.tag-chip.tag-wuxia:hover {
+  background-color: #f0e6d8;
+  border-color: #e4c7a4;
+}
+
+/* 11. Xuyên Không (Cyan) */
+.tag-chip.tag-xuyen-khong,
+.tag-chip.tag-transmigration {
+  /* English alias */
+  background-color: #e0ffff;
+  color: #00838f;
+  border-color: #b2ebf2;
+}
+
+.tag-chip.tag-xuyen-khong:hover,
+.tag-chip.tag-transmigration:hover {
+  background-color: #c9f7f7;
+  border-color: #84e1ec;
+}
+
+/* 12. Dị Năng (Lime Green) */
+.tag-chip.tag-di-nang,
+.tag-chip.tag-supernatural {
+  /* English alias */
+  background-color: #fafff0;
+  color: #689f38;
+  border-color: #e6f3d3;
+}
+
+.tag-chip.tag-di-nang:hover,
+.tag-chip.tag-supernatural:hover {
+  background-color: #f1f9e5;
+  border-color: #d4edae;
+}
+
+/* 13. Hệ Thống (Dark Gray/Slate) */
+.tag-chip.tag-he-thong,
+.tag-chip.tag-system {
+  /* English alias */
+  background-color: #edf2f7;
+  color: #2d3748;
+  border-color: #cbd5e0;
+}
+
+.tag-chip.tag-he-thong:hover,
+.tag-chip.tag-system:hover {
+  background-color: #e2e8f0;
+  border-color: #a0aec0;
+}
+
+/* 14. Cung Đấu (Crimson/Dark Red) */
+.tag-chip.tag-cung-dau,
+.tag-chip.tag-palace-intrigue {
+  background-color: #fff5f5;
+  color: #c53030;
+  border-color: #fed7d7;
+}
+
+.tag-chip.tag-cung-dau:hover,
+.tag-chip.tag-palace-intrigue:hover {
+  background-color: #feeeee;
+  border-color: #fbbbbb;
+}
+
+/* 15. Điền Viên (Olive Green) */
+.tag-chip.tag-dien-vien,
+.tag-chip.tag-farming {
+  background-color: #f7fee7;
+  color: #556b2f;
+  border-color: #dcfce7;
+}
+
+.tag-chip.tag-dien-vien:hover,
+.tag-chip.tag-farming:hover {
+  background-color: #f0f9e0;
+  border-color: #c0eec9;
+}
+
+/* static/novel/css/comment-section.css */
+
+/* Facebook-style comment section */
+.comment-main {
+  background-color: transparent;
+  border: none;
+  margin-bottom: 12px;
+}
+
+.comment-content {
+  background-color: transparent;
+  border: 2px solid #c9c9c9;
+  border-radius: 5px !important;
+  box-shadow: none !important;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.comment-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.comment-actions {
+  font-size: 0.8rem;
+  padding-left: 12px;
+  display: flex;
+  gap: 15px;
+  flex-direction: row;
+  align-items: center;
+}
+
+.comment-actions button,
+.reply-count {
+  color: #65676b;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.comment-actions button:hover,
+.reply-count:hover {
+  text-decoration: underline;
+}
+
+.replies-container {
+  padding-left: 0;
+  border-left: none;
+}
+
+.comment-form {
+  margin-bottom: 20px;
+}
+
+.comment-form textarea,
+.reply-form textarea {
+  border-radius: 20px;
+  padding: 10px 15px;
+  resize: none;
+  background-color: #f0f2f5;
+  border: none;
+  box-shadow: none;
+}
+
+.comment-form textarea:focus,
+.reply-form textarea:focus {
+  box-shadow: none;
+  border: none;
+  background-color: #f0f2f5;
+}
+
+.comment-thread {
+  margin-bottom: 16px;
+}
+
+.reply-item {
+  margin-bottom: 8px;
+}
+
+.reply-form {
+  margin-left: 52px;
+  margin-top: 8px !important;
+}
+
+/* User profile images */
+.rounded-circle {
+  border: 1px solid #ddd;
+}
+
+/* Comment button styling */
+.comment-form button,
+.reply-form button {
+  background-color: #1877f2;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  padding: 5px 12px;
+}
+
+.comment-form button:hover,
+.reply-form button:hover {
+  background-color: #166fe5;
+}
+
+/* Toggle comments button */
+#toggleComments {
+  border: none;
+  background-color: transparent;
+  color: #65676b;
+}
+
+#toggleComments:hover {
+  background-color: #f0f2f5;
+}
+
+/* Username styling */
+.comment-content h6 {
+  font-size: 1.2rem;
+  margin-bottom: 2px !important;
+}
+
+/* Comment text styling */
+.comment-content p {
+  font-size: 0.9rem;
+  margin-bottom: 0 !important;
+}
+
+/* Gap between user image and comment */
+.gap-2 {
+  gap: 12px !important;
+}
+
+/* Section title styling */
+.section-title h4 {
+  font-weight: 600;
+  color: #050505;
+}
+
+/* Timestamp styling */
+.text-muted {
+  color: #65676b !important;
+  font-size: 0.85rem;
+  margin-bottom: 0 !important;
+}
+
+.replied-to {
+  color: #1877f2 !important;
+  font-weight: 800 !important;
+  margin-right: 4px;
+}
+
+.form-control1 {
+  display: block;
+  width: 100%;
+  height: calc(1.5em + 0.75rem + 20px);
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #495057;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  color: #187ff2;
+}
+
+/* Add these new styles */
+.reply-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.reply-popup {
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 8px;
+  margin-bottom: 4px;
+  display: none;
+  width: 500px;
+  z-index: 1000;
+}
+
+.reply-form {
+  margin: 0 !important;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.reply-form form {
+  flex: 1;
+}
+
+.reply-form textarea {
+  min-height: 36px;
+  padding: 8px 12px;
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+.reply-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.reply-trigger {
+  cursor: pointer;
+}
+
+.reply-trigger:hover+.reply-popup,
+.reply-popup:hover {
+  display: block;
+}
+
+.gap-2 {
+  gap: 20px;
+}
+
+
+.hot-novels {
+  background: #fff;
+  padding: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.hot-novel-author {
+  font-size: 12px;
+  color: #777;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 2px;
+}
+
+.hot-novel-author i {
+  font-size: 12px;
+  color: #999;
+}
+
+.hot-novel-item {
+  display: flex;
+  padding: 8px 0;
+  border-bottom: 1px solid #ddd;
+  transition: all 0.2s;
+}
+
+.hot-novel-item:last-child {
+  border-bottom: none;
+}
+
+.hot-novel-item:hover {
+  background: #f8f9fa;
+}
+
+.rank-medal {
+  width: 24px;
+  text-align: center;
+}
+
+.rank-medal i {
+  font-size: 20px;
+}
+
+.rank-number {
+  font-size: 16px;
+  font-weight: bold;
+  width: 24px;
+  text-align: center;
+  color: #555;
+}
+
+.hot-novel-img {
+  width: 50px;
+  height: 75px;
+  object-fit: cover;
+  border-radius: 5px;
+  margin-right: 10px;
+}
+
+.novel-info {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  margin-left: 10px;
+
+}
+
+.hot-novel-details {
+  flex: 1;
+}
+
+.section-title {
+  margin-bottom: 20px !important;
+}
+
+.hot-novel-title {
+  font-size: 14px;
+  color: #333;
+  font-weight: 500;
+  text-decoration: none;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  font-family: 'Roboto', sans-serif;
+  max-width: 300px;
+}
+
+.hot-novel-title:hover {
+  color: #d19e2e;
+  transition: color 0.3s ease;
 }

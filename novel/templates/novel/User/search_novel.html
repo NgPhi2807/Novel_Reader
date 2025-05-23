@@ -7,8 +7,7 @@
   /* General search section style */
   .search-section {
     margin-bottom: 40px;
-    margin-top:40px;
-   
+    margin-top: 40px;
   }
 
   /* Center the search container */
@@ -16,42 +15,92 @@
     max-width: 900px;
     margin: 0 auto;
   }
+
   .search-wrapper {
-  position: relative;
-  display: flex;
-  align-items: center;
-  width: 100%;
-}
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+  }
 
-.search-box-wrapper {
-  position: relative;
-  width: 100%;
-}
+  .search-box-wrapper {
+    position: relative;
+    width: 100%;
+  }
 
-.search-box {
-  width: 100%;
-  padding: 12px 20px 12px 40px;  /* Thêm padding bên trái để tạo không gian cho biểu tượng */
-  font-size: 16px;
-  border: 1px solid #ddd;
-  border-radius: 50px;
-  background: #fff;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-  transition: all 0.3s ease;
-}
+  .search-box {
+    width: 100%;
+    padding: 12px 20px 12px 40px;
+    /* Padding left for icon */
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background: #fff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+  }
 
-.search-box:focus {
-  outline: none;
-  border-color: #288ad6;
-  box-shadow: 0 0 10px rgba(40, 138, 214, 0.2);
-}
+  .search-box:focus {
+    outline: none;
+    border-color: #288ad6;
+    box-shadow: 0 0 10px rgba(40, 138, 214, 0.2);
+  }
 
-.search-icon {
+  .search-icon {
+    position: absolute;
+    left: 15px;
+    /* Icon left */
+    top: 50%;
+    transform: translateY(-50%);
+    color: #aaa;
+  }
+
+  /* Autocomplete dropdown styling */
+#autocomplete-list {
   position: absolute;
-  left: 15px;  /* Căn trái biểu tượng trong ô tìm kiếm */
-  top: 50%;
-  transform: translateY(-50%);
-  color: #aaa;  /* Màu biểu tượng */
+  margin-top: 10px;
+  top: 100%;
+  left: 0;
+  right: 0;
+  border: 1px solid #ddd;
+  border-top: none;
+  background: white;
+  max-height: 350px;
+  overflow-y: auto;
+  z-index: 1000;
+  display: none;
+  border-radius: 10px;
+
+  /* Ẩn scrollbar cho Chrome, Edge, Safari */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;  /* IE and Edge */
 }
+
+#autocomplete-list::-webkit-scrollbar {
+  display: none; /* Chrome, Safari và Opera */
+}
+
+
+  .autocomplete-item {
+    padding: 8px 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #eee;
+  }
+
+  .autocomplete-item img {
+    width: 60px;
+    height: 80px;
+    object-fit: cover;
+    margin-right: 10px;
+    border-radius: 3px;
+  }
+
+  .autocomplete-item:hover {
+    background-color: #f0f8ff;
+  }
+
   /* Results section styling */
   .search-results {
     padding: 0 15px;
@@ -75,52 +124,20 @@
     color: #888;
   }
 
-  .latest-chapters {
-    padding: 8px;
-    font-size: 0.85em;
-
-  }
-
-  .chapter-item {
-    padding: 4px 0;
-    border-bottom: 1px solid #eee;
-
-  }
-
-  .chapter-item:last-child {
-    border: none;
-  }
-
-  .chapter-link {
-    color: #444;
-    display: block;
-  }
-
-  .chapter-time {
-    font-size: 0.8em;
-    color: #666;
-    font-style: italic;
-  }
-
   .product__item1 {
     margin-bottom: 20px;
   }
 
   .chapter {
     color: #000000;
-    /* Màu chữ mặc định là đen */
-    text-decoration: none;
-    /* Xóa gạch chân */
     font-weight: 700;
+    text-decoration: none;
   }
 
   .chapter:hover {
     color: #288ad6;
-    /* Màu chữ khi hover vào sẽ chuyển thành xanh */
   }
-  
 </style>
-
 {% endblock %}
 
 {% block content %}
@@ -129,18 +146,20 @@
   <section class="search-section">
     <div class="container">
       <div class="search-container">
-        <form action="{% url 'search_novel' %}" method="GET" class="search-wrapper">
+        <form action="{% url 'search_novel' %}" method="GET" class="search-wrapper" autocomplete="off">
           <div class="search-box-wrapper">
             <!-- SVG Icon -->
             <span class="search-icon">
               <i class="fa fa-search"></i>
             </span>
-            <!-- Search Input -->
-            <input type="text" name="search" class="search-box" placeholder="Nhập tên truyện cần tìm..." value="{{ search_query }}">
+            <!-- Search Input with id for JS -->
+            <input id="search-box" type="text" name="search" class="search-box" placeholder="Nhập tên truyện cần tìm..."
+              value="{{ search_query }}">
+            <!-- Autocomplete dropdown container -->
+            <div id="autocomplete-list"></div>
           </div>
         </form>
       </div>
-      
     </div>
   </section>
 
@@ -148,48 +167,42 @@
     <!-- Search Results Heading -->
     <div class="search-results">
       {% if search_query %}
-        <h4>Kết quả tìm kiếm cho "{{ search_query }}"</h4>
-        {% if not page_obj %}
-          <div class="no-results">
-            <i class="fa fa-search fa-3x mb-3"></i>
-            <p>Không tìm thấy truyện nào phù hợp với từ khóa tìm kiếm.</p>
-          </div>
-        {% endif %}
+      <h4>Kết quả tìm kiếm cho "{{ search_query }}"</h4>
+      {% if not page_obj %}
+      <div class="no-results">
+        <i class="fa fa-search fa-3x mb-3"></i>
+        <p>Không tìm thấy truyện nào phù hợp với từ khóa tìm kiếm.</p>
+      </div>
+      {% endif %}
       {% else %}
-        <h4>Tất cả truyện</h4>
+      <h4>Tất cả truyện</h4>
       {% endif %}
     </div>
-
     <!-- Novel List Section -->
     <section class="product">
       <div class="trending__product">
-        <!-- Nội dung thực tế -->
         <div class="col-lg-12">
           <div id="trending-section" class="trending__product">
-            <!-- Nội dung thực tế -->
             <div class="row">
               {% for novel in page_obj %}
               <div class="col-lg-2 col-md-4 col-sm-6 product__item1">
                 {% load static %}
                 <a href="{% url 'user_novel_detail' novel.NovelId %}" class="product__item__link">
-                  <div class="product__item__pic set-bg" data-setbg="{% get_media_prefix %}{{ novel.ImgUrl }}">
-                      <div class="ep">{{ novel.chapter_count }} chương</div>
-                      <p class="Name">{{ novel.Name }}</p>
+                  <div class="product__item__pic set-bg"
+                    style="background-image: url('{% get_media_prefix %}{{ novel.ImgUrl }}');">
+                    <div class="ep">{{ novel.chapter_count }} chương</div>
+                    <p class="Name">{{ novel.Name }}</p>
                   </div>
-              </a>
-              
-                
-                <a href="{% url 'user_novel_detail' novel.NovelId %}"></a>
+                </a>
               </div>
               {% endfor %}
             </div>
-
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Phân trang -->
+    <!-- Pagination -->
     <div class="pagination mb-3 text-center">
       <span class="step-links">
         {% if page_obj.has_previous %}
@@ -221,4 +234,73 @@
     </div>
   </div>
 </section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const searchBox = document.getElementById('search-box');
+    const autocompleteList = document.getElementById('autocomplete-list');
+
+    // URL lấy từ Django URL (bạn cần khai báo URL name 'autocomplete_novel' trong urls.py)
+    const autocompleteUrl = "{% url 'autocomplete_novel' %}";
+
+    // Ẩn hiện autocomplete dropdown
+    function closeAutocomplete() {
+      autocompleteList.style.display = 'none';
+      autocompleteList.innerHTML = '';
+    }
+
+    searchBox.addEventListener('input', function () {
+      const query = this.value.trim();
+      if (query.length === 0) {
+        closeAutocomplete();
+        return;
+      }
+
+      fetch(`${autocompleteUrl}?q=${encodeURIComponent(query)}`)
+        .then(response => response.json())
+        .then(data => {
+          autocompleteList.innerHTML = '';
+          if (data.length === 0) {
+            closeAutocomplete();
+            return;
+          }
+
+          data.forEach(novel => {
+            const item = document.createElement('div');
+            item.classList.add('autocomplete-item');
+
+            item.innerHTML = `
+  <img src="${novel.ImgUrl}" alt="${novel.Name}">
+  <div>
+    <strong>${novel.Name}</strong><br>
+    Tác giả: ${novel.Author}<br>
+    Số chương: ${novel.ChapCount}
+  </div>
+`;
+
+            item.addEventListener('click', () => {
+              // Chuyển đến trang chi tiết truyện khi chọn item
+              window.location.href = `/novel/detail/${novel.NovelId}/1/`;
+            });
+
+            autocompleteList.appendChild(item);
+          });
+
+          autocompleteList.style.display = 'block';
+        })
+        .catch(err => {
+          console.error('Autocomplete fetch error:', err);
+          closeAutocomplete();
+        });
+    });
+
+    // Đóng dropdown khi click ra ngoài
+    document.addEventListener('click', function (e) {
+      if (!searchBox.contains(e.target) && !autocompleteList.contains(e.target)) {
+        closeAutocomplete();
+      }
+    });
+  });
+</script>
+
 {% endblock %}

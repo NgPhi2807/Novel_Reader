@@ -1,56 +1,325 @@
 {% load static %}
+<style>
+  #autocomplete-list {
+    position: absolute;
+    margin-top: 10px;
+    top: 100%;
+    left: 0;
+    right: 0;
+    border: 1px solid #ddd;
+    border-top: none;
+    background: white;
+    max-height: 550px;
+    overflow-y: auto;
+    z-index: 9999;
+    display: none;
+    border-radius: 10px;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  #autocomplete-list::-webkit-scrollbar {
+    display: none;
+  }
+
+  .autocomplete-item {
+    padding: 8px 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #eee;
+  }
+
+  .autocomplete-item img {
+    width: 60px;
+    height: 80px;
+    object-fit: cover;
+    margin-right: 10px;
+    border-radius: 3px;
+  }
+
+  .autocomplete-item__content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+  }
+
+  .autocomplete-item__title {
+    font-weight: bold;
+    font-size: 1em;
+    margin-bottom: 4px;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    max-width: 240px;
+    /* hoặc width cố định, ví dụ 100%, 150px, tùy layout */
+  }
+
+  .autocomplete-item__info {
+    display: flex;
+    gap: 15px;
+    font-size: 0.85em;
+    color: #555;
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 230px;
+  }
+
+  .autocomplete-item:hover {
+    background-color: #f0f8ff;
+  }
+
+  /* Results section styling */
+  .search-results {
+    padding: 0 15px;
+    margin-top: 30px;
+  }
+
+  .search-results h4 {
+    color: #333;
+    font-size: 1.4em;
+    font-weight: bold;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 3px solid #288ad6;
+  }
+
+  .dropdown-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    /* 3 cột đều nhau */
+    gap: 10px 20px;
+    /* khoảng cách giữa các hàng và cột */
+    padding: 10px;
+    min-width: 500px;
+    max-height: 800px;
+    overflow-y: auto;
+    white-space: normal;
+    /* Cho phép xuống dòng tên thể loại dài */
+  }
+
+  /* Tùy chỉnh item */
+  .dropdown-grid li {
+    list-style: none;
+    margin: 0;
+  }
+
+  .dropdown-grid li a {
+    display: block;
+    color: #333;
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.2s;
+  }
+
+  .dropdown-grid li a:hover {
+    color: #288ad6;
+  }
+</style>
 
 <header class="header">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-2 col-md-2">
-                <div class="header__logo">
-                    <a href="{% url 'user_home' %}">
-                        <img class="logo" src="{% static 'novel/img/logo.png' %}" alt="Logo" />
-                    </a>
-                </div>
-            </div>
-            <div class="col-lg-8 pt-2">
-                <div class="header__nav text-center">
-                    <nav class="header__menu mobile-menu">
-                        <ul>
-                            <li class="active"><a href="{% url 'user_home' %}">Trang chủ</a></li>
-                            <li>
-                                <a href="#">Thể loại <span class="arrow_carrot-down"></span></a>
-                                <ul class="dropdown">
-                                    {% for category in all_categories %}
-                                    <li><a href="#">{{ category.Name }}</a></li>
-                                    {% endfor %}
-                                </ul>
-                            </li>
-                            <li><a href="{% url 'all_novel' %}">Danh sách</a></li>
-                        </ul>
-                    </nav>
-                </div>
-            </div>
-            <div class="col-lg-2 pt-3">
-                <div class="header__right">
-                    <a class="search-button1" href="{% url 'search_novel' %}">
-                        <i class="fa fa-search"></i>
-                    </a>
-                    {% if user.is_authenticated %}
-                    <div class="sign-in-container">
-                        <a href="#" class="user-button">
-                            <i class="far fa-user-circle"></i>
-                        </a>
-                        <ul class="user-dropdown">
-                            <li><a href="{% url 'admin_dashboard' %}"><i class="fas fa-user"></i> Tài khoản</a></li>
-                            <li><a href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i>Thoát</a></li>
-                        </ul>
-                    </div>
-                    {% else %}
-                    <div class="sign-in-container">
-                        <button class="sign-in-btn" onclick="openPopup('loginModal')">ĐĂNG NHẬP</button>
-                        {% include 'novel/login_popup.html' %}
-                    </div>
-                    {% endif %}
-                </div>
-            </div>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-2 col-md-2">
+        <div class="header__logo">
+          <a href="{% url 'user_home' %}">
+            <img class="logo" src="{% static 'novel/img/logo.png' %}" alt="Logo" />
+          </a>
         </div>
+      </div>
+
+      <div class="col-lg-5 pt-2">
+        <div class="header__nav text-center">
+          <nav class="header__menu mobile-menu">
+            <ul>
+              <li class="active">
+                <a href="{% url 'user_home' %}">Trang chủ</a>
+              </li>
+              <li>
+                <a href="#">Thể loại <span class="arrow_carrot-down"></span></a>
+                <ul class="dropdown dropdown-grid">
+                  {% for category in all_categories %}
+                  <li><a href="{% url 'novel_category' category.CategoryId %}">{{ category.Name }}</a></li>
+                  {% endfor %}
+                </ul>
+              </li>
+
+              <li><a href="{% url 'all_novel' %}">Danh sách</a></li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+
+      <div class="col-lg-5 pt-2">
+        <div class="header__right" style="display: flex; align-items: center; gap: 12px">
+          <!-- Search box -->
+          <div class="search-box-wrapper" style="position: relative; flex-shrink: 0; width: 350px">
+            <span class="search-icon" style="
+                position: absolute;
+                left: 10px;
+                top: 50%;
+                transform: translateY(-50%);
+                color: #aaa;
+              ">
+              <i class="fa fa-search"></i>
+            </span>
+            <input id="search-box" type="text" name="search" class="search-box" placeholder="Nhập tên truyện cần tìm..."
+              autocomplete="off" style="
+                width: 100%;
+                padding: 8px 12px 8px 35px;
+                font-size: 14px;
+                border: 1px solid #ddd;
+                border-radius: 8px;
+              " />
+            <div id="autocomplete-list"></div>
+          </div>
+
+          {% if user.is_authenticated %}
+          <div class="sign-in-container" style="position: relative">
+            <a href="#" class="user-button">
+              <img src="{% static 'novel/img/200.jpg' %}" alt="user">
+            </a>
+            <ul class="user-dropdown" style="
+        position: absolute;
+        top: 80%;
+        right: 0;
+        background: white;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        display: none;
+        list-style: none;
+        padding: 5px 0;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+      ">
+              <li>
+                {% if user.is_superuser %}
+                <a href="{% url 'admin_dashboard' %}"
+                  style="display: flex; align-items: center; color: #191b28; text-decoration: none;">
+                  <i class="fa fa-user-circle-o" style="margin-right: 8px"></i> Tài khoản
+                </a>
+                {% else %}
+                <a href="{% url 'novels_followed' %}"
+                  style="display: flex; align-items: center; color: #191b28; text-decoration: none;">
+                  <i class="fa fa-user-circle-o" style="margin-right: 8px"></i> Tài khoản
+                </a>
+                {% endif %}
+              </li>
+              <li>
+                <a href="{% url 'logout' %}"
+                  style="display: flex; align-items: center; color: #333; text-decoration: none;">
+                  <i class="fas fa-sign-out-alt" style="margin-right: 8px"></i> Thoát
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <script>
+            // Toggle user dropdown menu
+            document.addEventListener("DOMContentLoaded", () => {
+              const userButton = document.querySelector(".user-button");
+              const userDropdown = document.querySelector(".user-dropdown");
+
+              userButton.addEventListener("click", (e) => {
+                e.preventDefault();
+                userDropdown.style.display =
+                  userDropdown.style.display === "block" ? "none" : "block";
+              });
+
+              document.addEventListener("click", (e) => {
+                if (
+                  !userButton.contains(e.target) &&
+                  !userDropdown.contains(e.target)
+                ) {
+                  userDropdown.style.display = "none";
+                }
+              });
+            });
+          </script>
+          {% else %}
+          <div class="sign-in-container">
+            <button class="sign-in-btn" onclick="openPopup('loginModal')">
+              Đăng nhập
+            </button>
+            {% include 'novel/login_popup.html' %}
+          </div>
+          {% endif %}
+        </div>
+      </div>
     </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const searchBox = document.getElementById("search-box");
+      const autocompleteList = document.getElementById("autocomplete-list");
+
+      // URL lấy từ Django URL (bạn cần khai báo URL name 'autocomplete_novel' trong urls.py)
+      const autocompleteUrl = "{% url 'autocomplete_novel' %}";
+
+      function closeAutocomplete() {
+        autocompleteList.style.display = "none";
+        autocompleteList.innerHTML = "";
+      }
+
+      searchBox.addEventListener("input", function () {
+        const query = this.value.trim();
+        if (query.length === 0) {
+          closeAutocomplete();
+          return;
+        }
+
+        fetch(`${autocompleteUrl}?q=${encodeURIComponent(query)}`)
+          .then((response) => response.json())
+          .then((data) => {
+            autocompleteList.innerHTML = "";
+            if (data.length === 0) {
+              closeAutocomplete();
+              return;
+            }
+
+            data.forEach((novel) => {
+              const item = document.createElement("div");
+              item.classList.add("autocomplete-item");
+
+              item.innerHTML = `
+   <img src="${novel.ImgUrl}" alt="${novel.Name}">
+  <div class="autocomplete-item__content">
+    <p class="autocomplete-item__title" title="${novel.Name}">${novel.Name}</p>
+    <div class="autocomplete-item__info">
+      <span>Tác giả: ${novel.Author}</span>
+    </div>
+  </div>
+`;
+              item.addEventListener("click", () => {
+
+                window.location.href = `/novel/detail/${novel.NovelId}/`;
+              });
+
+              autocompleteList.appendChild(item);
+            });
+
+            autocompleteList.style.display = "block";
+          })
+          .catch((err) => {
+            console.error("Autocomplete fetch error:", err);
+            closeAutocomplete();
+          });
+      });
+
+      // Đóng dropdown khi click ra ngoài
+      document.addEventListener("click", function (e) {
+        if (
+          !searchBox.contains(e.target) &&
+          !autocompleteList.contains(e.target)
+        ) {
+          closeAutocomplete();
+        }
+      });
+    });
+  </script>
 </header>

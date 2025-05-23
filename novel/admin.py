@@ -1,40 +1,69 @@
 from django.contrib import admin
-from .models import Novel, Chapter
+from django.contrib.auth.admin import UserAdmin
+from .models import (
+    CustomUser, Novel, Chapter,
+    Category, CategoryNovel,
+    UserNovel, Comment,ReadingProgress
+)
 
-# Tạo lớp quản lý admin cho model Novel
+# Custom admin cho CustomUser
+class CustomUserAdmin(UserAdmin):
+    model = CustomUser
+    fieldsets = UserAdmin.fieldsets + (
+        (None, {'fields': ('sdt', 'is_admin')}),
+    )
+    list_display = ['username', 'email', 'sdt', 'is_admin', 'is_staff', 'is_superuser']
+    search_fields = ['username', 'email', 'sdt']
+    list_filter = ['is_admin', 'is_staff', 'is_superuser']
+    ordering = ['username']
+
+admin.site.register(CustomUser, CustomUserAdmin)
+
+# Admin cho Novel
+@admin.register(Novel)
 class NovelAdmin(admin.ModelAdmin):
-    list_display = ('Name', 'Author', 'State', 'ChapCount', 'ViewCount', 'dateUpdate')
-    search_fields = ('Name', 'Author')
-    list_filter = ('State',)
+    list_display = ['NovelId', 'Name', 'Author', 'ChapCount', 'ViewCount', 'TotalComments', 'State', 'dateUpdate']
+    search_fields = ['Name', 'Author']
+    list_filter = ['State']
+    ordering = ['-dateUpdate']
 
-    # Cấu hình phân quyền: chỉ admin mới có thể chỉnh sửa các đối tượng này
-    def has_add_permission(self, request):
-        return request.user.is_staff  # Chỉ cho phép người dùng có quyền staff thêm
-
-    def has_change_permission(self, request, obj=None):
-        return request.user.is_staff  # Chỉ cho phép người dùng có quyền staff thay đổi
-
-    def has_delete_permission(self, request, obj=None):
-        return request.user.is_staff  # Chỉ cho phép người dùng có quyền staff xóa
-
-# Đăng ký model Novel với cấu hình admin
-admin.site.register(Novel, NovelAdmin)
-
-# Tạo lớp quản lý admin cho model Chapter
+# Admin cho Chapter
+@admin.register(Chapter)
 class ChapterAdmin(admin.ModelAdmin):
-    list_display = ('Name', 'Number', 'Novel', 'dateUpdate')
-    search_fields = ('Name', 'Novel__Name')  # Tìm kiếm theo tên chương và tên tiểu thuyết
-    list_filter = ('Novel',)
+    list_display = ['ChapId', 'Name', 'Novel', 'Number', 'dateUpdate']
+    search_fields = ['Name', 'Novel__Name']
+    list_filter = ['Novel']
+    ordering = ['Novel', 'Number']
 
-    # Cấu hình phân quyền cho Chapter
-    def has_add_permission(self, request):
-        return request.user.is_staff  # Chỉ cho phép người dùng có quyền staff thêm chương mới
+# Admin cho Category
+@admin.register(Category)
+class CategoryAdmin(admin.ModelAdmin):
+    list_display = ['CategoryId', 'Name']
+    search_fields = ['Name']
+    ordering = ['CategoryId']
 
-    def has_change_permission(self, request, obj=None):
-        return request.user.is_staff  # Chỉ cho phép người dùng có quyền staff thay đổi chương
+# Admin cho CategoryNovel
+@admin.register(CategoryNovel)
+class CategoryNovelAdmin(admin.ModelAdmin):
+    list_display = ['CNId', 'Novel', 'Category']
+    list_filter = ['Category']
+    search_fields = ['Novel__Name', 'Category__Name']
 
-    def has_delete_permission(self, request, obj=None):
-        return request.user.is_staff  # Chỉ cho phép người dùng có quyền staff xóa chương
+# Admin cho UserNovel
+@admin.register(UserNovel)
+class UserNovelAdmin(admin.ModelAdmin):
+    list_display = ['UNId', 'User', 'Novel']
+    search_fields = ['User__username', 'Novel__Name']
 
-# Đăng ký model Chapter với cấu hình admin
-admin.site.register(Chapter, ChapterAdmin)
+# Admin cho Comment
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ['_id', 'User', 'Novel', 'CommentId', 'CreatedAt', 'parent_comment']
+    search_fields = ['Content', 'User__username', 'Novel__Name']
+    list_filter = ['CreatedAt']
+    ordering = ['-CreatedAt']
+
+@admin.register(ReadingProgress)
+class ReadingProgressAdmin(admin.ModelAdmin):
+    list_display = ('user', 'novel', 'current_chapter', 'updated_at')
+    list_filter = ('novel', 'updated_at')

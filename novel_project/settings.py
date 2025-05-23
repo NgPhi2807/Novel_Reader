@@ -1,10 +1,8 @@
 import warnings
-from cryptography.utils import CryptographyDeprecationWarning
 from pathlib import Path
 import os
 
 # Ignore CryptographyDeprecationWarning
-warnings.filterwarnings("ignore", category=CryptographyDeprecationWarning)
 
 # Base directory of the project
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -32,11 +30,13 @@ INSTALLED_APPS = [
     'novel',
     'drf_yasg',
     'rest_framework',
+
 ]
+
 REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': (
         'rest_framework.renderers.JSONRenderer',
-        'rest_framework.renderers.BrowsableAPIRenderer',  # Đây là renderer sẽ hiển thị tài liệu API
+        'rest_framework.renderers.BrowsableAPIRenderer',  # Renderer để hiển thị tài liệu API
     ),
 }
 
@@ -72,21 +72,17 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'novel_project.wsgi.application'
 
-# Database configuration
+# Database configuration - SỬ DỤNG POSTGRESQL
 DATABASES = {
     'default': {
-        'ENGINE': 'djongo',
-        'NAME': 'novel_db',
-        'ENFORCE_SCHEMA': True,  # Thêm tùy chọn này nếu cần
-        'CLIENT': {
-            'host': 'mongodb+srv://ngphi039:456123nhp@cluster0.jvf7l.mongodb.net/?retryWrites=true&w=majority',
-            'authSource': 'admin',
-        },
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'noveldb',          # Tên database PostgreSQL bạn tạo
+        'USER': 'postgres',          # User PostgreSQL
+        'PASSWORD': '', # Thay bằng mật khẩu của bạn
+        'HOST': 'localhost',         # Hoặc IP server DB
+        'PORT': '5432',              # Port mặc định PostgreSQL
     }
 }
-
-# DJongo SQL Translator
-DJONGO_SQL_TRANSLATOR = 'djongo.sql2mongo.SQLTranslator'
 
 # Custom user model
 AUTH_USER_MODEL = 'novel.CustomUser'

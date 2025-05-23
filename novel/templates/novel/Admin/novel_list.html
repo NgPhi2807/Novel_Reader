@@ -81,7 +81,7 @@
               <td>
                   <div class="book-container">
                       <div class="book">
-                          <div class="truyen__details__pic set-bg" data-setbg="{% get_media_prefix %}{{ novel.ImgUrl }}"></div>
+<div class="truyen__details__pic set-bg" data-setbg="{{ novel.ImgUrl }}"></div>
                       </div>
                   </div>
                   <p class="book-title">{{ novel.Name }}</p>
@@ -140,8 +140,6 @@
             {% endif %}
         </span>
     </div>
-    
-  
   </div>
 </div>
 

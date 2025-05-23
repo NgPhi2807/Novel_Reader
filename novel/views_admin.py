@@ -99,7 +99,6 @@ def delete_chapter(request, novel_id, chap_id):
 def novel_list(request):
     search_query = request.GET.get('search', '').strip()
 
-    # Lọc dữ liệu theo từ khóa tìm kiếm
     if search_query:
         try:
             search_query_int = int(search_query)
@@ -110,20 +109,17 @@ def novel_list(request):
     else:
         novels_list = Novel.objects.all()
 
-    novels_list = novels_list.order_by("NovelId")
+    novels_list = novels_list.order_by("-ViewCount")
 
-    # Phân trang với 5 mục mỗi trang
     paginator = Paginator(novels_list, 5)
     page_number = request.GET.get("page", 1)
     page_obj = paginator.get_page(page_number)
 
-    # Tính toán giới hạn cho phân trang từ 1 đến 10, 11 đến 20, v.v.
-    start_page = (page_obj.number // 10) * 10 + 1  # Trang bắt đầu của nhóm
-    end_page = start_page + 9  # Trang kết thúc của nhóm
+    start_page = (page_obj.number // 10) * 10 + 1 
+    end_page = start_page + 9  
     if end_page > paginator.num_pages:
         end_page = paginator.num_pages
 
-    # Cập nhật page_obj để chỉ hiển thị nhóm trang từ start_page đến end_page
     page_range = range(start_page, end_page + 1)
 
     return render(request, "novel/Admin/novel_list.html", {
@@ -153,14 +149,11 @@ def edit_novel(request, novel_id):
 
         novel.save()
 
-        # Lấy danh sách ID thể loại từ request (ví dụ: "1,2")
         category_ids_str = request.POST.get("categories", "")
         selected_category_ids = category_ids_str.split(",") if category_ids_str else []
 
-        # Xóa các liên kết thể loại cũ
         CategoryNovel.objects.filter(Novel=novel).delete()
 
-        # Lấy CNId lớn nhất hiện tại và cộng thêm 1
         last_cn_id = CategoryNovel.objects.order_by("-CNId").first()
         next_cn_id = last_cn_id.CNId + 1 if last_cn_id else 1
 
@@ -169,15 +162,13 @@ def edit_novel(request, novel_id):
             if category_id:  # Kiểm tra ID không trống
                 try:
                     category = Category.objects.get(pk=category_id)
-                    # Tạo liên kết với CNId tự tăng
                     CategoryNovel.objects.create(
-                        CNId=next_cn_id,  # Gán CNId tự tăng
+                        CNId=next_cn_id,  
                         Novel=novel,
                         Category=category
                     )
-                    next_cn_id += 1  # Tăng CNId cho lần kế tiếp
+                    next_cn_id += 1  
                 except (Category.DoesNotExist, ValueError):
-                    # Bỏ qua các ID thể loại không hợp lệ hoặc không tồn tại
                     continue
 
         return redirect("novel_list")
@@ -200,19 +191,17 @@ def add_novel(request):
         description = request.POST.get("description", "").strip()
         author = request.POST.get("author", "").strip()
         state = request.POST.get("state", "").strip()
-        img = request.FILES.get("img")
+        img_url = request.POST.get("imgurl", "").strip()
         category_ids = request.POST.get("categories", "")
 
         if not name or not description or not author or not state:
             return HttpResponse("Vui lòng điền đầy đủ thông tin.")
 
-        # Lấy NovelId lớn nhất hiện tại
         last_novel = Novel.objects.order_by("-NovelId").first()
         next_novel_id = last_novel.NovelId + 1 if last_novel else 1
 
-        # Tạo tiểu thuyết mới với NovelId tự tăng
         novel = Novel(
-            NovelId=next_novel_id,  # Gán NovelId tự động tăng
+            NovelId=next_novel_id,  
             Name=name,
             Description=description,
             Author=author,
@@ -220,8 +209,8 @@ def add_novel(request):
             ChapCount=0,
         )
 
-        if img:
-            novel.ImgUrl = img
+        if img_url:
+            novel.ImgUrl = img_url
 
         try:
             novel.save() 
@@ -233,21 +222,17 @@ def add_novel(request):
 
         novel_id = novel.NovelId  
 
-        # Xử lý thể loại
         if not category_ids:
             return HttpResponse("Vui lòng chọn ít nhất một thể loại.")
 
         category_ids = [int(cat_id) for cat_id in category_ids.split(",") if cat_id.isdigit()]
         
-        # Kiểm tra nếu không có thể loại hợp lệ
         if not category_ids:
             return HttpResponse("Không có thể loại hợp lệ được chọn.")
 
-        # Lấy CNId lớn nhất hiện tại
         last_cn_id = CategoryNovel.objects.order_by("-CNId").first()
         next_cn_id = last_cn_id.CNId + 1 if last_cn_id else 1
 
-        # Tạo mối quan hệ CategoryNovel
         for category_id in category_ids:
             category = Category.objects.filter(pk=category_id).first()
             if category:
@@ -260,24 +245,35 @@ def add_novel(request):
     return render(request, "novel/Admin/novel_create.html", {"categories": categories})
 
 
-
 @admin_required
 def list_chapter(request, novel_id):
     novel = get_object_or_404(Novel, pk=novel_id)
-    chapters = Chapter.objects.filter(Novel=novel).order_by("Number")
+    all_chapters = Chapter.objects.filter(Novel=novel).order_by("Number")
+
+    # Phân trang
+    paginator = Paginator(all_chapters, 100)  # Hiển thị 10 chương mỗi trang
+    page_number = request.GET.get("page")
+    chapters = paginator.get_page(page_number)
+
+    # Xử lý thêm chương mới
     if request.method == "POST":
         name = request.POST.get("name")
         number = request.POST.get("number")
         content = request.POST.get("content")
 
-        if name and number and content:  # Kiểm tra dữ liệu hợp lệ
+        if name and number and content: 
             Chapter.objects.create(
                 Novel=novel, Name=name, Number=number, Content=content
             )
-            return redirect("novel_list")
+            return redirect("novel_list")  
 
     return render(
-        request, "novel/Admin/chapter_add.html", {"novel": novel, "chapters": chapters}
+        request,
+        "novel/Admin/chapter_add.html",
+        {
+            "novel": novel,
+            "chapters": chapters,
+        },
     )
 
 @admin_required

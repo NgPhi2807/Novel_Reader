@@ -1,28 +1,28 @@
 {% extends "base_user.html" %}
 {% load static %}
+
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'novel/css/home.css' %}">
 {% endblock %}
+
 {% block content %}
-<!-- Hero Section Begin -->
-<section class="truyen">
+<section class="truyen py-4">
   <div class="container">
     <div class="swiper mySwiper">
       <div class="swiper-wrapper">
         {% for novel in all_novels %}
         <div class="swiper-slide">
-          <div class="truyen__items set-bg" data-setbg="{% get_media_prefix %}{{ novel.ImgUrl }}"></div>
+          <div class="truyen__items set-bg"
+            data-setbg="{{ novel.ImgUrl|default_if_none:'/static/novel/img/default_slider_placeholder.jpg' }}"></div>
         </div>
         {% endfor %}
       </div>
     </div>
-
     <div class="swiper sw1">
       <div class="swiper-pagination"></div>
     </div>
   </div>
 
-  <!-- Nút điều hướng riêng -->
   <div class="custom-prev">
     <svg width="30" height="30" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
       <path fill-rule="evenodd"
@@ -36,227 +36,157 @@
     </svg>
   </div>
 </section>
-<!-- Hero Section End -->
 
-<!-- Product Section Begin -->
-<section class="product">
+<section class="product pb-4">
   <div class="container">
     <div class="row">
       <div class="col-lg-12">
-        <div id="trending-section" class="trending__product">
-          <div class="row">
-            <div class="col-lg-8 col-md-8 col-sm-8">
-              <div class="section-title">
-                <h4>Truyện Hot</h4>
-              </div>
-            </div>
-            <div class="col-lg-4 col-md-4 col-sm-4">
-              <div class="btn__all">
-                <a href="{% url 'all_novel' %}" class="btn-xemtatca">
-                  Xem tất cả <span class="arrow_right"></span>
-                </a>
-              </div>
+        <div id="trending-section" class="trending__product py-4">
+          <div class="section-title mt-4 mb-4 py-2 px-3">
+            <h4>Truyện Hot</h4>
+            <div class="btn__all text-right text-sm-center">
+              <a href="{% url 'all_novel' %}" class="btn-xemtatca">
+                Xem tất cả
+              </a>
             </div>
           </div>
 
-          <!-- Nội dung thực tế -->
-          <div class="row">
+          <div class="novel-grid mt-3">
             {% for novel in all_novels %}
-            <div class="col-lg-2 col-md-4 col-sm-6 product__item">
-              {%load static %}
-              <div class="product__item__pic set-bg" data-setbg="{% get_media_prefix %}{{novel.ImgUrl}}">
-                <div class="ep">{{ novel.chapter_count}} chương</div>
-                <p class="Name">{{novel.Name}}</p>
+            <div class="novel-card">
+              <div class="product__item">
+                <div class="product__item__pic set-bg"
+                  data-setbg="{{ novel.ImgUrl|default_if_none:'/static/novel/img/default_product_placeholder.jpg' }}">
+                  <div class="ep">{{ novel.ChapCount }} chương</div>
+                  <div class="Name">{{ novel.Name }}</div>
+                </div>
+                <div class="product__item__text">
+                  <ul>
+                    {% for category_novel_obj in novel.categorynovel_set.all|slice:":2" %}
+                    <li>{{ category_novel_obj.Category.Name }}</li>
+                    {% empty %}
+                    <li>Đang cập nhật</li>
+                    {% endfor %}
+                  </ul>
+                </div>
+                <a href="{% url 'user_novel_detail' novel.NovelId %}" class="full-link" title="{{ novel.Name }}"></a>
               </div>
-              <div class="product__item__text text-center">
-                <ul>
-                  {% for category in novel.categorynovel_set.all|slice:":2" %}
-                  <li>{{category.Category.Name}}</li>
-                  {% endfor %}
-                </ul>
-              </div>
-              <a href="{% url 'user_novel_detail' novel.NovelId %}" class="full-link"></a>
             </div>
             {% endfor %}
           </div>
+
         </div>
       </div>
 
-      <div class="container mt-4 pb-4">
-        <div class="row">
-          <!-- Cột Đọc Nhiều -->
-          <div class="col-lg-4 col-md-4 col-sm-12">
-            <div class="section-title">
-              <h4>Đọc Nhiều</h4>
-            </div>
-            <div class="story">
-              <img src="../../static/novel/img/truyen_docnhieu/vancothande.png" alt="Truyện 1" />
-              <div>
-                <h6>Ta, Kỷ Nguyên Chi Chủ</h6>
-                <p>Khoa huyễn</p>
-                <span>513 chương</span>
-              </div>
-            </div>
-            <div class="story">
-              <img src="../../static/novel/img/truyen_docnhieu/vancothande.png" alt="Truyện 1" />
-              <div>
-                <h6>Ta, Kỷ Nguyên Chi Chủ</h6>
-                <p>Khoa huyễn</p>
-                <span>513 chương</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Cột Thịnh Hành -->
-          <div class="col-lg-4 col-md-4 col-sm-12">
-            <div class="section-title">
-              <h4>Thịnh Hành</h4>
-            </div>
-            <div class="story">
-              <img src="../../static/novel/img/truyen_thinhhanh/dangcapkhivan.png" alt="Truyện 1" />
-              <div>
-                <h6>Mọi Người Tu Tiên Ta Làm Ruộng</h6>
-                <p>Khoa huyễn</p>
-                <span>513 chương</span>
-              </div>
-            </div>
-            <div class="story">
-              <img src="../../static/novel/img/truyen_thinhhanh/vancothande.png" alt="Truyện 1" />
-              <div>
-                <h6>Ta, Kỷ Nguyên Chi Chủ</h6>
-                <p>Khoa huyễn</p>
-                <span>513 chương</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Cột Đề Cử -->
-          <div class="col-lg-4 col-md-4 col-sm-12">
-            <div class="section-title">
-              <h4>Đề Cử</h4>
-            </div>
-            <div class="story">
-              <img src="../../static/novel/img/truyen_decu/dangcapkhivan.png" alt="Truyện 1" />
-              <div>
-                <h6>Ta, Kỷ Nguyên Chi Chủ</h6>
-                <p>Khoa huyễn</p>
-                <span>513 chương</span>
-              </div>
-            </div>
-            <div class="story">
-              <img src="../../static/novel/img/truyen_decu/dangcapkhivan.png" alt="Truyện 1" />
-              <div>
-                <h6>Hải Tặc Chi Toàn Thuộc Tính Bạo Tạc</h6>
-                <p>Khoa huyễn</p>
-                <span>513 chương</span>
-              </div>
-            </div>
-          </div>
-        </div>
+    <div class="container mt-2">
+  <div class="row">
+    <div class="col-lg-12 mb-md-0">
+      <div class="section-title py-2 px-3">
+        <h4>Truyện Đọc Nhiều</h4>
       </div>
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col" colspan="2">Tên Truyện</th>
+              <th scope="col">Thể loại</th>
+              <th scope="col">Số chương</th>
+              <th scope="col">Lượt đọc</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for novel in novel_rank %}
+            <tr>
+              <th scope="row">{{ forloop.counter }}</th>
+              <td>
+                <a href="{% url 'user_novel_detail' novel.NovelId %}"
+                  class="story-link text-decoration-none d-flex align-items-center">
+                  <div class="book">
+                    <div class="book-cover"
+                      style="background-image: url('{{ novel.ImgUrl }}'); background-size: cover;"></div>
+                  </div>
+                </a>
+              </td>
+              <td>
+                <a href="{% url 'user_novel_detail' novel.NovelId %}" class="story-link text-decoration-none position-relative" 
+                  title="{{ novel.Name }}">
+                  <p class="font-15-bold d-inline-block me-1">{{novel.Name}}</p>{# Added d-inline-block and me-1 for spacing #}
+                  <span class="hot-label">HOT</span> {# Added the HOT label #}
+                </a>
+              </td>
+              <td class="font-15-bold">
+                {% for category_novel_obj in novel.categorynovel_set.all|slice:":2" %}
+                <span class="category-item">{{ category_novel_obj.Category.Name }}</span>{% if not forloop.last%}, {% endif %}
+                {% empty %}
+                Đang cập nhật
+                {% endfor %}
+              </td>
+              <td class="red-bold">{{ novel.ChapCount }} chương</td>
+              <td class="font-15-bold">{{ novel.ViewCount }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
 
-      <div class="container mb-4">
+      <div class="container">
         <div class="row">
-          <div class="col-lg-12 col-md-12 col-sm-12">
+          <div class="col-lg-12">
             <div class="update__product">
-              <div class="row">
-                <div class="col-lg-8 col-md-8 col-sm-8">
-                  <div class="section-title">
-                    <h4>Truyện có chương mới</h4>
-                  </div>
-                </div>
-                <div class="col-lg-4 col-md-4 col-sm-4">
-                  <div class="btn__all">
-                    <a href="{% url 'all_novel' %}" class="btn-xemtatca">
-                      Xem tất cả <span class="arrow_right"></span>
-                    </a>
-                  </div>
+              <div class="section-title mt-4 mb-4 py-2 px-3">
+                <h4>Truyện có chương mới</h4>
+                <div class="btn__all text-right text-sm-center">
+                  <a href="{% url 'all_novel' %}" class="btn-xemtatca">
+                    Xem tất cả
+                  </a>
                 </div>
               </div>
-              <div class="row">
+
+              <div class="row mt-3">
                 {% for novel in novelupdates %}
-                <div class="col-6 mb-4 d-flex">
+                <div class="col-lg-6 col-md-12 mb-4 d-flex">
                   <div class="card d-flex flex-row w-100">
                     <div class="img-box">
-                      {% load static %}
                       <a href="{% url 'user_novel_detail' novel.NovelId %}">
-                        <img src="{% get_media_prefix %}{{ novel.ImgUrl }}" alt="{{ novel.Name }}">
+                        <img src="{{ novel.ImgUrl }}" alt="{{ novel.Name }}">
                       </a>
                     </div>
                     <div class="card-body novel-update-info">
                       <h6 class="novel-title">
-                        <a href="{% url 'user_novel_detail' novel.NovelId %}">
-                          {{ novel.Name }}
-                        </a>
+                        <a href="{% url 'user_novel_detail' novel.NovelId %}">{{ novel.Name }}</a>
                       </h6>
-              
                       {% if novel.latest_chapter and novel.latest_chapter.ChapId %}
                       <p class="latest-chapter">
-                        <strong><i class="fas fa-fire"></i> Chương mới nhất:</strong>
-                        <a href="{% url 'user_chapter_detail' novel.NovelId novel.latest_chapter.ChapId %}" class="chapter-link">
-                            Chương {{ novel.latest_chapter.Number }} - {{ novel.latest_chapter.Name }}
+                        <strong><i class="fas fa-fire"></i></strong>
+                        <a href="{% url 'user_chapter_detail' novel.NovelId novel.latest_chapter.ChapId %}"
+                          class="chapter-link">
+                         {{ novel.latest_chapter.Name }}
                         </a>
                       </p>
-                      
                       <p class="time-info">
-                        <i class="fas fa-clock"></i> Cập nhật: {{ novel.latest_update_display }}
+                        <i class="fas fa-clock"></i> {{ novel.latest_update_display }}
                       </p>
                       {% else %}
-                      <p class="latest-chapter"><i class="fas fa-exclamation-circle"></i> Chưa có chương nào</p>
-                      {% endif %}
+                      <p class="latest-chapter">
+                        <i class="fas fa-exclamation-circle"></i> Chưa có chương nào
+                      </p>
+                      {% endif %} {# Added this missing endif tag #}
                     </div>
-                    <style>
-                      .novel-update-info {
-                        max-width: 70%;
-                        padding: 0.75rem;
-                      }
-                    
-                      
-                      .novel-title a {
-                        display: block;
-                        white-space: nowrap;
-                        overflow: hidden;
-                        text-overflow: ellipsis;
-                        font-size:20px;
-                        font-weight:700;
-                      }
-                      
-                      .latest-chapter {
-                        font-size: 0.9rem;
-                        margin-bottom: 0.5rem;
-                        white-space: nowrap;
-                        overflow: hidden;
-                        text-overflow: ellipsis;
-                      }
-                      
-                      .time-info {
-                        font-size: 0.8rem;
-                        margin-bottom: 0;
-                        color: #666;
-                      }
-                      .img-box img {
-                        width: 100%;
-                        height: 100%;
-                        object-fit: cover;
-                      }
-                    </style>
                   </div>
                 </div>
                 {% endfor %}
               </div>
 
-
-
-
-
             </div>
           </div>
-          <!-- New column for Thể loại -->
-
         </div>
       </div>
+
     </div>
   </div>
 </section>
-<!-- Product Section End -->
 {% endblock %}

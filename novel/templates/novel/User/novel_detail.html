@@ -3,9 +3,7 @@
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'novel/css/truyen-detail.css' %}">
 {% endblock %}
-
 {% block content %}
-<!-- Breadcrumb Begin -->
 
 <div class="breadcrumb-option">
   <div class="container">
@@ -13,127 +11,109 @@
       <div class="col-lg-12">
         <div class="breadcrumb__links">
           <a href="{% url 'user_home' %}"><i class="fa fa-home"></i> Home</a>
-          <span class="current">{{novel.Name}}</span>
+          <i class="fa fa-angle-right mx-2"></i>
+          <span class="current">{{ novel.Name }}</span>
         </div>
       </div>
     </div>
   </div>
 </div>
-<!-- Breadcrumb End -->
 
-<!-- Truyen Section Begin -->
 <section class="truyen-details spad1">
   <div class="container">
     <div class="truyen__details__content">
       <div class="row ">
-
         <div class="col-lg-3">
           <a class="book-container" href="" target="_blank" rel="noreferrer noopener">
             <div class="book">
-              <div class="truyen__details__pic set-bg" {%load static%}
-                data-setbg="{% get_media_prefix %}{{novel.ImgUrl}}">
+              <div class="truyen__details__pic set-bg" {%load static%} data-setbg="{{novel.ImgUrl}}">
                 <div class="comment"><i class="fa fa-comments"></i> {{novel.TotalComments}} </div>
-                <div class="view"><i class="fa fa-eye"></i> {{ novel.ViewCount }}</div> <!-- Hiển thị lượt xem -->
+                <div class="view"><i class="fa fa-eye"></i> {{ novel.ViewCount }}</div> 
               </div>
             </div>
           </a>
         </div>
-
+     
         <div class="col-lg-9 px-5">
-          <div class="truyen__details__text">
-            <div class="truyen__details__title">
-              <h3>{{novel.Name}}</h3>
-              <span class="font-20 px-1">Tác giả: {{novel.Author}}</span>
+          <div class="novel-detail-container-new">
+
+            <div class="novel-header-section">
+              <h1 class="novel-title-main">{{ novel.Name }}</h1>
+              <p class="novel-author-sub">Tác giả : {{ novel.Author }}</p>
             </div>
 
-            <div class="truyen__details__widget">
-              <div class="row">
-                <div class="col-lg-12 col-md-12">
-                  <ul>
-                    <li>
-                      <i class="fas fa-book-open px-2"></i>
+            <div class="novel-actions-bar">
+              {% if FirstChapterId %}
+              <a href="{% url 'user_chapter_detail' novel.NovelId FirstChapterId %}" class="action-button btn-solid">
+                <i class="fas fa-book-reader"></i> Đọc Truyện
+              </a>
+              {% endif %}
 
-                      <span class="font-20">Thể loại: </span>
-                      <span class="font-20 fw-bold">
+              {% if user.is_authenticated %}
+              <form action="{% url 'theo_doi_truyen' novel.NovelId %}" method="post" style="display: inline;">
+                {% csrf_token %}
+                {% if is_following %}
+                <button type="submit" class="action-button btn-outline" style="background-color: #ccc;">
+                  <i class="fas fa-bookmark"></i> Đã theo dõi
+                </button>
+                {% else %}
+                <button type="submit" class="action-button btn-outline">
+                  <i class="fas fa-bookmark"></i> Theo dõi
+                </button>
+                {% endif %}
+              </form>
+              {% else %}
+              <button type="button" class="action-button btn-outline">
+                <i class="fas fa-bookmark"></i> Theo dõi
+              </button>
+              {% endif %}
 
-                        {% for category in novel.categorynovel_set.all %}
-                        {{ category.Category.Name }}{% if not forloop.last %}, {% endif %}
-                        {% endfor %}
-                      </span>
+              <button type="button" class="action-button btn-outline">
+                <i class="fas fa-comments"></i> Thảo Luận
+                {% if some_other_count > 0 %}
+                <span class="badge-count">{{ some_other_count }}</span>
+                {% endif %}
+              </button>
+               <button type="button" class="action-button btn-outline">
+  <i class="fas fa-spinner"></i> {{ novel.State }}
+</button>
+            </div>
 
-                    </li>
-                    <li>
-                      <i class="fas fa-spinner px-2"></i>
-                      <span class="font-20">Trạng thái : </span>
-                      <span class="font-20 fw-bold">{{novel.State}}</span>
-
-                    </li>
-                    <li>
-                      <i class="fas fa-file-alt px-2"></i>
-                      <span class="font-20 pl-1">Độ dài : </span>
-                      <span class="font-20 fw-bold">{{novel.ChapCount}} chương</span>
-                    </li>
-                  </ul>
-                  <div class="truyen__details__rating">
-                    <span class="font-20 px-1">Đánh giá : </span>
-                    <div class="rating">
-                      <a href="#"><i class="fa fa-star"></i></a>
-                      <a href="#"><i class="fa fa-star"></i></a>
-                      <a href="#"><i class="fa fa-star"></i></a>
-                      <a href="#" class="half-star">
-                        <i class="fa fa-star"></i>
-                        <!-- Sao đầy -->
-                        <i class="fa fa-star-half-o"></i>
-                        <!-- Nửa sao -->
-                      </a>
-                    </div>
-                    <span class="rating-text"> (5/5) (11 đánh giá) </span>
-                  </div>
-                </div>
+            <div class="novel-stats-bar">
+              <div class="stat-block">
+                <span class="stat-value">{{ novel.TotalComments}}</span>
+                <span class="stat-label">Lượt bình luận</span>
+              </div>
+              <div class="stat-block">
+                <span class="stat-value">{{ novel.ViewCount }}</span>
+                <span class="stat-label">Lượt đọc</span>
+              </div>
+                     <div class="stat-block">
+                <span class="stat-value">{{ novel.ChapCount }}</span>
+                <span class="stat-label">Chương</span>
               </div>
             </div>
-          </div>
-          <div class="truyen_button">
-            {% if FirstChapterId %}
-            <a href="{% url 'user_chapter_detail' novel.NovelId FirstChapterId %}" class="primary-btn">Đọc truyện</a>
-            {% else %}
-            {% endif %}
-            <a href="#" class="btn primary-btn">Theo dõi</a>
+
+            <div class="novel-tags-bar">
+              {% for category_novel in novel.categorynovel_set.all %}
+              <a href="#" class="tag-chip tag-category tag-{{ category_novel.Category.Name|slugify }}">
+                {{ category_novel.Category.Name }}
+              </a>
+              {% endfor %}
+            </div>
 
           </div>
+
+
         </div>
+
       </div>
     </div>
 
     <!-- Truyen Description -->
     <div class="row">
       <div class="col-lg-9 col-md-9">
-        <div class="card px-3 py-1">
-          <div class="section-title">
-            <div class="mt-3">
-              <div class="section-title">
-                <h4 class="text-black font-24">Truyện có chương mới</h4>
-              </div>
-              <div class="col-md-12">
-                <div class="row1">
-                  <table class="table1">
-                    <tbody class="chapter-update-list-grid">
-                      {% for chapter in chapters %}
-                      <tr>
-                        <td>
-                          <a href="#">
-                            <i class="fas fa-book"></i> <!-- Icon Font Awesome -->
-                            Chương {{ chapter.Number }}: {{ chapter.Name }}
-                          </a>
-                        </td>
-                      </tr>
-                      {% endfor %}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-          </div>
+        <div class="card p-4 rounded-3">
           <!-- Giới thiệu và Danh sách chương -->
           <div class="section-title">
             <a href="#" class="text-black font-24 tab active" data-tab="gioi-thieu">Giới thiệu</a>
@@ -143,13 +123,12 @@
           </div>
           <div class="tab-content">
             <div id="gioi-thieu" class="content-section active">
-              <div class="ml-2">
+              <div class="ml-2" style="font-size: 16px; line-height: 30px;">
                 {{ novel.Description|safe }}
               </div>
             </div>
 
             <div id="danh-sach" class="content-section">
-
               <div class="col-md-12 mb-3">
                 <div class="row1">
                   <table class="table ml-2">
@@ -157,9 +136,10 @@
                       {% for chapter in page_obj %}
                       <tr>
                         <td>
-                          <a href="{% url 'user_chapter_detail' novel_id=novel.NovelId chapter_id=chapter.ChapId %}">
-                            Chương {{ chapter.Number }}: {{ chapter.Name }}
-                          </a>
+                        <a href="{% url 'user_chapter_detail' novel_id=novel.NovelId chapter_id=chapter.ChapId %}" title="{{ chapter.Name }}">
+                          {{ chapter.Name }}
+                        </a>
+
                         </td>
                       </tr>
                       {% endfor %}
@@ -167,35 +147,47 @@
                   </table>
                 </div>
               </div>
-              <div class="pagination mb-3">
-                <span class="step-links">
-                  {% if page_obj.has_previous %}
-                  <a href="#" data-page="1" class="pagination-link">
-                    <i class="fas fa-angle-double-left"></i>
-                  </a>
-                  <a href="#" data-page="{{ page_obj.previous_page_number }}" class="pagination-link">
-                    <i class="fas fa-arrow-left"></i>
-                  </a>
-                  {% endif %}
+           <div class="pagination mb-3">
+  <span class="step-links">
+    {% if page_obj.has_previous %}
+      <a href="#" data-page="1" class="pagination-link" title="First">
+        <i class="fas fa-angle-double-left"></i>
+      </a>
+      <a href="#" data-page="{{ page_obj.previous_page_number }}" class="pagination-link" title="Previous">
+        <i class="fas fa-arrow-left"></i>
+      </a>
+    {% endif %}
+    {# Nếu start_page > 1 thì hiển thị dấu ... #}
+    {% if start_page > 1 %}
+      <span class="pagination-ellipsis">...</span>
+    {% endif %}
 
-                  {% for num in page_obj.paginator.page_range %}
-                  {% if num == page_obj.number %}
-                  <span class="current-page">{{ num }}</span>
-                  {% else %}
-                  <a href="#" data-page="{{ num }}" class="pagination-link">{{ num }}</a>
-                  {% endif %}
-                  {% endfor %}
+    {% for num in page_obj.paginator.page_range %}
+      {% if num >= start_page and num <= end_page %}
+        {% if num == page_obj.number %}
+          <span class="current-page">{{ num }}</span>
+        {% else %}
+          <a href="#" data-page="{{ num }}" class="pagination-link">{{ num }}</a>
+        {% endif %}
+      {% endif %}
+    {% endfor %}
 
-                  {% if page_obj.has_next %}
-                  <a href="#" data-page="{{ page_obj.next_page_number }}" class="pagination-link" title="Next">
-                    <i class="fas fa-arrow-right"></i>
-                  </a>
-                  <a href="#" data-page="{{ page_obj.paginator.num_pages }}" class="pagination-link" title="Last">
-                    <i class="fas fa-angle-double-right"></i>
-                  </a>
-                  {% endif %}
-                </span>
-              </div>
+    {# Nếu end_page < tổng số trang thì hiển thị dấu ... #}
+    {% if end_page < page_obj.paginator.num_pages %}
+      <span class="pagination-ellipsis">...</span>
+    {% endif %}
+
+    {% if page_obj.has_next %}
+      <a href="#" data-page="{{ page_obj.next_page_number }}" class="pagination-link" title="Next">
+        <i class="fas fa-arrow-right"></i>
+      </a>
+      <a href="#" data-page="{{ page_obj.paginator.num_pages }}" class="pagination-link" title="Last">
+        <i class="fas fa-angle-double-right"></i>
+      </a>
+    {% endif %}
+  </span>
+</div>
+
             </div>
             <script>
               function loadChapters(pageNumber) {
@@ -304,11 +296,8 @@
             </script>
           </div>
           <div class="truyen__details__review mt-3">
-            <div class="section-title d-flex justify-content-between align-items-center">
-              <h4 class="text-black font-24 mb-0">Bình luận</h4>
-              <button id="toggleComments" class="btn btn-light btn-sm">
-                <i class="fas fa-chevron-up"></i>
-              </button>
+            <div class="title mt-4 mb-4">
+              <h4 class="text-black mb-0 py-2 ">Bình luận </h4>
             </div>
 
             <div id="commentSection">
@@ -316,11 +305,10 @@
               <form method="POST" class="mt-3 comment-form">
                 {% csrf_token %}
                 <div class="d-flex gap-2">
-                  <img src="{% static 'novel/img/user/user1.png' %}" alt="User"  width="40"
-                    height="40" />
+                  <img src="{% static 'novel/img/200.jpg' %}" alt="User" width="40" height="40" />
                   <div class="flex-grow-1">
                     <textarea name="Content" id="editor" class="form-control" placeholder="Viết bình luận..."
-                      rows="1"></textarea>
+                      rows="10"></textarea>
                     <button type="submit" class="btn btn-primary mt-2 float-end">Đăng bình luận</button>
                   </div>
                 </div>
@@ -341,17 +329,25 @@
                 <div class="comment-thread">
                   <div class="comment-main rounded">
                     <div class="d-flex gap-2">
-                      <img src="{% static 'novel/img/user/user1.png' %}" alt="User"  width="40" height="40" />
                       <div class="flex-grow-1">
+
                         <div class="comment-content bg-light p-3 rounded">
-                          <h6 class="mb-1 fw-bold text-primary">{{ comment.User.username }}</h6>
-                          <p class="mb-1">{{ comment.Content|safe }}</p>
+                          <div>
+                            <img src="{% static 'novel/img/200.jpg' %}" alt="User" width="40" height="40" />
+
+                          </div>
+                          <div class="comment-info">
+
+                            <h6 class="mb-1 fw-bold text-primary">{{ comment.User.username }}</h6>
+                            <p class="mb-1">{{ comment.Content|safe }}</p>
+                          </div>
+
                         </div>
                         <div class="comment-actions mt-1">
                           <small class="text-muted">{{ comment.time_since }}</small>
                           {% if user.is_authenticated %}
                           <div class="reply-wrapper">
-                            <button class="btn btn-link btn-sm p-0 ms-2 reply-trigger" 
+                            <button class="btn btn-link btn-sm p-0 ms-2 reply-trigger"
                               onclick="toggleReplyForm('{{ comment.CommentId }}', '{{ comment.CommentId }}', '{{ comment.User.username }}')">
                               Trả lời
                             </button>
@@ -371,7 +367,7 @@
                           {% for reply in comment.replies.all %}
                           <div class="reply-thread">
                             <div class="d-flex gap-2 mt-2">
-                              <img src="{% static 'novel/img/user/user1.png' %}" alt="User"  width="32" height="32" />
+                              <img src="{% static 'novel/img/user/user1.png' %}" alt="User" width="32" height="32" />
                               <div class="flex-grow-1">
                                 <div class="comment-content bg-light p-2 rounded">
                                   <h6 class="mb-1 fw-bold">{{ reply.User.username }}</h6>
@@ -386,7 +382,7 @@
                                   <small class="text-muted">{{ reply.time_since }}</small>
                                   {% if user.is_authenticated %}
                                   <div class="reply-wrapper">
-                                    <button class="btn btn-link btn-sm p-0 ms-2 reply-trigger" 
+                                    <button class="btn btn-link btn-sm p-0 ms-2 reply-trigger"
                                       onclick="toggleReplyForm('{{ reply.CommentId }}', '{{ comment.CommentId }}', '{{ reply.User.username }}')">
                                       Trả lời
                                     </button>
@@ -410,282 +406,91 @@
               </div>
             </div>
           </div>
-
-<style>
-  /* Facebook-style comment section */
-  .comment-main {
-    background-color: transparent;
-    border: none;
-    margin-bottom: 12px;
-  }
-
-  .comment-content {
-    background-color: #f0f2f5 !important;
-    border-radius: 5px !important;
-    box-shadow: none !important;
-    display:flex;
-    flex-direction: column;
-    gap:5px;
-  }
-
-  .comment-actions {
-    font-size: 0.8rem;
-    padding-left: 12px;
-    display: flex;
-    gap: 15px;
-    flex-direction: row;
-    align-items: center;
-  }
-
-  .comment-actions button,
-  .reply-count {
-    color: #65676B;
-    font-weight: 600;
-    text-decoration: none;
-  }
-
-  .comment-actions button:hover,
-  .reply-count:hover {
-    text-decoration: underline;
-  }
-
-  .replies-container {
-    
-    padding-left: 0;
-    border-left: none;
-  }
-
-  .comment-form {
-    margin-bottom: 20px;
-  }
-
-  .comment-form textarea,
-  .reply-form textarea {
-    border-radius: 20px;
-    padding: 10px 15px;
-    resize: none;
-    background-color: #f0f2f5;
-    border: none;
-    box-shadow: none;
-  }
-
-  .comment-form textarea:focus,
-  .reply-form textarea:focus {
-    box-shadow: none;
-    border: none;
-    background-color: #f0f2f5;
-  }
-
-  .comment-thread {
-    margin-bottom: 16px;
-  }
-
-  .reply-item {
-    margin-bottom: 8px;
-  }
-
-  .reply-form {
-    margin-left: 52px;
-    margin-top: 8px !important;
-  }
-
-  /* User profile images */
-  .rounded-circle {
-    border: 1px solid #ddd;
-  }
-
-  /* Comment button styling */
-  .comment-form button,
-  .reply-form button {
-    background-color: #1877F2;
-    border: none;
-    border-radius: 6px;
-    font-weight: 600;
-    font-size: 0.85rem;
-    padding: 5px 12px;
-  }
-
-  .comment-form button:hover,
-  .reply-form button:hover {
-    background-color: #166fe5;
-  }
-
-  /* Toggle comments button */
-  #toggleComments {
-    border: none;
-    background-color: transparent;
-    color: #65676B;
-  }
-
-  #toggleComments:hover {
-    background-color: #f0f2f5;
-  }
-
-  /* Username styling */
-  .comment-content h6 {
-    font-size: 1.2rem;
-    margin-bottom: 2px !important;
-  }
-
-  /* Comment text styling */
-  .comment-content p {
-    font-size: 0.9rem;
-    margin-bottom: 0 !important;
-  }
-
-  /* Gap between user image and comment */
-  .gap-2 {
-    gap: 12px !important;
-  }
-
-  /* Section title styling */
-  .section-title h4 {
-    font-weight: 600;
-    color: #050505;
-  }
-
-  /* Timestamp styling */
-  .text-muted {
-    color: #65676B !important;
-  }
-
-  .replied-to {
-    color: #1877F2 !important;
-    font-weight: 800 !important;
-    margin-right: 4px;
-  }
-  .form-control1 {
-    display: block;
-    width: 100%;
-    height: calc(1.5em + .75rem + 20px);
-    padding: .375rem .75rem;
-    font-size: 1rem;
-    font-weight: 400;
-    line-height: 1.5;
-    color: #495057;
-    background-color: #fff;
-    background-clip: padding-box;
-    border: 1px solid #ced4da;
-    border-radius: .25rem;
-    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
-    color: #187ff2;
-  }
-
-  /* Add these new styles */
-  .reply-wrapper {
-    position: relative;
-    display: inline-block;
-  }
-
-  .reply-popup {
-    position: absolute;
-    bottom: 100%;
-    left: 0;
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    padding: 8px;
-    margin-bottom: 4px;
-    display: none;
-    width: 500px;
-    z-index: 1000;
-  }
-
-  .reply-form {
-    margin: 0 !important;
-    display: flex;
-    align-items: flex-start;
-    gap: 8px;
-  }
-
-  .reply-form form {
-    flex: 1;
-  }
-
-  .reply-form textarea {
-    min-height: 36px;
-    padding: 8px 12px;
-    width: 100%;
-    margin-bottom: 8px;
-  }
-
-  .reply-buttons {
-    display: flex;
-    justify-content: flex-end;
-    gap: 8px;
-    margin-top:10px;
-  }
-
-  .reply-trigger {
-    cursor: pointer;
-  }
-
-  .reply-trigger:hover + .reply-popup,
-  .reply-popup:hover {
-    display: block;
-  }
-</style>
-          <script>
-            ClassicEditor.create(document.querySelector('#editor'), {
-              toolbar: [
-                'heading', '|', 'bold', 'italic', 'underline', 'strikethrough', 'link', 'bulletedList', 'numberedList',
-                '|', 'fontSize', 'fontColor', 'fontBackgroundColor', 'emoji', '|',
-                'imageUpload', 'insertTable', 'blockQuote', 'codeBlock', 'mediaEmbed', 'undo', 'redo', 'fullscreen'
-              ],
-              mediaEmbed: {
-                previewsInData: true
-              },
-              simpleUpload: {
-                uploadUrl: '/upload/', // Route upload ảnh bạn xử lý bằng Django
-                headers: {
-                  'X-CSRFToken': '{{ csrf_token }}'
-                }
-              }
-            })
-              .then(editor => {
-                console.log(editor);
-              })
-              .catch(error => {
-                console.error(error);
-              });
-          </script>
-
-
         </div>
+
+        <script>
+          ClassicEditor.create(document.querySelector('#editor'), {
+            toolbar: [
+              'heading', '|', 'bold', 'italic', 'underline', 'strikethrough', 'link', 'bulletedList', 'numberedList',
+              '|', 'fontSize', 'fontColor', 'fontBackgroundColor', 'emoji', '|',
+              'imageUpload', 'insertTable', 'blockQuote', 'codeBlock', 'mediaEmbed', 'undo', 'redo', 'fullscreen'
+            ],
+            mediaEmbed: {
+              previewsInData: true
+            },
+            simpleUpload: {
+              uploadUrl: '/upload/',
+              headers: {
+                'X-CSRFToken': '{{ csrf_token }}'
+              }
+            }
+          })
+            .then(editor => {
+              console.log(editor);
+            })
+            .catch(error => {
+              console.error(error);
+            });
+        </script>
+        <div class="rounded-3">
+          <div class="title mt-4 mb-4">
+            <h4 class="text-black mb-0 py-2 ">Truyện cùng thể loại </h4>
+          </div>
+          <div class="row">
+            {% for novel in similar_novels %}
+            <div class="col-lg-3 col-md-4 col-sm-6 product__item">
+              {%load static %}
+              <div class="product__item__pic set-bg" data-setbg="{{novel.ImgUrl}}">
+                <div class="ep">{{ novel.ChapCount}} chương</div>
+                <p class="Name">{{novel.Name}}</p>
+              </div>
+              <div class="product__item__text text-center">
+                <ul>
+                  {% for category in novel.categorynovel_set.all|slice:":2" %}
+                  <li>{{ category.Category.Name }}</li>
+                  {% empty %}
+                  <li>Đang cập nhật</li>
+                  {% endfor %}
+                </ul>
+
+              </div>
+              <a href="{% url 'user_novel_detail' novel.NovelId %}" class="full-link" title="{{ novel.Name }}"></a>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        <style>
+
+        </style>
       </div>
       <div class="col-lg-3 col-md-3 pt-1">
         <div class="section-title">
-          <h4 class="">Truyện Đọc nhiều</h4>
+          <h4 class="">Truyện đề xuất</h4>
         </div>
         <div class="hot-novels">
           {% for novel in novels_123 %}
           <div class="hot-novel-item rank-{{ forloop.counter }}">
-            <!-- Huy chương chỉ hiển thị cho top 3 -->
             <div class="rank-medal">
               {% if forloop.counter == 1 %}
-              <i class="fas fa-medal medal-gold"></i>
+              <img src="{% static 'novel/img/rank-index-1.png' %}" alt="Hạng 1" />
               {% elif forloop.counter == 2 %}
-              <i class="fas fa-medal medal-silver"></i>
+              <img src="{% static 'novel/img/rank-index-2.png' %}" alt="Hạng 2" />
               {% else %}
-              <i class="fas fa-medal medal-bronze"></i>
+              <img src="{% static 'novel/img/rank-index-3.png' %}" alt="Hạng 3" />
               {% endif %}
             </div>
 
             <div class="novel-info">
               {% if forloop.counter == 1 %}
-              <img src="{% get_media_prefix %}{{ novel.ImgUrl }}" alt="{{ novel.Name }}" class="hot-novel-img">
+              <img src="{{ novel.ImgUrl }}" alt="{{ novel.Name }}" class="hot-novel-img">
               {% endif %}
-
               <div class="hot-novel-details">
                 <a href="{% url 'user_novel_detail' novel.NovelId %}" class="hot-novel-title">
                   {{ novel.Name }}
                 </a>
-
-                {% if forloop.counter == 1 %}
                 <span class="hot-novel-author">
                   <i class="fas fa-user"></i> {{ novel.Author }}
                 </span>
-                {% endif %}
               </div>
             </div>
           </div>
@@ -704,115 +509,10 @@
           {% endfor %}
         </div>
       </div>
-
-
     </div>
   </div>
 </section>
-<!-- Truyen Section End -->
 
-<style>
-  .hot-novels {
-    background: #fff;
-    padding: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  }
 
-  .hot-novel-author {
-    font-size: 12px;
-    color: #777;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    margin-top: 2px;
-  }
-
-  .hot-novel-author i {
-    font-size: 12px;
-    color: #999;
-  }
-
-  /* Item truyện */
-  .hot-novel-item {
-    display: flex;
-    align-items: center;
-    padding: 8px 0;
-    border-bottom: 1px solid #ddd;
-    transition: all 0.2s;
-  }
-
-  .hot-novel-item:last-child {
-    border-bottom: none;
-  }
-
-  .hot-novel-item:hover {
-    background: #f8f9fa;
-  }
-
-  .rank-medal {
-    width: 24px;
-    text-align: center;
-  }
-
-  .rank-medal i {
-    font-size: 18px;
-  }
-
-  .medal-gold {
-    color: #FFD700;
-  }
-
-  .medal-silver {
-    color: #C0C0C0;
-  }
-
-  .medal-bronze {
-    color: #CD7F32;
-  }
-
-  /* Số thứ tự */
-  .rank-number {
-    font-size: 16px;
-    font-weight: bold;
-    width: 24px;
-    text-align: center;
-    color: #555;
-  }
-
-  /* Ảnh của truyện top 1 */
-  .hot-novel-img {
-    width: 50px;
-    height: 70px;
-    object-fit: cover;
-    border-radius: 5px;
-    margin-right: 10px;
-  }
-
-  /* Canh chỉnh thông tin truyện */
-  .novel-info {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .hot-novel-details {
-    flex: 1;
-  }
-
-  /* Tiêu đề truyện */
-  .hot-novel-title {
-    font-size: 14px;
-    color: #333;
-    font-weight: bold;
-    text-decoration: none;
-    display: block;
-  }
-
-  .hot-novel-title:hover {
-    text-decoration: underline;
-    color: inherit;
-  }
-</style>
 
 {% endblock %}

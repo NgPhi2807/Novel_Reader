@@ -28,12 +28,19 @@
 
 html,
 body {
-  height: 100%;
-  font-family: "Mulish", sans-serif;
-  -webkit-font-smoothing: antialiased;
-  background-color: #e7e7e7;
+    background-color: #f3f4f6;
+    line-height: 1.25rem;
 }
 
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.content {
+  flex: 1;
+}
 h1,
 h2,
 h3,
@@ -115,16 +122,16 @@ ol {
   color: #1f2129;
   font-weight: 600;
   line-height: 21px;
-  text-transform: uppercase;
+  
   padding-left: 20px;
   position: relative;
-  font-family: "Oswald", sans-serif;
+  font-family: "Quicksand", sans-serif;
 }
+
 .section-title h5 {
   padding-top: 10px !important;
   font-size: 15px;
   font-weight: 300 !important;
-  text-transform: uppercase;
 }
 
 .section-title h4:after,
@@ -132,7 +139,7 @@ ol {
   position: absolute;
   left: 0;
   top: -3px;
-  height: 32px;
+  height: 28px;
   width: 4px;
   background: #e53637;
   content: "";

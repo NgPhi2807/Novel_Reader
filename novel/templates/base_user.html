@@ -11,6 +11,8 @@
 
     <!-- Swiper CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&display=swap"
@@ -42,20 +44,22 @@
 
 <body>
 
+     <div class="wrapper"> <!-- Thêm div này -->
     <!-- Header -->
     <header>
-        {% include "header.html" %}
+      {% include "header.html" %}
     </header>
 
     <!-- Main Content -->
-    <main>
-        {% block content %}{% endblock %}
+    <main class="content">
+      {% block content %}{% endblock %}
     </main>
 
     <!-- Footer -->
-    <footer>
-        {% include "footer.html" %}
+    <footer class="footer">
+      {% include "footer.html" %}
     </footer>
+  </div>
 
     <script src="{% static 'novel/js/jquery-3.3.1.min.js' %}"></script>
     <script src="{% static 'novel/js/bootstrap.min.js' %}"></script>

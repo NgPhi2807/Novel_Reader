@@ -7,7 +7,7 @@ from .views_admin import (
 from .views_user import (
     register_user, login_view, logout_view,
     password_reset_request, password_reset_verify, password_reset_confirm,
-    search_novel, UserHomeView ,add_comment_reply
+    search_novel, UserHomeView ,add_comment_reply,autocomplete_novel,theo_doi_truyen,user_dashboard,novels_followed,unfollow_novel,novel_category
 )
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
@@ -27,7 +27,6 @@ schema_view = get_schema_view(
 
 urlpatterns = [
     path('api/', schema_view.with_ui('swagger', cache_timeout=0), name='swagger-docs'),
-    # 🌟 Trang chính
     path("", views_user.user_home, name="user_home"),
     path('api/user_home/', UserHomeView.as_view(), name='user_home_api'),
 
@@ -38,6 +37,10 @@ urlpatterns = [
     path('logout/', logout_view, name='logout'),
     path('user_home/', views_user.user_home, name='user_home'),
     path('toggle-admin/<int:user_id>/', views_admin.toggle_admin, name='toggle_admin'),
+    path('novel/<int:novel_id>/follow/', views_user.theo_doi_truyen, name='theo_doi_truyen'),
+    path('user/novels_followed/', views_user.novels_followed, name='novels_followed'),
+    path('unfollow/<int:novel_id>/', views_user.unfollow_novel, name='unfollow_novel'),
+    path('the-loai/<int:category_id>/', views_user.novel_category, name='novel_category'),
 
 
     # 🔐 Quản lý mật khẩu
@@ -64,6 +67,7 @@ urlpatterns = [
     # 📖 Chi tiết truyện
     path("detail/<int:novel_id>/", views_user.user_novel_detail, name="user_novel_detail"),
     path('comment/<int:CommnetId>/reply/', views_user.add_comment_reply, name='reply_comment'),
+    path('novel/autocomplete/', views_user.autocomplete_novel, name='autocomplete_novel'),
 
     
     # 📖 Quản lý chương truyện

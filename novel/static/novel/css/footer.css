@@ -1,9 +1,10 @@
 .footer {
-  background: #ffff;
   padding-top: 60px;
   padding-bottom: 40px;
   position: relative;
-  border-top: 2px solid #e0e0e0;
+  border-top: 1px solid #202020;
+  margin-left:auto;
+  margin-right:auto;
 }
 
 .page-up {

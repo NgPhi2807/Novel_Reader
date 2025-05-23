@@ -3,39 +3,32 @@
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'novel/css/listchap.css' %}">
 {% endblock %}
-
 {% block title %}Thêm Chương - {{ novel.Name }}{% endblock %}
-
 {% block content %}
 <div class="col-md-9 col-lg-9 mx-auto">
     <div class="card p-4">
         <h4 class="mb-3 fw-bold text-primary">Danh sách chương:</h4>
 
         <div class="d-flex align-items-center search-bar">
-            <!-- Ô tìm kiếm -->
             <div class="flex-grow-1">
                 <div class="input-group">
                     <span class="input-group-text"><i class="fas fa-search"></i></span>
                     <input type="text" class="form-control" placeholder="Tìm kiếm chương...">
                 </div>
             </div>
-
             <button class="btn btn-primary btn-search">
                 <i class="fas fa-search"></i> Tìm kiếm
             </button>
-
-            <!-- Nút thêm chương -->
             <button type="button" class="btn btn-success btn-add" id="addChapter">
                 <i class="fas fa-plus"></i> Thêm chương
             </button>
         </div>
-
         <div class="form-container">
             <div class="left-column">
                 <ul id="chapterList">
                     {% for chapter in chapters %}
                     <li class="list-group-item1 chapter-item">
-                        Chương {{ chapter.Number }}: {{ chapter.Name }}
+                        {{ chapter.Name }}
                         <div class="popup-menu">
                             <button class="edit-btn" data-id="{{ chapter.ChapId }}">Chỉnh sửa</button>
                             <button class="delete-btn text-danger">Xóa</button>
@@ -43,6 +36,20 @@
                     </li>
                     {% endfor %}
                 </ul>
+                <div class="pagination-buttons">
+                    {% if chapters.has_previous %}
+                    <a class="btn" href="?page=1">&laquo; Đầu</a>
+                    <a class="btn" href="?page={{ chapters.previous_page_number }}">Trước</a>
+                    {% endif %}
+
+                    <span class="btn disabled">Trang {{ chapters.number }} / {{ chapters.paginator.num_pages }}</span>
+
+                    {% if chapters.has_next %}
+                    <a class="btn" href="?page={{ chapters.next_page_number }}">Sau</a>
+                    <a class="btn" href="?page={{ chapters.paginator.num_pages }}">Cuối &raquo;</a>
+                    {% endif %}
+                </div>
+
             </div>
 
             <div class="right-column" id="editChapterBox">
@@ -67,10 +74,10 @@
                     </form>
                 </div>
                 <div id="alertBox" class="custom-alert">
-                    <i class="fa fa-check-circle"></i> 
+                    <i class="fa fa-check-circle"></i>
                     <span id="alertMessage"></span>
                 </div>
-                
+
                 <div class="card p-4" id="addChapterSection">
                     <h5 class="mb-3 fw-bold text-success">Thêm Chương Mới</h5>
                     <form method="post" id="addChapterForm" action="/novel/{{ novel.NovelId }}/add_chapter/add/">
