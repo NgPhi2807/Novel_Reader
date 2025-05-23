@@ -18,6 +18,10 @@ from .serializers import CategorySerializer
 from rest_framework.response import Response
 from django.db.models import Count
 from django.db.models import Q
+from django.core.paginator import Paginator
+from django.shortcuts import get_object_or_404, redirect, render
+from django.contrib import messages
+from django.utils.timezone import now
 
 
 
@@ -134,10 +138,6 @@ def all_novel(request):
         "novels_with_chapters": novels_with_chapters
     })
 
-from django.core.paginator import Paginator
-from django.shortcuts import get_object_or_404, redirect, render
-from django.contrib import messages
-from django.utils.timezone import now
 
 def user_novel_detail(request, novel_id):
     novel = get_object_or_404(Novel, pk=novel_id)
@@ -153,11 +153,16 @@ def user_novel_detail(request, novel_id):
     first_chapter = Chapter.objects.filter(Novel=novel).order_by("Number").first()
     first_chapter_id = first_chapter.ChapId if first_chapter else None
 
+    # Lấy reading progress nếu user đã đăng nhập
+    if request.user.is_authenticated:
+        reading_progress = ReadingProgress.objects.filter(user=request.user, novel=novel).first()
+    else:
+        reading_progress = None
+
     paginator = Paginator(chapters, 100)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
 
-    # Tính start_page và end_page để phân trang hiển thị tối đa 10 trang 1 lần
     current_page = page_obj.number
     total_pages = page_obj.paginator.num_pages
 
@@ -185,7 +190,7 @@ def user_novel_detail(request, novel_id):
 
     if request.method == 'POST':
         content = request.POST.get('Content', '').strip()
-        parent_comment_id = request.POST.get('parent_comment_id')  # Lấy parent_comment_id nếu có
+        parent_comment_id = request.POST.get('parent_comment_id')
 
         if not request.user.is_authenticated:
             messages.error(request, "Bạn cần đăng nhập để bình luận.")
@@ -232,11 +237,12 @@ def user_novel_detail(request, novel_id):
             "novels_123": novels_123,
             "novels_4_10": novels_4_10,
             "page_obj": page_obj,
-            "start_page": start_page,    # thêm start_page
-            "end_page": end_page,        # thêm end_page
+            "start_page": start_page,
+            "end_page": end_page,
             "comments": comments,
             "similar_novels": similar_novels,
-            'is_following': is_following,
+            "is_following": is_following,
+            "reading_progress": reading_progress,  
         },
     )
 
@@ -255,21 +261,18 @@ def autocomplete_novel(request):
     ]
     return JsonResponse(results, safe=False)
 
-@login_required
 def user_chapter_detail(request, novel_id, chapter_id):
     chapter = get_object_or_404(Chapter, ChapId=chapter_id, Novel_id=novel_id)
     
-    # ✅ Tự động tạo hoặc cập nhật tiến trình đọc
-    ReadingProgress.objects.update_or_create(
-        user=request.user,
-        novel=chapter.Novel,
-        defaults={'current_chapter': chapter}
-    )
+    if request.user.is_authenticated:
+        ReadingProgress.objects.update_or_create(
+            user=request.user,
+            novel=chapter.Novel,
+            defaults={'current_chapter': chapter}
+        )
     
-    # Lấy danh sách các chương của truyện
     chapters = Chapter.objects.filter(Novel_id=novel_id).order_by("Number")
     
-    # Tính số lượng chương cho truyện này
     novels = Novel.objects.filter(NovelId=novel_id).annotate(chapter_count=Count('chapters'))
 
     return render(
@@ -457,11 +460,9 @@ def search_novel(request):
 
     novels_list = Novel.objects.all().order_by("-ChapCount", "-NovelId")
 
-    # If there's a search query, filter the novels
     if search_query:
         novels_list = novels_list.filter(Name__icontains=search_query)
 
-    # If no novels found, inform the user
     if not novels_list:
         messages.info(request, "Không tìm thấy cuốn tiểu thuyết nào với từ khóa này.")
 
@@ -524,13 +525,11 @@ def add_comment_reply(request, novel_id):
         return redirect('user_novel_detail', novel_id=novel_id)
     return render(request, 'novel/User/novel_detail.html')
 
-
 @login_required
 def theo_doi_truyen(request, novel_id):
     novel = get_object_or_404(Novel, pk=novel_id)
     
-    # Lấy chương đầu tiên hoặc chương mới nhất tùy mục đích
-    chapter = novel.chapters.order_by('Number').first()  # hoặc .last() nếu muốn theo dõi từ chương mới nhất
+    chapter = novel.chapters.order_by('Number').first()  
 
     if not chapter:
         messages.error(request, "Truyện này chưa có chương nào để theo dõi.")
@@ -542,7 +541,6 @@ def theo_doi_truyen(request, novel_id):
         novel=novel,
         defaults={'current_chapter': chapter}
     )
-
     if not created:
         progress.delete()
         message = "Đã hủy theo dõi truyện."
@@ -566,15 +564,13 @@ def user_dashboard(request):
 
 @login_required
 def novels_followed(request):
-    # Lấy tất cả progress của user hiện tại, kèm truyện
     progresses = ReadingProgress.objects.filter(user=request.user).select_related('novel')
     novel_ids = progresses.values_list('novel__NovelId', flat=True)
 
-    # Annotate số chương cho mỗi truyện
     novels = (
         Novel.objects
         .filter(NovelId__in=novel_ids)
-        .annotate(ChapterCount=Count('chapters'))  # 'chapters' là related_name trong Chapter model
+        .annotate(ChapterCount=Count('chapters')) 
     )
 
     return render(request, 'novel/user/novel_followed.html', {

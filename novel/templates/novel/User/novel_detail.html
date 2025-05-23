@@ -68,17 +68,23 @@
               </button>
               {% endif %}
 
-              <button type="button" class="action-button btn-outline">
-                <i class="fas fa-comments"></i> Thảo Luận
-                {% if some_other_count > 0 %}
-                <span class="badge-count">{{ some_other_count }}</span>
-                {% endif %}
-              </button>
-               <button type="button" class="action-button btn-outline">
-  <i class="fas fa-spinner"></i> {{ novel.State }}
-</button>
-            </div>
+              <a href="#commentSection" class="action-button btn-outline">
+                <i class="fas fa-comment"></i> Thảo Luận
+                <span class="badge-count">{{ novel.TotalComments }}</span>
+               </a>
 
+               <button type="button" class="action-button btn-outline">
+             <i class="fas fa-spinner"></i> {{ novel.State }}
+           </button>
+         
+             {% if reading_progress and reading_progress.current_chapter %}
+              <a href="{% url 'user_chapter_detail' novel.NovelId reading_progress.current_chapter.ChapId %}" 
+              class="action-button btn-outline">
+             <i class="fas fa-spinner"></i> Đang đọc:   
+              <span> Chương: {{ reading_progress.current_chapter.Number }}</span>
+            </a>
+            {% endif %}           
+            </div>
             <div class="novel-stats-bar">
               <div class="stat-block">
                 <span class="stat-value">{{ novel.TotalComments}}</span>
@@ -295,12 +301,16 @@
               }
             </script>
           </div>
+     
+        </div>
+        <div class=" rounded-3">
+          
           <div class="truyen__details__review mt-3">
             <div class="title mt-4 mb-4">
               <h4 class="text-black mb-0 py-2 ">Bình luận </h4>
             </div>
 
-            <div id="commentSection">
+            <div id="commentSection" class="card p-4 rounded-3">
               {% if user.is_authenticated %}
               <form method="POST" class="mt-3 comment-form">
                 {% csrf_token %}
@@ -318,10 +328,14 @@
                   gap: 20px;
                 }
               </style>
-              {% else %}
-              <p>Vui lòng <a href="{% url 'login' %}" class="text-primary fw-bold text-decoration-underline">đăng
-                  nhập</a> để bình luận.</p>
-              {% endif %}
+                {% else %}
+    <div class="sign-in-container">
+  <p class="sign-in-message">
+    Vui lòng <button class="sign-in-btn" onclick="openPopup('loginModal')">đăng nhập</button> để bình luận.
+  </p>
+  {% include 'novel/login_popup.html' %}
+</div>
+{% endif %}
 
               <div class="comments-container mt-4">
                 {% for comment in comments %}
@@ -330,15 +344,13 @@
                   <div class="comment-main rounded">
                     <div class="d-flex gap-2">
                       <div class="flex-grow-1">
-
                         <div class="comment-content bg-light p-3 rounded">
                           <div>
-                            <img src="{% static 'novel/img/200.jpg' %}" alt="User" width="40" height="40" />
-
+                            <img  class="rounded-circle"src="{% static 'novel/img/200.jpg' %}" alt="User" width="40" height="40" />
                           </div>
                           <div class="comment-info">
 
-                            <h6 class="mb-1 fw-bold text-primary">{{ comment.User.username }}</h6>
+                            <p class="username fw-bold font text-primary">Username: {{ comment.User.username }}</p>
                             <p class="mb-1">{{ comment.Content|safe }}</p>
                           </div>
 
@@ -367,7 +379,7 @@
                           {% for reply in comment.replies.all %}
                           <div class="reply-thread">
                             <div class="d-flex gap-2 mt-2">
-                              <img src="{% static 'novel/img/user/user1.png' %}" alt="User" width="32" height="32" />
+                              <img src="{% static 'novel/img/200.jpg' %}" alt="User" width="32" height="32" />
                               <div class="flex-grow-1">
                                 <div class="comment-content bg-light p-2 rounded">
                                   <h6 class="mb-1 fw-bold">{{ reply.User.username }}</h6>
