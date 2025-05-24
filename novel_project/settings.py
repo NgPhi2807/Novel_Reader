@@ -19,7 +19,9 @@ SECRET_KEY = 'django-insecure-_vaaj^mn0bka0wj8-hhw*+uv!(j3k!y6c=bn-)_v4zr(!$r-g-
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-
+CSRF_TRUSTED_ORIGINS = [
+    'https://novelreader-production.up.railway.app',
+]
 # Media configuration
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

@@ -595,7 +595,7 @@ def novel_category(request, category_id):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
-    return render(request, 'novel/user/novel_category.html', {
+    return render(request, 'novel/User/novel_category.html', {
         'the_loai': the_loai,
         'page_obj': page_obj,
     })
