@@ -2,6 +2,8 @@
 
 Dự án này là một hệ thống quản lý tiểu thuyết, cho phép bạn tự động lấy dữ liệu tiểu thuyết và chương từ một API bên ngoài và nhập chúng vào cơ sở dữ liệu cục bộ của bạn. Phần này sẽ hướng dẫn bạn cách thiết lập và cấu hình dự án để sử dụng PostgreSQL làm cơ sở dữ liệu.
 
+## Link demo sẵn
+https://novelreader-production.up.railway.app/novel/user_home/
 ## Giao Diện Ứng Dụng
 
 ![Trang chủ ứng dụng](media/novel_images/image.png)
