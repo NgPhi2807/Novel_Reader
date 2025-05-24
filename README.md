@@ -2,6 +2,14 @@
 
 Dự án này là một hệ thống quản lý tiểu thuyết, cho phép bạn tự động lấy dữ liệu tiểu thuyết và chương từ một API bên ngoài và nhập chúng vào cơ sở dữ liệu cục bộ của bạn. Phần này sẽ hướng dẫn bạn cách thiết lập và cấu hình dự án để sử dụng PostgreSQL làm cơ sở dữ liệu.
 
+## Giao Diện Ứng Dụng
+
+![Trang chủ ứng dụng](media/novel_images/image.png)
+
+![Trang chi tiết truyện](media/novel_images/detail.png)
+
+Giao diện hiển thị danh sách tiểu thuyết được lấy từ API và lưu vào cơ sở dữ liệu.
+
 ## **Tính Năng Chính (Cập Nhật)**
 
 * **Tích hợp PostgreSQL:** Dễ dàng kết nối với cơ sở dữ liệu PostgreSQL.  
