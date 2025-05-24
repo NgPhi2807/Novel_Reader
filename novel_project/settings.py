@@ -1,6 +1,7 @@
 import warnings
 from pathlib import Path
 import os
+import dj_database_url
 
 # Ignore CryptographyDeprecationWarning
 DATABASES = {
@@ -17,7 +18,7 @@ SECRET_KEY = 'django-insecure-_vaaj^mn0bka0wj8-hhw*+uv!(j3k!y6c=bn-)_v4zr(!$r-g-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Media configuration
 MEDIA_URL = '/media/'
@@ -40,12 +41,15 @@ INSTALLED_APPS = [
 REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': (
         'rest_framework.renderers.JSONRenderer',
-        'rest_framework.renderers.BrowsableAPIRenderer',  # Renderer để hiển thị tài liệu API
+        'rest_framework.renderers.BrowsableAPIRenderer',  
     ),
 }
 
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
