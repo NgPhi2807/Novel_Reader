@@ -88,7 +88,7 @@ def fetch_story_detail(story):
         }
 
     except requests.RequestException as e:
-        print(f'❌ Lỗi khi lấy thông tin từ {url}: {e}')
+        print(f'Lỗi khi lấy thông tin từ {url}: {e}')
         return None
 
 def get_story_details(stories):
@@ -103,7 +103,7 @@ def get_story_details(stories):
     with open('total_stories.json', 'w', encoding='utf-8') as f:
         json.dump(total_stories, f, ensure_ascii=False, indent=2)
 
-    print(f'✅ Đã lưu {len(total_stories)} truyện vào total_stories.json')
+    print(f'Đã lưu {len(total_stories)} truyện vào total_stories.json')
     return total_stories
 
 def get_stories(start_page=1, end_page=2):
@@ -111,7 +111,7 @@ def get_stories(start_page=1, end_page=2):
 
     for page in range(start_page, end_page + 1):
         url = f'{BASE_URL}/danh-sach/truyen-hot' if page == 1 else f'{BASE_URL}/danh-sach/truyen-hot?page={page}'
-        print(f'🔍 Đang lấy dữ liệu từ: {url}')
+        print(f'Đang lấy dữ liệu từ: {url}')
 
         try:
             response = requests.get(url, headers=HEADERS)
@@ -159,7 +159,7 @@ def get_stories(start_page=1, end_page=2):
             time.sleep(1)
 
         except requests.RequestException as e:
-            print(f'❌ Lỗi khi lấy trang {url}: {e}')
+            print(f'Lỗi khi lấy trang {url}: {e}')
 
     return get_story_details(all_stories)
 

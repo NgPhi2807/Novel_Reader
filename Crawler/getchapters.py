@@ -24,7 +24,7 @@ def safe_get(url, headers=None, retries=5, sleep=2, timeout=10):
             response.raise_for_status()
             return response
         except requests.RequestException as e:
-            print(f"⚠️ Lỗi khi GET {url}: {e}. Thử lại ({i+1}/{retries})...")
+            print(f"Lỗi khi GET {url}: {e}. Thử lại ({i+1}/{retries})...")
             time.sleep(sleep + random.uniform(0.2, 0.8))
     return None
 
@@ -53,7 +53,7 @@ def get_all_chapters_api(story_id, max_page):
     max_page = min(max_page, 1)  
     for page in range(1, max_page + 1):
         api_url = f'{BASE_URL}get/listchap/{story_id}?page={page}'
-        print(f"📘 Lấy chương trang {page}/{max_page}: {api_url}")
+        print(f"Lấy chương trang {page}/{max_page}: {api_url}")
         resp = safe_get(api_url, headers=HEADERS)
         if not resp:
             continue
@@ -90,7 +90,7 @@ def get_chapter_content(chapter_url):
     soup = BeautifulSoup(resp.text, 'html.parser')
     content = soup.select_one('.truyen')
     if not content:
-        print(f'⚠️ Không tìm thấy nội dung trong {chapter_url}')
+        print(f' Không tìm thấy nội dung trong {chapter_url}')
         return None
     return content.decode_contents()
 
@@ -105,17 +105,14 @@ def get_stories(start_page=1, end_page=2):
             continue
         soup = BeautifulSoup(resp.text, 'html.parser')
         for elem in soup.select('.item'):
-        # for i, elem in enumerate(soup.select('.item')):
-        #     if i >= 10:
-        #         break
-
+  
             title_elem = elem.select_one('h3 a')
             if not title_elem:
                 continue
             story_url = urljoin(BASE_URL, title_elem['href'])
             story_name = title_elem.text.strip()
 
-            print(f"📖 Lấy chương cho truyện: {story_name}")
+            print(f"Lấy chương cho truyện: {story_name}")
             chapters = get_chapters_from_story_url(story_url)
 
             formatted_chapters = []
@@ -144,7 +141,7 @@ def get_stories(start_page=1, end_page=2):
     with open('get_chapters.json', 'w', encoding='utf-8') as f:
         json.dump(all_stories, f, ensure_ascii=False, indent=2)
 
-    print(f'✅ Đã lưu danh sách {len(all_stories)} truyện vào get_chapters.json')
+    print(f'Đã lưu danh sách {len(all_stories)} truyện vào get_chapters.json')
     return all_stories
 
 
