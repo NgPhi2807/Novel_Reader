@@ -109,7 +109,7 @@ def novel_list(request):
     else:
         novels_list = Novel.objects.all()
 
-    novels_list = novels_list.order_by("-ViewCount")
+    novels_list = novels_list.order_by("-dateUpdate")
 
     paginator = Paginator(novels_list, 5)
     page_number = request.GET.get("page", 1)
@@ -143,9 +143,9 @@ def edit_novel(request, novel_id):
         novel.Name = request.POST.get("name")
         novel.Author = request.POST.get("author")
         novel.Description = request.POST.get("description")
-        img = request.FILES.get("img")
-        if img:
-            novel.ImgUrl = img
+        img_url = request.POST.get("imgurl", "").strip()
+        if img_url:
+           novel.ImgUrl = img_url
 
         novel.save()
 
@@ -193,6 +193,15 @@ def add_novel(request):
         state = request.POST.get("state", "").strip()
         img_url = request.POST.get("imgurl", "").strip()
         category_ids = request.POST.get("categories", "")
+        chapters_str = request.POST.get("chapters", "0").strip()
+
+        # Validate số chương là số nguyên >= 0
+        try:
+            chapters = int(chapters_str)
+            if chapters < 0:
+                chapters = 0
+        except ValueError:
+            chapters = 0
 
         if not name or not description or not author or not state:
             return HttpResponse("Vui lòng điền đầy đủ thông tin.")
@@ -206,7 +215,7 @@ def add_novel(request):
             Description=description,
             Author=author,
             State=state,
-            ChapCount=0,
+            ChapCount=chapters,   # Gán số chương ở đây
         )
 
         if img_url:
@@ -217,11 +226,7 @@ def add_novel(request):
         except IntegrityError:
             return HttpResponse("Lỗi: Không thể lưu tiểu thuyết, vui lòng thử lại.")
         
-        if not hasattr(novel, 'NovelId'):
-            return HttpResponse("Lỗi: Không thể gán NovelId cho tiểu thuyết.")
-
-        novel_id = novel.NovelId  
-
+        # Các bước xử lý thể loại như cũ
         if not category_ids:
             return HttpResponse("Vui lòng chọn ít nhất một thể loại.")
 
@@ -236,13 +241,14 @@ def add_novel(request):
         for category_id in category_ids:
             category = Category.objects.filter(pk=category_id).first()
             if category:
-                CategoryNovel.objects.create(CNId=next_cn_id, Novel_id=novel_id, Category=category)
+                CategoryNovel.objects.create(CNId=next_cn_id, Novel_id=novel.NovelId, Category=category)
                 next_cn_id += 1
 
         return redirect("novel_list")   
 
     categories = Category.objects.all()
     return render(request, "novel/Admin/novel_create.html", {"categories": categories})
+
 
 
 @admin_required
@@ -317,9 +323,9 @@ def delete_novel_and_related(request, novel_id):
 
     # Tiến hành xóa cuốn tiểu thuyết và các đối tượng liên quan (Chapters, Comments, etc.)
     # Xóa các chapter liên quan
-    novel.chapter_set.all().delete()
+    novel.chapters.all().delete()
     # Xóa các bình luận liên quan
-    novel.comment_set.all().delete()
+    novel.comments.all().delete()
     # Sau đó xóa cuốn tiểu thuyết
     novel.delete()
 

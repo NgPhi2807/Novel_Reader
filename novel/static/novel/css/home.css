@@ -214,7 +214,6 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-
   padding-top: clamp(5px, 1.5vw, 10px);
 }
 
@@ -225,15 +224,14 @@ body {
 .product__item__text ul li {
   display: inline-block;
   font-size: 12px;
-  color: #047857;
-  /* Màu chữ thể loại */
+  color: #050505;
   margin-right: 5px;
   margin-bottom: 5px;
-  padding: 3px 8px;
+  padding:2px 5px;
   background-color: transparent;
   border-radius: 5px;
   text-align: center;
-  border: 1.5px solid #047857;
+  border: 1.5px solid #111111;
   font-weight: 500;
 }
 
@@ -452,7 +450,7 @@ body {
 
 .novel-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   /* mobile */
   gap: 20px;
 }
@@ -473,7 +471,7 @@ body {
 
 @media (min-width: 1200px) {
   .novel-grid {
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(6, 1fr);
     /* desktop lớn */
   }
 }
@@ -567,9 +565,8 @@ body {
 }
 
 
-/* Hover effect: change novel name to red */
 .table tbody td a.story-link:hover p {
-    color: #dc3545; /* Bootstrap's danger/red color */
+    color: #dc3545; 
 }
 
 .hot-label {

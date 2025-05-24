@@ -2,16 +2,14 @@ import os
 import sys
 import json
 from django.db.models import Max
-# Thêm đường dẫn chứa thư mục project vào PYTHONPATH
 sys.path.append(r'E:\Project\Novel_Reader')
 
-# Đặt biến môi trường trỏ tới settings.py của project
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'novel_project.settings')
 
 import django
 django.setup()
 
-from novel.models import Novel, Category, CategoryNovel # Thay 'novel' bằng tên app chứa model Novel nếu khác
+from novel.models import Novel, Category, CategoryNovel 
 
 def import_novels_from_json(json_path):
     with open(json_path, encoding='utf-8') as f:
@@ -61,6 +59,6 @@ def import_novels_from_json(json_path):
 
 
 if __name__ == '__main__':
-    json_path = r"E:\Project\Novel_Reader\API\total_stories.json"  # Đường dẫn tới file json
+    json_path = r"E:\Project\Novel_Reader\Crawler\total_stories.json"  # Đường dẫn tới file json
     import_novels_from_json(json_path)
     print("Import completed!")

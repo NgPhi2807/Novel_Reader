@@ -91,12 +91,16 @@
                 <span class="stat-label">Lượt bình luận</span>
               </div>
               <div class="stat-block">
+                <span class="stat-value">{{ novel.reading_progress.count }}</span>
+                <span class="stat-label">Lượt theo dõi</span>
+              </div>
+              <div class="stat-block">
                 <span class="stat-value">{{ novel.ViewCount }}</span>
                 <span class="stat-label">Lượt đọc</span>
               </div>
-                     <div class="stat-block">
+              <div class="stat-block">
                 <span class="stat-value">{{ novel.ChapCount }}</span>
-                <span class="stat-label">Chương</span>
+                <span class="stat-label">Số chương hiện tại</span>
               </div>
             </div>
 
@@ -107,9 +111,7 @@
               </a>
               {% endfor %}
             </div>
-
           </div>
-
 
         </div>
 
@@ -448,9 +450,9 @@
           <div class="title mt-4 mb-4">
             <h4 class="text-black mb-0 py-2 ">Truyện cùng thể loại </h4>
           </div>
-          <div class="row">
+          <div class="novel-grid">
             {% for novel in similar_novels %}
-            <div class="col-lg-3 col-md-4 col-sm-6 product__item">
+            <div class="product__item">
               {%load static %}
               <div class="product__item__pic set-bg" data-setbg="{{novel.ImgUrl}}">
                 <div class="ep">{{ novel.ChapCount}} chương</div>

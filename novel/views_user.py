@@ -81,7 +81,7 @@ class UserHomeView(APIView):
         })
 
 def user_home(request):
-    all_novels = Novel.objects.all().order_by("-NovelId")[:15]
+    all_novels = Novel.objects.all().order_by("-dateUpdate")[:18]
     novel_rank = Novel.objects.all().order_by("-ViewCount")[:10]
     novelupdates = Novel.objects.annotate(
         latest_update=Max("chapters__dateUpdate"),
@@ -153,7 +153,6 @@ def user_novel_detail(request, novel_id):
     first_chapter = Chapter.objects.filter(Novel=novel).order_by("Number").first()
     first_chapter_id = first_chapter.ChapId if first_chapter else None
 
-    # Lấy reading progress nếu user đã đăng nhập
     if request.user.is_authenticated:
         reading_progress = ReadingProgress.objects.filter(user=request.user, novel=novel).first()
     else:
@@ -186,7 +185,7 @@ def user_novel_detail(request, novel_id):
     novel_categories = novel.categorynovel_set.values_list('Category', flat=True)
     similar_novels = Novel.objects.filter(
         categorynovel__Category__in=novel_categories
-    ).exclude(pk=novel.pk).distinct().order_by('-ViewCount')[:12]
+    ).exclude(pk=novel.pk).distinct().order_by('-ViewCount')[:15]
 
     if request.method == 'POST':
         content = request.POST.get('Content', '').strip()
@@ -249,12 +248,12 @@ def user_novel_detail(request, novel_id):
 
 def autocomplete_novel(request):
     q = request.GET.get('q', '')
-    novels = Novel.objects.filter(Name__icontains=q)[:5]
+    novels = Novel.objects.filter(Q(Name__icontains=q) | Q(Author__icontains=q))[:5]
     results = [
         {
             'NovelId': novel.NovelId,
             'Name': novel.Name,
-            'ImgUrl': novel.ImgUrl if novel.ImgUrl else '',
+            'ImgUrl': novel.ImgUrl or '',
             'Author': novel.Author,
         }
         for novel in novels

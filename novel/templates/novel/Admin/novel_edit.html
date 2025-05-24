@@ -12,12 +12,9 @@
             <div class="col-md-9">
                 <div class="card p-4">
                   <div class="d-flex align-items-center gap-3 mb-3">
-                    {% load static %}
-                    <img src="{% static 'novel/img/edit.svg' %}" alt="Report Icon"
-                      alt=""    
-                      width="40"      
-                      />
-                    <h4 class="ml-2 mb-0 text-primary fo">Chỉnh sửa truyện</h4>
+                   
+                    
+                    <h4 class="mb-0 text-primary fo">Chỉnh sửa truyện</h4>
                   </div>
                   <form method="post" enctype="multipart/form-data">
                         {% csrf_token %}
@@ -26,7 +23,7 @@
                                 <div class="book-container">
                                     <div class="book">
                                       {%load static %}
-                                        <div class="truyen__details__pic set-bg" id="previewImage" data-setbg="{% get_media_prefix %}{{novel.ImgUrl}}">
+                                        <div class="truyen__details__pic set-bg" id="previewImage" data-setbg="{{novel.ImgUrl}}">
                                         </div>
                                     </div>
                                 </div>
@@ -105,10 +102,8 @@
                                 </div>
                                 
                                   
-                                  <div class="mb-3">
-                                    <label class="form-label">Chọn ảnh mới</label>
-                                    <input type="file" class="form-control" id="img" name="img" accept="image/*">
-                                </div>
+                                  <label class="form-label" for="imgurl">URL ảnh bìa: </label>
+                                  <input class="form-control mb-3" type="text" name="imgurl" id="imgurl" value="{{ novel.ImgUrl }}" required>
                     
                                   <div class="mb-3">
                                     <label for="state" class="form-label">Tình trạng *</label>

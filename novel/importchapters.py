@@ -61,6 +61,6 @@ def import_chapters_from_json(json_path):
             print(f"{action} chương {number} - {name} cho truyện '{novel_name}'.")
 
 if __name__ == '__main__':
-    json_path = r"E:\Project\Novel_Reader\API\get_chapters.json"  # File JSON chứa chương
+    json_path = r"E:\Project\Novel_Reader\Crawler\get_chapters.json"  # File JSON chứa chương
     import_chapters_from_json(json_path)
     print("Import chương hoàn tất!")

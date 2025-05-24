@@ -40,6 +40,8 @@ class Novel(models.Model):
     def update_view_count(self):
         self.ViewCount += 1
         self.save()
+    def get_followers_count(self):
+        return self.reading_progress.count()
 
 
 class Chapter(models.Model):
@@ -88,7 +90,7 @@ class Comment(models.Model):
     CommentId = models.IntegerField()
     Content = models.TextField()
     User = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
-    Novel = models.ForeignKey(Novel, on_delete=models.CASCADE)
+    Novel = models.ForeignKey(Novel, on_delete=models.CASCADE,related_name='comments')
     CreatedAt = models.DateTimeField(auto_now_add=True)
     parent_comment = models.ForeignKey('self', null=True, blank=True, related_name='replies', on_delete=models.CASCADE)
 

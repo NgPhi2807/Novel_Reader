@@ -285,7 +285,7 @@
                 </span>
               </div>
               <div class="novel-item-stats">
-                <span class="chapter-count">{{ novel.chapter_count|default:0 }} chương</span>
+                <span class="chapter-count">{{ novel.ChapCount|default:0 }} chương</span>
                 <a href="{% url 'user_novel_detail' novel.NovelId %}" class="read-trial-btn-yellow">Đọc thử</a>
               </div>
             </div>

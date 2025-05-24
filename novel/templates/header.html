@@ -68,6 +68,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
     max-width: 230px;
+    
   }
 
   .autocomplete-item:hover {
@@ -168,7 +169,7 @@
               ">
               <i class="fa fa-search"></i>
             </span>
-            <input id="search-box" type="text" name="search" class="search-box" placeholder="Nhập tên truyện cần tìm..."
+            <input id="search-box" type="text" name="search" class="search-box" placeholder="Nhập tên truyện hoặc tác giả cần tìm..."
               autocomplete="off" style="
                 width: 100%;
                 padding: 8px 12px 8px 35px;
@@ -287,14 +288,14 @@
               item.classList.add("autocomplete-item");
 
               item.innerHTML = `
-   <img src="${novel.ImgUrl}" alt="${novel.Name}">
-  <div class="autocomplete-item__content">
-    <p class="autocomplete-item__title" title="${novel.Name}">${novel.Name}</p>
-    <div class="autocomplete-item__info">
-      <span>Tác giả: ${novel.Author}</span>
-    </div>
-  </div>
-`;
+               <img src="${novel.ImgUrl}" alt="${novel.Name}">
+              <div class="autocomplete-item__content">
+               <p class="autocomplete-item__title" title="${novel.Name}">${novel.Name}</p>
+                <div class="autocomplete-item__info">
+               <span>Tác giả: ${novel.Author}</span>
+              </div>
+             </div>
+             `;
               item.addEventListener("click", () => {
 
                 window.location.href = `/novel/detail/${novel.NovelId}/`;
