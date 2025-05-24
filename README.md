@@ -1,111 +1,148 @@
-# Hệ Thống Quản Lý Tiểu Thuyết
+# **Hệ Thống Quản Lý Tiểu Thuyết: Chuyển Đổi sang PostgreSQL**
 
-Dự án này là một hệ thống quản lý tiểu thuyết, cho phép bạn tự động lấy dữ liệu tiểu thuyết và chương từ một API bên ngoài và nhập chúng vào cơ sở dữ liệu MySQL cục bộ của bạn. Đây là một công cụ hữu ích để xây dựng một thư viện tiểu thuyết cá nhân hoặc một ứng dụng đọc truyện.
+Dự án này là một hệ thống quản lý tiểu thuyết, cho phép bạn tự động lấy dữ liệu tiểu thuyết và chương từ một API bên ngoài và nhập chúng vào cơ sở dữ liệu cục bộ của bạn. Phần này sẽ hướng dẫn bạn cách thiết lập và cấu hình dự án để sử dụng PostgreSQL làm cơ sở dữ liệu.
 
----
+## **Tính Năng Chính (Cập Nhật)**
 
-## Tính Năng Chính
-
-* **Tích hợp XAMPP/MySQL:** Dễ dàng kết nối với cơ sở dữ liệu MySQL thông qua XAMPP.
-* **Lấy dữ liệu tự động:** Tự động tải thông tin tiểu thuyết và chương từ một API được cấu hình sẵn.
-* **Nhập dữ liệu vào DB:** Nhập dữ liệu đã lấy vào cơ sở dữ liệu cục bộ của bạn một cách có tổ chức.
+* **Tích hợp PostgreSQL:** Dễ dàng kết nối với cơ sở dữ liệu PostgreSQL.  
+* **Lấy dữ liệu tự động:** Tự động tải thông tin tiểu thuyết và chương từ một API được cấu hình sẵn.  
+* **Nhập dữ liệu vào DB:** Nhập dữ liệu đã lấy vào cơ sở dữ liệu cục bộ của bạn một cách có tổ chức.  
 * **Hệ thống Django:** Được xây dựng trên framework Django, đảm bảo tính bảo mật và khả năng mở rộng.
 
----
+## **Hướng Dẫn Cài Đặt và Sử Dụng (Cập Nhật)**
 
-## Hướng Dẫn Cài Đặt và Sử Dụng
+Để bắt đầu với dự án này sử dụng PostgreSQL, hãy làm theo các bước dưới đây.
 
-Để bắt đầu với dự án này, hãy làm theo các bước dưới đây.
+### **1\. Thiết Lập Cơ Sở Dữ Liệu với PostgreSQL**
 
-### 1. Thiết Lập Cơ Sở Dữ Liệu với XAMPP
+Trước tiên, bạn cần chuẩn bị cơ sở dữ liệu PostgreSQL.
 
-Trước tiên, bạn cần chuẩn bị cơ sở dữ liệu MySQL sử dụng XAMPP.
+1. **Cài đặt PostgreSQL:**  
+   * **Trên Windows:** Tải xuống trình cài đặt từ [trang web chính thức của PostgreSQL](https://www.postgresql.org/download/windows/).  
+   * **Trên macOS:** Sử dụng Homebrew: brew install postgresql  
+   * **Trên Linux (Ubuntu/Debian):** sudo apt update && sudo apt install postgresql postgresql-contrib  
+2. **Khởi động Dịch vụ PostgreSQL:** Đảm bảo dịch vụ PostgreSQL đang chạy. Trên hầu hết các hệ điều hành, nó sẽ tự động khởi động sau khi cài đặt.  
+3. **Tạo Cơ Sở Dữ Liệu và Người Dùng:**  
+   * Mở terminal hoặc command prompt.  
+   * Truy cập vào shell PostgreSQL với người dùng mặc định (thường là postgres):  
+     psql \-U postgres
 
-1.  **Cài đặt XAMPP:** Nếu chưa có, hãy tải và cài đặt XAMPP từ [trang web chính thức của Apache Friends](https://www.apachefriends.org/index.html).
-2.  **Khởi động Apache và MySQL:** Mở **XAMPP Control Panel** và **Start** các module **Apache** và **MySQL**.
-3.  **Tạo Cơ Sở Dữ Liệu:**
-    * Mở trình duyệt web và truy cập `http://localhost/phpmyadmin`.
-    * Trong phpMyAdmin, chọn tab "Databases".
-    * Nhập tên cơ sở dữ liệu mới (ví dụ: `novel_db`) vào trường "Create database" và nhấp **Create**.
-4.  **Cấu hình Cài đặt Django:**
-    * Mở tệp `settings.py` trong thư mục gốc của dự án Django của bạn.
-    * Cập nhật phần `DATABASES` để kết nối với cơ sở dữ liệu MySQL của XAMPP:
+   * Tạo một cơ sở dữ liệu mới (ví dụ: novel\_db):  
+     CREATE DATABASE novel\_db;
 
-    ```python
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.mysql',
-            'NAME': 'novel_db', # Thay thế bằng tên cơ sở dữ liệu bạn đã tạo
-            'USER': 'root',
-            'PASSWORD': '', # Để trống nếu không có mật khẩu nào được đặt cho người dùng root XAMPP
-            'HOST': '127.0.0.1',
-            'PORT': '3306',
-        }
-    }
-    ```
-    *Lưu ý: Nếu bạn đã đặt mật khẩu cho người dùng `root` MySQL trong XAMPP, hãy điền mật khẩu đó vào trường `PASSWORD`.*
+   * Tạo một người dùng mới (ví dụ: noveluser) và đặt mật khẩu:  
+     CREATE USER noveluser WITH PASSWORD 'your\_password';
 
----
+     *Thay thế your\_password bằng mật khẩu mạnh mà bạn muốn sử dụng.*  
+   * Cấp quyền cho người dùng mới trên cơ sở dữ liệu:  
+     GRANT ALL PRIVILEGES ON DATABASE novel\_db TO noveluser;
 
-### 2. Thiết Lập Môi Trường Dự Án & Khởi Tạo Cơ Sở Dữ Liệu
+   * Thoát khỏi shell PostgreSQL:  
+     \\q
+
+4. **Cấu hình Cài đặt Django:**  
+   * Mở tệp settings.py trong thư mục gốc của dự án Django của bạn.  
+   * Cập nhật phần DATABASES để kết nối với cơ sở dữ liệu PostgreSQL:
+
+DATABASES \= {  
+    'default': {  
+        'ENGINE': 'django.db.backends.postgresql', \# Thay đổi từ mysql sang postgresql  
+        'NAME': 'novel\_db', \# Tên cơ sở dữ liệu bạn đã tạo  
+        'USER': 'noveluser', \# Người dùng bạn đã tạo  
+        'PASSWORD': 'your\_password', \# Mật khẩu của người dùng  
+        'HOST': 'localhost', \# Hoặc địa chỉ IP của máy chủ PostgreSQL nếu khác  
+        'PORT': '5432', \# Cổng mặc định của PostgreSQL  
+    }  
+}  
+*Lưu ý: Thay thế novel\_db, noveluser, your\_password và localhost (nếu cần) bằng thông tin cấu hình của bạn.*
+
+### **2\. Thiết Lập Môi Trường Dự Án & Khởi Tạo Cơ Sở Dữ Liệu (Cập Nhật)**
 
 Các bước này sẽ tạo môi trường ảo Python, cài đặt các thư viện cần thiết và khởi tạo cấu trúc bảng trong cơ sở dữ liệu.
 
-1.  **Tạo Môi Trường Ảo:**
-    python -m venv venv
-    
-2.  **Kích Hoạt Môi Trường Ảo:**
-    * **Trên Windows:**
+1. **Tạo Môi Trường Ảo:**  
+   python \-m venv venv
 
-        venv\Scripts\activate
+2. **Kích Hoạt Môi Trường Ảo:**  
+   * **Trên Windows:**  
+     venv\\Scripts\\activate
 
+   * **Trên macOS/Linux:**  
+     source venv/bin/activate
 
-3.  **Cài Đặt Các Phụ Thuộc:**
-    pip install -r requirements.txt
+3. Cài Đặt Các Phụ Thuộc (Cập Nhật):    
+   pip install \-r requirements.txt
 
-    *Đảm bảo bạn có một file `requirements.txt` trong thư mục gốc của dự án liệt kê tất cả các thư viện cần thiết (ví dụ: `Django`, `mysqlclient`, `requests`).*
-4.  **Áp Dụng Các Migration Cơ Sở Dữ Liệu:** Bước này sẽ tạo các bảng cần thiết trong cơ sở dữ liệu `novel_db` của bạn.
-    py manage.py makemigrations
-    py manage.py migrate
+4. **Áp Dụng Các Migration Cơ Sở Dữ Liệu:** Bước này sẽ tạo các bảng cần thiết trong cơ sở dữ liệu novel\_db của bạn.  
+   py manage.py makemigrations  
+   py manage.py migrate
 
-### 3. Thao Tác Dữ Liệu: Lấy và Nhập
+### **3\. Thao Tác Dữ Liệu: Lấy và Nhập**
 
-Sau khi cấu hình cơ sở dữ liệu, bạn có thể bắt đầu lấy và nhập dữ liệu tiểu thuyết.
+Các bước này không thay đổi vì chúng liên quan đến logic ứng dụng để lấy và nhập dữ liệu, không phụ thuộc vào loại cơ sở dữ liệu.
 
-1.  **Lấy và Nhập Tiểu Thuyết:**
-    * Di chuyển vào thư mục `API`:
-        cd API
+1. **Lấy và Nhập Tiểu Thuyết:**  
+   * Di chuyển vào thư mục API:  
+     cd API
 
-    * Chạy script để **lấy dữ liệu tiểu thuyết**:
-        py getnovels.py
+   * Chạy script để **lấy dữ liệu tiểu thuyết**:  
+     py getnovels.py
 
-    * Quay lại thư mục dự án chính và vào thư mục ứng dụng `novel`:
-        cd ..
-        cd novel
- 
-    * Chạy script để **nhập dữ liệu tiểu thuyết** vào cơ sở dữ liệu của bạn:
-        py importnovel.py
+   * Quay lại thư mục dự án chính và vào thư mục ứng dụng novel:  
+     cd ..  
+     cd novel
 
-2.  **Lấy và Nhập Chương:**
-    * Di chuyển trở lại thư mục `API`:
-        cd ..
-        cd API
-     
-    * Chạy script để **lấy dữ liệu chương**:
-        py getchapters.py
- 
-    * Quay lại thư mục dự án chính và vào thư mục ứng dụng `novel`:
-        cd ..
-        cd novel
+   * Chạy script để **nhập dữ liệu tiểu thuyết** vào cơ sở dữ liệu của bạn:  
+     py importnovel.py
 
-    * Chạy script để **nhập dữ liệu chương** vào cơ sở dữ liệu của bạn:
-        py importchapters.py
- 
+2. **Lấy và Nhập Chương:**  
+   * Di chuyển trở lại thư mục API:  
+     cd ..  
+     cd API
 
----
+   * Chạy script để **lấy dữ liệu chương**:  
+     py getchapters.py
 
-### 4. Chạy Ứng Dụng Django
+   * Quay lại thư mục dự án chính và vào thư mục ứng dụng novel:  
+     cd ..  
+     cd novel
+
+   * Chạy script để **nhập dữ liệu chương** vào cơ sở dữ liệu của bạn:  
+     py importchapters.py
+
+### **4\. Chạy Ứng Dụng Django**
 
 Cuối cùng, sau khi thiết lập cơ sở dữ liệu và nhập dữ liệu, bạn có thể khởi chạy ứng dụng Django của mình:
 
-py manage.py runserver
+py manage.py runserver  
+
+### 5. Deploy bằng Railway
+
+Railway là một nền tảng đơn giản giúp bạn dễ dàng deploy ứng dụng Django online cùng với cơ sở dữ liệu PostgreSQL miễn phí.
+
+---
+
+#### 📝 Các bước thực hiện:
+
+---
+
+#### 1. Đăng ký tài khoản Railway
+
+- Truy cập [https://railway.app](https://railway.app) và đăng ký tài khoản (có thể đăng nhập bằng GitHub).
+- Railway cho phép bạn sử dụng gói PostgreSQL miễn phí từ **Aviencloud** hoặc **Railway-hosted**.
+
+---
+
+#### 2. Tạo project mới và provision PostgreSQL
+
+- Nhấn **New Project** → chọn **Provision PostgreSQL**.
+- Sau khi tạo xong, vào tab **Database** → **Connect** để lấy các thông tin kết nối:
+  - `Host`
+  - `Database`
+  - `User`
+  - `Password`
+  - `Port`
+
+---
+
+#### 3. Cấu hình kết nối PostgreSQL trong `settings.py`
