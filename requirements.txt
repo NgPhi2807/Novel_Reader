@@ -25,4 +25,3 @@ whitenoise==6.9.0
 requests
 beautifulsoup4
 
-mysqlclient==2.2.4  # Hoặc thay thế bằng pymysql nếu mysqlclient gây lỗi

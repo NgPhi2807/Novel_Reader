@@ -3,7 +3,11 @@ from pathlib import Path
 import os
 
 # Ignore CryptographyDeprecationWarning
-
+DATABASES = {
+    'default': dj_database_url.config(
+        default='postgres://avnadmin:AVNS_MwItjpFgLS4GPOMZU8f@pg-2318a3f0-iconictk2-0c57.j.aivencloud.com:12207/novel_db?sslmode=require'
+    )
+}
 # Base directory of the project
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -72,17 +76,17 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'novel_project.wsgi.application'
 
-# Database configuration - SỬ DỤNG POSTGRESQL
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'noveldb',          # Tên database PostgreSQL bạn tạo
-        'USER': 'postgres',          # User PostgreSQL
-        'PASSWORD': '', # Thay bằng mật khẩu của bạn
-        'HOST': 'localhost',         # Hoặc IP server DB
-        'PORT': '5432',              # Port mặc định PostgreSQL
-    }
-}
+# # Database configuration - SỬ DỤNG POSTGRESQL
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'noveldb',          # Tên database PostgreSQL bạn tạo
+#         'USER': 'postgres',          # User PostgreSQL
+#         'PASSWORD': '', # Thay bằng mật khẩu của bạn
+#         'HOST': 'localhost',         # Hoặc IP server DB
+#         'PORT': '5432',              # Port mặc định PostgreSQL
+#     }
+# }
 
 # Custom user model
 AUTH_USER_MODEL = 'novel.CustomUser'
